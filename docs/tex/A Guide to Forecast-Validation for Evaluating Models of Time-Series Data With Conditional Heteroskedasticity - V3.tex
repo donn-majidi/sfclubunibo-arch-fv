@@ -1,0 +1,204 @@
+
+\documentclass{article} % This defines the style of your paper
+%\usepackage[top = 2.5cm, bottom = 2.5cm, left = 2.5cm, right = 2.5cm]{geometry} 
+
+% Unfortunately, LaTeX has a hard time interpreting German Umlaute. The following two lines and packages should help. If it doesn't work for you please let me know.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry} 
+\usepackage{blindtext}
+\usepackage{parskip}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.9}
+\usepackage{hyphenat}
+\usepackage{soul}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{braket}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	citecolor=blue,
+}
+\usepackage{titletoc}
+%\usepackage[style=authoryear, backend=biber]{biblatex}
+%\usepackage[style=authoryear, natbib=true, backend=biber]{biblatex}
+\usepackage[
+style=authoryear, 
+maxcitenames=2, 
+%    mincitenames=1, 
+uniquelist=false, 
+backend=biber
+]{biblatex}
+\addbibresource{references.bib} % The name of your file
+
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\newcommand{\indep}{\perp \! \! \! \perp}
+
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+% The following two packages - multirow and booktabs - are needed to create nice looking tables.
+\usepackage{multirow} % Multirow is for tables with multiple rows within one cell.
+\usepackage{booktabs} % For even nicer tables.
+
+% As we usually want to include some plots (.pdf files) we need a package for that.
+\usepackage{graphicx} 
+
+% The default setting of LaTeX is to indent new paragraphs. This is useful for articles. But not really nice for homework problem sets. The following command sets the indent to 0.
+\usepackage{setspace}
+\setlength{\parindent}{0in}
+
+% Package to place figures where you want them.
+\usepackage{float}
+
+% The fancyhdr package let's us create nice headers.
+\usepackage{fancyhdr}
+
+\title{\textbf{A Guide to Forecast-Validation for Evaluating Models of Time-Series Data With Conditional Heteroskedasticity}}
+\author{Shahriyar Majidi \\\\ Riot Investment Research}
+\date{\today}
+
+\begin{document}
+	
+	\maketitle
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.4\linewidth]{logo/logo.png}
+	\end{figure}
+	
+	\begin{center}
+		This article is a product of the authors' contributions within Riot Investment Research, as part of our commitment to research and knowledge sharing in finance and data analysis.
+	\end{center}
+	
+	\begin{center}
+		\textbf{Abstract}
+	\end{center}
+	
+	This study analyzes the relationship between high-dimensional time series data through the lens of dynamic factor models, and the predictive capacity of such models in forecasting applications. Leveraging time series data from the Federal Reserve Bank of St. Louis FRED-QD database, we first identify the state space model representing this database, and then estimate the common factors using the expectation maximization algorithm with the Kalman smoother and augment the model by specifying a sparse VAR for the remaining idiosyncratic components by the means of $L_1$ penalized regression. Results reveal that dynamic factor models produce reliable forecasts of macroeconomic time series while simultaneously reducing the dimension of the database. Furthermore, we find that in the case of macroeconomic variables, once the common factors are extracted from the data, accounting for the remaining latent components in the database does not provide any meaningful information.
+	\newpage
+	\tableofcontents
+	\setcounter{tocdepth}{2} % 1 = Sections only, 2 = Subsections, etc.
+	\newpage
+	
+	\section{Introduction}
+	Modeling the conditional variance of financial time-series is one of the most critical tasks of any portfolio manager. Almost every financial decision involves forecasting the conditional variance of a set of financial instruments, with some of the most prominent examples being portfolio risk management and pricing derivative instruments. Needless to say, virtually every risk management model requires a forecast of the conditional variance as one of the key inputs, with the accuracy of the forecasts having far-reaching implications for the efficiency of the models. Modeling the conditional variance has also been a central focus in empirical finance, and a great number of forecast models have emerged ever since the introduction of the ARCH class of models by \textcite{ENGLE1982} and \textcite{BOLLERSLEV1986307}. See \textcite{PAGAN199615} and \textcite{POON&GRANGER2003} for a comprehensive review.
+	
+	While the literature is extensively rich in volatility forecast models, general methods and procedures for assessing forecast accuracy and comparing alternative forecast models are scarce and the results are often mixed. This can pose a real challenge for a practitioner who has to choose among a wide variety of existing forecast models, without being provided the adequate tools to properly evaluate and compare them. The main purpose of this study is therefore, to bridge this gap and provide a general framework for evaluating volatility forecast models that is adaptable to typical financial data sets such as those including asset returns and currency exchange rates. Furthermore, this study surveys the most recent findings in the forecasting literature and combines them to develop a forecast-validation framework that is mathematically founded and readily applicable to the workflow of an active financial risk modeling system.
+	
+	\subsection{Overview of Model Selection}
+	Econometric modeling often involves estimating a set of different models on a given data set, and selecting the best performing model on the basis of a criterion defined \textit{a priori}. 
+	
+	Traditionally, econometric models relied on estimates of information criteria such as the BIC or the AIC to rank and compare different models. This is a method commonly known as criterion based model selection, and involves assigning a penalty to the likelihood score of each model, with the penalty being higher for models with a larger number of unknown parameters. Penalizing models based on the number of parameters is rooted in the idea that by using estimates rather than the true values of the parameters, the model will drift farther apart from reality. Therefore, the information criteria generally favor more parsimonious models with fewer parameters over more complex models. This, of course, may lead to a potential bias in the forecasts due to the omission of otherwise important parameters from the models, which is a classic issue in machine learning known as the bias-variance trade-off.\footnote{For an introductory account of the bias-variance trade-off see \textcite[219]{ESL2004}.} Even though criterion based model selection rules are generally model selection consistent under standard regularity conditions, they tend to over penalize the models in the finite sample regime. Consequently, they might select models with poor out of sample performance when the number of available observations is limited. Another relevant issue, as pointed out by \textcite[3010]{BOLLERSLEV19942959}, is that when the likelihood function is misspecified, as in the case of Quasi-Maximum Likelihood Estimation, further modifications to the information criteria are required to maintain their consistency, which further reduces their power in selecting efficient models in the finite sample regime. See \textcite{SIN1996207} for further reference.
+	
+	In light of these issues with criterion based model selection rules, empirical research has shifted its focus to measures of out of sample performance for comparing alternative models based on the forecasts that they produce. Typically, empirical model selection criteria involve estimating a loss function for each of the competing models on a test or hold-out sample which will then be used for ranking and comparison. The choice of the loss function depends on the nature of the problem at hand, and the objectives of the forecast user. As \textcite{HANSENLUNDE2005} and \textcite{PATTON2011246} have documented, there exists a wide variety of different loss functions employed in the literature for comparing volatility forecast models. A seemingly worrisome problem with this huge class of loss functions, however, is that different loss functions often produce different rankings of the forecast models. This inconsistency in the rankings of the models instigated a debate in the literature that at some point it even brought the practical relevance of volatility models under question.\footnote{See \textcite{PAGAN1990267}, \textcite{BOLLERSLEVGHYSEL1994}, and \textcite{ANDERSEN1999457} for example.} As it turned out, the issue lies in the use of volatility proxies (such as the squared return or the realized variance) instead of the true latent volatilities in the loss functions. This was shown by \textcite{PATTON2011246} where he had further proven that unless the loss functions are robust to the noise in the proxies, they will not produce consistent rankings.\footnote{In fact, \textcite{PATTON2011246} proves that non-robust loss functions are also asymptotically inconsistent.} Of the class of robust loss functions introduced by \textcite{PATTON2011246}, two special cases emerge which had also been among those commonly used loss functions in the literature: the mean squared error (MSE) and the quasi-likelihood loss function (QLIKE).\footnote{That is to say, of the loss functions commonly used in the literature, only the MSE and the QLIKE were robust to the noise in the proxies.} In order to obtain a ranking of the models then, it is enough to select a robust loss function and compute it on the hold-out. Eventually, the model with the minimum overall loss will be selected as the best performing model. This procedure requires the partitioning of the sample into a training and an evaluation set, (the former for estimating the model and the latter for computing the loss function) and is generally referred to as hold-out evaluation or the hold-out criterion.
+	
+	One concern with the hold-out criterion, however, is the efficiency loss due to the partitioning of the data, and hence reducing the sample size for obtaining model estimates. This is necessary, of course, to prevent over fitting and to obtain reliable estimates of the out-of-sample loss. A standard practice to minimize this effect is to estimate the loss function by cross-validation instead. The method of cross-validation involves random partitioning of the data into multiple sets or folds, and estimating every model several times, each time on one but one of the folds. The fold that is left out in each iteration will be used as the evaluation or the validation set. The overall loss function is then given by the average of the estimates of the loss function obtained from each of the individual folds. \textcite{LI1987} and \textcite{ANDREWS1991359} studied the properties of the cross-validation scheme and showed that under certain conditions, model selection based on the cross-validation estimates of the loss function is asymptotically optimal for linear models with both homoskedastic and heteroskedastic errors. The application of cross-validation to time-series data, however, is less straight forward as the serial correlations in the series does not allow for the random partitioning of the data. Interestingly, however, \textcite{BERGMEIR201870} showed that the standard k-fold cross-validation procedure can be used for purely autoregressive models with only a minor modification.\footnote{In particular, the modified procedure involves dividing the sample into tuples of size corresponding to the lag order of the autoregressive process, and then partitioning the resulting tuples as one normally would with cross-validation.} Nevertheless, for models with longer memories such as moving averages or fractionally integrated processes the case is less clear, and the properties of cross-validation are generally unknown.
+	
+	A second concern with the hold-out criterion, is its inability to accommodate for the variability of model parameters over time. It is a well-established fact in time-series analysis, that the parameter estimates generally vary with time, and attain different values at different parts of the sample. This can be very critical for volatility forecast models, and many authors have advocated that the models be constantly re-estimated on a routinely basis in order to maintain their predictive accuracy, especially during times of high volatility. As \textcite{ENGLERISK} pointed out, this issue is of particular importance for risk management applications where the forecast models need to be continuously updated to account for new incoming data and the most recent shocks. Therefore, by keeping a large chunk of the data in a hold out sample, the predictive ability of the forecast models will be severely deteriorated.
+	
+	The solution to the problems mentioned above can be found in estimating the models on a series of rolling samples and then obtain the forecast loss at each step by forecasting ahead out-of-the-rolling-sample. The rolling window estimation procedure ensures that at any point in time, the model is trained on the most recent data. Furthermore, by keeping the size of the  window fixed, it ensures that data from the distant past will not distort future estimates of the model parameters. This is particularly useful when forecasting with time-series models with decaying memories and especially when the underlying stochastic process is subject to structural shocks. Finally, by maintaining a large enough window, the efficiency loss in the estimates of the model parameters can be effectively minimized. A canonical reference for this method is \textcite{WEST1996}. In particular, he studies the properties of the smooth functions of out-of-sample prediction errors as the sample size grows without bound and shows that under standard assumptions their asymptotic distribution is normal. A closely related mechanism is the Superior Predictive Ability (SPA) test of \textcite{HANSENSPA2001}. The SPA test allows for comparing the predictive ability of a set of competing models in a unified framework. The central argument in motivating the SPA test, is that comparing multiple models is a non-standard inference problem and is subject to spurious results unless the multiple comparisons are controlled for by inference. That is to say, a smaller forecast loss does not necessarily imply superior predictive ability as it could occur due to chance. Therefore, it is necessary to control for the forecast losses of the multiple models at the same time and assess the pairwise statistical significance of the out-performance of the forecast models. 
+	
+	This paper follows the same procedure and develops a validation framework for employing the SPA test of \textcite{HANSENSPA2001}. Our approach is slightly different in that we use the rolling window estimation procedure to estimate the models. By this means, our validation framework allows for simultaneous estimation of model parameters and out-of-sample forecast losses while avoiding the efficiency loss caused by the hold-out criterion. Moreover, by comparing the models based on the \textcite{PATTON2011246} class of loss functions, consistency of the rankings and asymptotic optimality of the test results are ensured. Ultimately, the forecast-validation framework presented in this paper provides a data-driven procedure to evaluate and compare volatility forecast models that can guide the decisions of market practitioners.
+	
+	The rest of this paper is structured as follows. Section \ref{sec:models-ch} introduces the canonical GARCH class of models along with their most widely used extensions and section \ref{sec:validation-frw} presents the validation framework and the SPA test. In section \ref{sec:simul-analysis} the properties of the validation framework are studied in a Monte Carlo simulation analysis. Section \ref{sec:emp-analysis} applies the framework to real market data and section \ref{sec:conclusion} concludes. A supplementary appendix contains code implementation and practical guidelines. All supplementary material are available online and can be found at \cite{GITHUB}.
+	---------------------------------------
+	
+	\section{Models of Conditional Heteroskedasticity}\label{sec:models-ch}\footnote{The choice of the rather technical terminology in this section is somewhat deliberate. Enthusiastic readers are encouraged to extend their research and lookup the terms that they find unfamiliar.}
+	Following the discovery of the empirical regularities in financial markets, a large number of models were proposed with the aim of producing processes that are able to capture the particular characteristics of financial time-series. The most successful of these models which dominate both empirical research and professional use are the conditionally heteroskedastic models of \textcite{ENGLE1982} and \textcite{BOLLERSLEV1986307}. These models, unlike traditional time-series models, are non-linear, and capable of generating processes with error terms that are conditionally heteroskedastic. Conditional heteroskedasticity is a prominent feature of these models that allows for volatility clustering over time, which is one of the fundamental aspects of financial returns. In the most general case, for a given demeaned return process $\{r_t\}$ - which we define as a sequence of compounded daily returns - an i.i.d. process $\{z_t\}$ with zero mean and unit variance, and some deterministic function $h(\mathcal{F}_{t-1};\theta)$ defined over the $\sigma$-algebra $\mathcal{F}_{t-1}$ induced by the system up to time $t-1$ and parametrized by the vector $\theta \in \Theta$, a conditionally heteroskedastic model is defined as:
+	\begin{align}
+		r_t = h_t(\mathcal{F}_{t-1};\theta)z_t. \label{eq:ch_model_general}
+	\end{align}
+	Therefore, the return process in this setting is defined as the tensor product of two orthogonal processes $\{h(\mathcal{F}_{t-1};\theta)\}$ and $\{z_t\}$. More formally, if we let $\mathcal{H}_t^r:L^2(\Omega,\mathcal{F}_t,\mathcal{P})$ denote the Hilbert space representing the return process and $\mathcal{H}_t^z:L^2(\Omega,\mathcal{F}_t,\mathcal{P})$ the Hilbert space representing the iid. process $\{z_t\}$, then the space representing the return process can be decomposed as:
+	\begin{align}
+		\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \otimes \mathcal{H}_t^z,
+	\end{align}
+	where $\mathcal{H}_{t-1}^r \subset \mathcal{H}_t^r$ is the Hilbert space representing the sub process $\{r_s | s<t\}$. Given the model in \eqref{eq:ch_model_general}, the variance of the conditional distribution of the return process is given by:
+	\begin{align}
+		Var(r_t|\mathcal{F}_{t-1}) = h_t^2, \label{eq:cond_var_function}
+	\end{align}
+	which is conditionally heteroskedastic in the sense that it varies over time and it depends on the past observations of the system. Different models defer in their specification of the function $h(\mathcal{F}_{t-1};\theta)$ but their modeling logic remains fundamentally the same.
+	\subsection{GARCH Type Processes}
+	A standard specification for the conditional variance function in \eqref{eq:cond_var_function} is the GARCH(p,q) process which is given by:
+	\begin{align}
+		h_t^2 = \omega + \sum_{i=1}^q \alpha_i r_{t-i}^2 + \sum_{i=1}^p \beta_i h_{t-i}^2.
+	\end{align}
+	The GARCH process is extensively studied in the literature and its properties are well known. Key features of this process are its stationarity, imposed by the constraint $\sum_{i=1}^q\alpha_i+\sum_{i=1}^p\beta_i<1$ and its symmetry, implying that both positive and negative returns influence future volatility equally. The baseline GARCH process has evolved over time and much of this evolution has been guided by empirical findings. A prominent finding that dates back to very early in the history of the literature is that negative returns have a larger impact on future volatility than positive returns of the same magnitude. This effect, commonly referred to as the leverage effect was first discovered by \textcite{Black1976} and later illustrated by \textcite{PAGAN1990267} and \textcite{ENGLE_NG1993} in the context of the news impact curve. A natural way to incorporate the leverage effect into the GARCH process is to adjust the coefficients of the lagged squared returns so that the coefficients are smaller when the returns are positive. This is the GJR-GARCH process of \textcite{GLOSTEN1993}:
+	\begin{align}
+		h_t^2 = \omega + \sum_{i=1}^q \left( \alpha_i + \gamma_i \mathbb{I}_{{[r_{t-i}>0]}} \right) r_{t-i}^2 + \sum_{i=1}^p h_{t-i}^2.
+	\end{align}
+	An alternative approach is to model the natural logarithm of the variance as in the EGARCH model of \textcite{NELSON1991}:
+	\begin{align}
+		log (h_t^2) = \omega + \sum_{i=1}^q \left[ \alpha_i z_{t-i} + \gamma_i \left( |z_{t-i}| - \mathbb{E}\left[ z_{t-i} \right] \right) \right] + \sum_{i=1}^p \beta_i h_{t-i}^2,
+	\end{align}
+	where $z_{t-i} = r_{t-i}/h_{t-i}$ is the standardized return. The leverage effect in the EGARCH process is manifested by the coefficient $\gamma_i < 0$. Another significant discovery was that absolute returns have a stronger serial correlation than squared returns. This was formally shown by \textcite{DING199383}, and led to the proposal of the Asymmetric Power ARCH (APARCH) model:
+	\begin{align}
+		h_t^\delta = \omega + \sum_{i=1}^q \alpha_i \left[ |r_{t-i} - \gamma_i r_{t-i} | \right]^\delta + \sum_{i=1}^p \beta_i h_{t-i}^\delta.
+	\end{align}
+	By allowing the degree the degree of the process $\delta$ to be a free parameter, the APARCH model is more flexible in capturing the dynamics of the conditional variance than other specifications. There exist many other models for the conditional variance, and the list of the models presented here is by no means exhaustive. Nevertheless, the models mentioned so far are among the most commonly used and nest many of the other specifications. See \textcite{DING199383} and \textcite{HENTSCHEL199571}.
+	\subsection{Estimation}
+	A note on the estimation procedure seems appropriate. Thus far, we have made no specific assumptions about the conditional distribution of the return process. Popular choices are the normal distribution and the student's-t distribution. In the case of the latter, along with the parameters of the GARCH process, the degrees of freedom of the conditional distribution must be estimated as well from the data. Using a heavy tailed distribution can often lead to higher efficiency in the maximum likelihood estimator, with only one caveat. If the likelihood function is misspecified, under any distribution other than the normal, the bias in the estimator will persist, and the estimator will be asymptotically biased. Therefore, unless there is strong evidence in favor a specific class of distributions, the normal likelihood function should be preferred. The asymptotic distribution of the maximum likelihood estimator, regardless of the choice of the likelihood function, is normal and provided that the fourth order moment of the process exists, its limiting distribution is given by:
+	\begin{align}
+		&\sqrt{T}\left( \theta - \theta_0 \right) \overset{d}{\rightarrow} \mathcal{N}(0,\Sigma),\\
+		&\Sigma = H^{-1}VH^{-1}.
+	\end{align}
+	Where $V$ is the asymptotic covariance matrix of the score function and $H^{-1}$ is the inverse of the Hessian. The general conditions for the existence of the fourth order moment of GARCH processes are unknown, and should be driven for each type of process and for each specific order of the model individually. For instance, the necessary and sufficient condition for the GARCH(1,2) process is:
+	\begin{align}
+		\alpha_2 + 3\alpha_1^2 + 3\alpha_2^2 + \beta_1^2 + 2\alpha_1\beta_1 - 3\alpha_2^3 + 3\alpha_1^2 \alpha_2 + 6\alpha_1\alpha_2 \beta_1 + \alpha_2\beta_1^2 < 1.
+	\end{align}
+	While the condition for the GARCH(2,1) process is:
+	\begin{align}
+		\beta_2 + 3\alpha_1^2 + \beta_1^2 + \beta_2^2 + 2 \alpha_1\beta_1 - \beta_2^3 - \alpha_1^2\beta_2 + 2\alpha_1\beta_1\beta_2 + \beta_1^2\beta_2 < 1.
+	\end{align}
+	These conditions manifest as restrictions in the parameter space, and do not necessarily imply that the process being modeled has finite fourth order moment. Therefore, it is prudent to use an empirical method such as tail index estimation to test for the finiteness of the fourth moment of the process ex-post. See section \ref{sec:fv_diag} below for more details.
+	
+	\section{Validation Framework}\label{sec:validation-frw}
+	
+	\subsection{Rolling Window Estimation}
+	
+	\subsection{Forecast Evaluation}
+	
+	\subsection{Asymptotic Inference and The SPA Test}
+	
+	\section{Empirical Analysis}\label{sec:emp-analysis}
+
+	\subsection{Results}
+	
+	\subsection{Diagnostic Tests}\label{sec:fv_diag}
+	
+	\section{Conclusion}\label{sec:conclusion}
+	
+	\newpage
+	\appendix
+	\section{Code Implementation}
+	
+	\newpage
+	\nocite{*}
+	\printbibliography[title={References}]
+\end{document}

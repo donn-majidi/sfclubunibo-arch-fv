@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Overview of Model Selection}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Models of Conditional Heteroskedasticity}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}GARCH Type Processes}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Estimation}{6}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Validation Framework}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Rolling Window Estimation}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Forecast Evaluation}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Asymptotic Inference and The SPA Test}{7}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Empirical Analysis}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Results}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Diagnostic Tests}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Conclusion}{7}{section.5}%
+\contentsline {section}{\numberline {A}Code Implementation}{8}{appendix.A}%
+\contentsfinish 

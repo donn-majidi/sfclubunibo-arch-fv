@@ -1,0 +1,1182 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{ANDERSEN1999457}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=09c85c9c10e1f8f0e62363a927495479}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Torben\bibnamedelima G},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2a01e14b95c100a4fc85bdf9071c16b3}{%
+           family={Lange},
+           familyi={L\bibinitperiod},
+           given={Steve},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{fullhash}{6dfeeb58aa72ec1d825e91f2efe9b000}
+      \strng{bibnamehash}{6dfeeb58aa72ec1d825e91f2efe9b000}
+      \strng{authorbibnamehash}{6dfeeb58aa72ec1d825e91f2efe9b000}
+      \strng{authornamehash}{9272a1c6d168447aacb6c6349cd85cab}
+      \strng{authorfullhash}{6dfeeb58aa72ec1d825e91f2efe9b000}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper explores the return volatility predictability inherent in high-frequency speculative returns. Our analysis focuses on a refinement of the more traditional volatility measures, the integrated volatility, which links the notion of volatility more directly to the return variance over the relevant horizon. In our empirical analysis of the foreign exchange market the integrated volatility is conveniently approximated by a cumulative sum of the squared intraday returns. Forecast horizons ranging from short intraday to 1-month intervals are investigated. We document that standard volatility models generally provide good forecasts of this economically relevant volatility measure. Moreover, the use of high-frequency returns significantly improves the longer run interdaily volatility forecasts, both in theory and practice. The results are thus directly relevant for general research methodology as well as industry applications.}
+      \field{issn}{0927-5398}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{number}{5}
+      \field{title}{Forecasting financial market volatility: Sample frequency vis-à-vis forecast horizon}
+      \field{volume}{6}
+      \field{year}{1999}
+      \field{pages}{457\bibrangedash 477}
+      \range{pages}{21}
+      \verb{doi}
+      \verb https://doi.org/10.1016/S0927-5398(99)00013-4
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0927539899000134
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0927539899000134
+      \endverb
+      \keyw{Financial market volatility,Forecast horizon,Integrated volatility}
+    \endentry
+    \entry{ANDREWS1991359}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=819f147f61363909f87ab9d5fdf6c835}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={Donald\bibnamedelima W.K.},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{819f147f61363909f87ab9d5fdf6c835}
+      \strng{fullhash}{819f147f61363909f87ab9d5fdf6c835}
+      \strng{bibnamehash}{819f147f61363909f87ab9d5fdf6c835}
+      \strng{authorbibnamehash}{819f147f61363909f87ab9d5fdf6c835}
+      \strng{authornamehash}{819f147f61363909f87ab9d5fdf6c835}
+      \strng{authorfullhash}{819f147f61363909f87ab9d5fdf6c835}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The problem considered here is that of using a data-driven procedure to select a good estimate from a class of linear estimates indexed by a discrete parameter. In contrast to other papers on this subject, we consider models with heteroskedastic errors. The results apply to model selection problems in linear regression and to nonparametric regression estimation via series estimators, nearest-neighbor estimators, and local regression estimators, among others. Generalized CL (GCL), cross-validation (CV), and generalized cross-validation (GCV) procedures are analyzed. The GCL and CV criteria are shown to be asymptotically optimal under general conditions. A feasible version of GCL, however, is available only in some applications. The GCV criterion is found to be asymptotically optimal only under a condition that is satisfied in some applications but not in others. For example, it is satisfied in the nearest-neighbor estimation context but not in the series estimation, local regression estimation, or model selection contexts. Thus, the CV criterion is the only feasible criterion of the three that is asymptotically optimal under general conditions. The proofs rely heavily on results of Li (1987).}
+      \field{issn}{0304-4076}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{2}
+      \field{title}{Asymptotic optimality of generalized CL, cross-validation, and generalized cross-validation in regression with heteroskedastic errors}
+      \field{volume}{47}
+      \field{year}{1991}
+      \field{pages}{359\bibrangedash 377}
+      \range{pages}{19}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0304-4076(91)90107-O
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/030440769190107O
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/030440769190107O
+      \endverb
+    \endentry
+    \entry{BERGMEIR201870}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=fb7be81f0574878d688bb03f0abb8502}{%
+           family={Bergmeir},
+           familyi={B\bibinitperiod},
+           given={Christoph},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f709db8a046ae1d056e75c1f3aad31c}{%
+           family={Hyndman},
+           familyi={H\bibinitperiod},
+           given={Rob\bibnamedelima J.},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=456c64a747ca43a27b2b0588e019452d}{%
+           family={Koo},
+           familyi={K\bibinitperiod},
+           given={Bonsoo},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b8f58b862d412017af28a340c6b81f9b}
+      \strng{fullhash}{3c7d0e367d19008c04c005f000ff27ba}
+      \strng{bibnamehash}{3c7d0e367d19008c04c005f000ff27ba}
+      \strng{authorbibnamehash}{3c7d0e367d19008c04c005f000ff27ba}
+      \strng{authornamehash}{b8f58b862d412017af28a340c6b81f9b}
+      \strng{authorfullhash}{3c7d0e367d19008c04c005f000ff27ba}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{One of the most widely used standard procedures for model evaluation in classification and regression is K-fold cross-validation (CV). However, when it comes to time series forecasting, because of the inherent serial correlation and potential non-stationarity of the data, its application is not straightforward and often replaced by practitioners in favour of an out-of-sample (OOS) evaluation. It is shown that for purely autoregressive models, the use of standard K-fold CV is possible provided the models considered have uncorrelated errors. Such a setup occurs, for example, when the models nest a more appropriate model. This is very common when Machine Learning methods are used for prediction, and where CV can control for overfitting the data. Theoretical insights supporting these arguments are presented, along with a simulation study and a real-world example. It is shown empirically that K-fold CV performs favourably compared to both OOS evaluation and other time-series-specific techniques such as non-dependent cross-validation.}
+      \field{issn}{0167-9473}
+      \field{journaltitle}{Computational Statistics & Data Analysis}
+      \field{title}{A note on the validity of cross-validation for evaluating autoregressive time series prediction}
+      \field{volume}{120}
+      \field{year}{2018}
+      \field{pages}{70\bibrangedash 83}
+      \range{pages}{14}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.csda.2017.11.003
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167947317302384
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0167947317302384
+      \endverb
+      \keyw{Cross-validation,Time series,Autoregression}
+    \endentry
+    \entry{Black1976}{inproceedings}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9a94a0fa5dacc37b1b0dd2a609ec074b}{%
+           family={Black},
+           familyi={B\bibinitperiod},
+           given={Fisher},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {American Statistical Association}%
+      }
+      \strng{namehash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \strng{fullhash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \strng{bibnamehash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \strng{authorbibnamehash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \strng{authornamehash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \strng{authorfullhash}{9a94a0fa5dacc37b1b0dd2a609ec074b}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 1976 Business and Economic Statistics Section}
+      \field{title}{Studies of Stock Price Volatility Changes}
+      \field{year}{1976}
+      \field{pages}{177\bibrangedash 181}
+      \range{pages}{5}
+    \endentry
+    \entry{BOLLERSLEV1986307}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{39f8f5a428abd62057a0152546172106}
+      \strng{fullhash}{39f8f5a428abd62057a0152546172106}
+      \strng{bibnamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authorbibnamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authornamehash}{39f8f5a428abd62057a0152546172106}
+      \strng{authorfullhash}{39f8f5a428abd62057a0152546172106}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A natural generalization of the ARCH (Autoregressive Conditional Heteroskedastic) process introduced in Engle (1982) to allow for past conditional variances in the current conditional variance equation is proposed. Stationarity conditions and autocorrelation structure for this new class of parametric models are derived. Maximum likelihood estimation and testing are also considered. Finally an empirical example relating to the uncertainty of the inflation rate is presented.}
+      \field{issn}{0304-4076}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{3}
+      \field{title}{Generalized autoregressive conditional heteroskedasticity}
+      \field{volume}{31}
+      \field{year}{1986}
+      \field{pages}{307\bibrangedash 327}
+      \range{pages}{21}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0304-4076(86)90063-1
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0304407686900631
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0304407686900631
+      \endverb
+    \endentry
+    \entry{BOLLERSLEV19942959}{incollection}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d491df6781389ebb4ef255c1ec0ca7ed}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fcf85ccf41cad5a831ea4c697a7dcd25}{%
+           family={Nelson},
+           familyi={N\bibinitperiod},
+           given={Daniel\bibnamedelima B.},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{b250c826403737aaca16b70d855ba175}
+      \strng{fullhash}{f76ff798ab45e44df41e9c89044be351}
+      \strng{bibnamehash}{f76ff798ab45e44df41e9c89044be351}
+      \strng{authorbibnamehash}{f76ff798ab45e44df41e9c89044be351}
+      \strng{authornamehash}{b250c826403737aaca16b70d855ba175}
+      \strng{authorfullhash}{f76ff798ab45e44df41e9c89044be351}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This chapter evaluates the most important theoretical developments in ARCH type modeling of time-varying conditional variances. The coverage include the specification of univariate parametric ARCH models, general inference procedures, conditions for stationarity and ergodicity, continuous time methods, aggregation and forecasting of ARCH models, multivariate conditional covariance formulations, and the use of model selection criteria in an ARCH context. Additionally, the chapter contains a discussion of the empirical regularities pertaining to the temporal variation in financial market volatility. Motivated in part by recent results on optimal filtering, a new conditional variance model for better characterizing stock return volatility is also presented.}
+      \field{issn}{1573-4412}
+      \field{series}{Handbook of Econometrics}
+      \field{title}{Chapter 49 Arch models}
+      \field{volume}{4}
+      \field{year}{1994}
+      \field{pages}{2959\bibrangedash 3038}
+      \range{pages}{80}
+      \verb{doi}
+      \verb https://doi.org/10.1016/S1573-4412(05)80018-2
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1573441205800182
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1573441205800182
+      \endverb
+    \endentry
+    \entry{BOLLERSLEVGHYSEL1994}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=39f8f5a428abd62057a0152546172106}{%
+           family={Bollerslev},
+           familyi={B\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fe30f81765eb94de52128d1b6585cc7f}{%
+           family={Ghysels},
+           familyi={G\bibinitperiod},
+           given={Eric},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[American Statistical Association, Taylor & Francis, Ltd.]}%
+      }
+      \strng{namehash}{31c6626a65ac55096cb5392f675eb63a}
+      \strng{fullhash}{31c6626a65ac55096cb5392f675eb63a}
+      \strng{bibnamehash}{31c6626a65ac55096cb5392f675eb63a}
+      \strng{authorbibnamehash}{31c6626a65ac55096cb5392f675eb63a}
+      \strng{authornamehash}{31c6626a65ac55096cb5392f675eb63a}
+      \strng{authorfullhash}{31c6626a65ac55096cb5392f675eb63a}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Most high-frequency asset returns exhibit seasonal volatility patterns. This article proposes a new class of models featuring periodicity in conditional heteroscedasticity explicitly designed to capture the repetitive seasonal time variation in the second-order moments. This new class of periodic autoregressive conditional heteroscedasticity, or P-ARCH, models is directly related to the class of periodic autoregressive moving average (ARMA) models for the mean. The implicit relation between periodic generalized ARCH (P-GARCH) structures and time-invariant seasonal weak GARCH processes documents how neglected autoregressive conditional heteroscedastic periodicity may give rise to a loss in forecast efficiency. The importance and magnitude of this informational loss are quantified for a variety of loss functions through the use of Monte Carlo simulation methods. Two empirical examples with daily bilateral Deutschemark/British pound and intraday Deutschemark/U.S. dollar spot exchange rates highlight the practical relevance of the new P-GARCH class of models. Extensions to discrete-time periodic representations of stochastic volatility models subject to time deformation are briefly discussed.}
+      \field{issn}{07350015}
+      \field{journaltitle}{Journal of Business & Economic Statistics}
+      \field{number}{2}
+      \field{title}{Periodic Autoregressive Conditional Heteroscedasticity}
+      \field{urlday}{17}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{14}
+      \field{year}{1996}
+      \field{urldateera}{ce}
+      \field{pages}{139\bibrangedash 151}
+      \range{pages}{13}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/1392425
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/1392425
+      \endverb
+    \endentry
+    \entry{ENGLERISK}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=6e799e3301a027947a422026ed9840b9}{%
+           family={Brownlees},
+           familyi={B\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e26a28d48dace74af17a9f7ae9246e64}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=96799198bea175b6a69479505180a2cd}{%
+           family={Kelly},
+           familyi={K\bibinitperiod},
+           given={Bryan},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{75c879325b81af387a75212a01042e20}
+      \strng{fullhash}{65c86d88df0b8e8cc6c58d1e23f95638}
+      \strng{bibnamehash}{65c86d88df0b8e8cc6c58d1e23f95638}
+      \strng{authorbibnamehash}{65c86d88df0b8e8cc6c58d1e23f95638}
+      \strng{authornamehash}{75c879325b81af387a75212a01042e20}
+      \strng{authorfullhash}{65c86d88df0b8e8cc6c58d1e23f95638}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{ABSTRACT We present a volatility forecasting comparative study within the autoregressive conditional heteroskedasticity (ARCH) class of models. Our goal is to identify successful predictive models over multiple horizons and to investigate how predictive ability is influenced by choices for estimation window length, innovation distribution, and frequency of parameter reestimation. Test assets include a range of domestic and international equity indices and exchange rates.We find that model rankings are insensitive to the forecast horizon and suggestions for best practices emerge. While our main sample spans from 1990 to 2008, we take advantage of the near-record surge in volatility during the last half of 2008 to ask whether forecasting models or best practices break down during periods of turmoil. Surprisingly, we find that volatility during the 2008 crisis was well approximated by predictions made one day ahead, and should have been within risk managers'1\% confidence intervals up to one month ahead.}
+      \field{journaltitle}{Journal of Risk}
+      \field{number}{2}
+      \field{title}{A practical guide to volatility forecasting through calm and storm}
+      \field{volume}{14}
+      \field{year}{2012}
+      \field{pages}{3\bibrangedash 22}
+      \range{pages}{20}
+      \verb{doi}
+      \verb https://doi.org/10.21314/JOR.2012.237
+      \endverb
+    \endentry
+    \entry{DING199383}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=c0e3c26016d07eb2a1c7bea17dac411d}{%
+           family={Ding},
+           familyi={D\bibinitperiod},
+           given={Zhuanxin},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d97fcd65b851bd0d341ce547227991a3}{%
+           family={Granger},
+           familyi={G\bibinitperiod},
+           given={Clive\bibnamedelima W.J.},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d491df6781389ebb4ef255c1ec0ca7ed}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{64895250543177393a55c962109df751}
+      \strng{fullhash}{b9a0674acac10109c5a8f881b65ae683}
+      \strng{bibnamehash}{b9a0674acac10109c5a8f881b65ae683}
+      \strng{authorbibnamehash}{b9a0674acac10109c5a8f881b65ae683}
+      \strng{authornamehash}{64895250543177393a55c962109df751}
+      \strng{authorfullhash}{b9a0674acac10109c5a8f881b65ae683}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{A ‘long memory’ property of stock market returns is investigated in this paper. It is found that not only there is substantially more correlation between absolute returns than returns themselves, but the power transformation of the absolute return ¦rt¦d also has quite high autocorrelation for long lags. It is possible to characterize ¦rt¦d to be ‘long memory’ and this property is strongest when d is around 1. This result appears to argue against ARCH type specifications based upon squared returns. But our Monte-Carlo study shows that both ARCH type models based on squared returns and those based on absolute return can produce this property. A new general class of models is proposed which allows the power δ of the heteroskedasticity equation to be estimated from the data.}
+      \field{issn}{0927-5398}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{number}{1}
+      \field{title}{A long memory property of stock market returns and a new model}
+      \field{volume}{1}
+      \field{year}{1993}
+      \field{pages}{83\bibrangedash 106}
+      \range{pages}{24}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0927-5398(93)90006-D
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/092753989390006D
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/092753989390006D
+      \endverb
+    \endentry
+    \entry{ENGLE1982}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d491df6781389ebb4ef255c1ec0ca7ed}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Econometric Society]}%
+      }
+      \strng{namehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{fullhash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{bibnamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authorbibnamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authornamehash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \strng{authorfullhash}{d491df6781389ebb4ef255c1ec0ca7ed}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Traditional econometric models assume a constant one-period forecast variance. To generalize this implausible assumption, a new class of stochastic processes called autoregressive conditional heteroscedastic (ARCH) processes are introduced in this paper. These are mean zero, serially uncorrelated processes with nonconstant variances conditional on the past, but constant unconditional variances. For such processes, the recent past gives information about the one-period forecast variance. A regression model is then introduced with disturbances following an ARCH process. Maximum likelihood estimators are described and a simple scoring iteration formulated. Ordinary least squares maintains its optimality properties in this set-up, but maximum likelihood is more efficient. The relative efficiency is calculated and can be infinite. To test whether the disturbances follow an ARCH process, the Lagrange multiplier procedure is employed. The test is based simply on the autocorrelation of the squared OLS residuals. This model is used to estimate the means and variances of inflation in the U.K. The ARCH effect is found to be significant and the estimated variances increase substantially during the chaotic seventies.}
+      \field{issn}{00129682, 14680262}
+      \field{journaltitle}{Econometrica}
+      \field{number}{4}
+      \field{title}{Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation}
+      \field{urlday}{17}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{50}
+      \field{year}{1982}
+      \field{urldateera}{ce}
+      \field{pages}{987\bibrangedash 1007}
+      \range{pages}{21}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/1912773
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/1912773
+      \endverb
+    \endentry
+    \entry{ENGLE_NG1993}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=d491df6781389ebb4ef255c1ec0ca7ed}{%
+           family={Engle},
+           familyi={E\bibinitperiod},
+           given={Robert\bibnamedelima F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a9503ba1e94132f6c2758a8316f7e511}{%
+           family={Ng},
+           familyi={N\bibinitperiod},
+           given={Victor\bibnamedelima K.},
+           giveni={V\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{67f380210d1083ef16b120e77d8c5f7c}
+      \strng{fullhash}{67f380210d1083ef16b120e77d8c5f7c}
+      \strng{bibnamehash}{67f380210d1083ef16b120e77d8c5f7c}
+      \strng{authorbibnamehash}{67f380210d1083ef16b120e77d8c5f7c}
+      \strng{authornamehash}{67f380210d1083ef16b120e77d8c5f7c}
+      \strng{authorfullhash}{67f380210d1083ef16b120e77d8c5f7c}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{ABSTRACT This paper defines the news impact curve which measures how new information is incorporated into volatility estimates. Various new and existing ARCH models including a partially nonparametric one are compared and estimated with daily Japanese stock return data. New diagnostic tests are presented which emphasize the asymmetry of the volatility response to news. Our results suggest that the model by Glosten, Jagannathan, and Runkle is the best parametric model. The EGARCH also can capture most of the asymmetry; however, there is evidence that the variability of the conditional variance implied by the EGARCH is too high.}
+      \field{journaltitle}{The Journal of Finance}
+      \field{number}{5}
+      \field{title}{Measuring and Testing the Impact of News on Volatility}
+      \field{volume}{48}
+      \field{year}{1993}
+      \field{pages}{1749\bibrangedash 1778}
+      \range{pages}{30}
+      \verb{doi}
+      \verb https://doi.org/10.1111/j.1540-6261.1993.tb05127.x
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1540-6261.1993.tb05127.x
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05127.x
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05127.x
+      \endverb
+    \endentry
+    \entry{GLOSTEN1993}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=4a29ab880fb251872f4356cd5005b404}{%
+           family={Glosten},
+           familyi={G\bibinitperiod},
+           given={Lawrence\bibnamedelima R.},
+           giveni={L\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=40c358e3088c318c285107caccc9bfb2}{%
+           family={Jagannathan},
+           familyi={J\bibinitperiod},
+           given={Ravi},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cc9f0c14d0d315993598432f6ab06cfc}{%
+           family={Runkle},
+           familyi={R\bibinitperiod},
+           given={David\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{90c11f0051befbab1e15d0cc4ee31f0d}
+      \strng{fullhash}{fdd9bba5f15864c76fca86d8e69d8b65}
+      \strng{bibnamehash}{fdd9bba5f15864c76fca86d8e69d8b65}
+      \strng{authorbibnamehash}{fdd9bba5f15864c76fca86d8e69d8b65}
+      \strng{authornamehash}{90c11f0051befbab1e15d0cc4ee31f0d}
+      \strng{authorfullhash}{fdd9bba5f15864c76fca86d8e69d8b65}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{ABSTRACT We find support for a negative relation between conditional expected monthly return and conditional variance of monthly return, using a GARCH-M model modified by allowing (1) seasonal patterns in volatility, (2) positive and negative innovations to returns having different impacts on conditional volatility, and (3) nominal interest rates to predict conditional variance. Using the modified GARCH-M model, we also show that monthly conditional volatility may not be as persistent as was thought. Positive unanticipated returns appear to result in a downward revision of the conditional volatility whereas negative unanticipated returns result in an upward revision of conditional volatility.}
+      \field{journaltitle}{The Journal of Finance}
+      \field{number}{5}
+      \field{title}{On the Relation between the Expected Value and the Volatility of the Nominal Excess Return on Stocks}
+      \field{volume}{48}
+      \field{year}{1993}
+      \field{pages}{1779\bibrangedash 1801}
+      \range{pages}{23}
+      \verb{doi}
+      \verb https://doi.org/10.1111/j.1540-6261.1993.tb05128.x
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1111/j.1540-6261.1993.tb05128.x
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05128.x
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05128.x
+      \endverb
+    \endentry
+    \entry{HAMILTON1994}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ed0cabd783cf75498bb682d0e23f8ec9}{%
+           family={Hamilton},
+           familyi={H\bibinitperiod},
+           given={J.D.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Princeton University Press, Princeton}%
+      }
+      \strng{namehash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \strng{fullhash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \strng{bibnamehash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \strng{authorbibnamehash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \strng{authornamehash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \strng{authorfullhash}{ed0cabd783cf75498bb682d0e23f8ec9}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Time Series Analysis}
+      \field{year}{1994}
+      \true{nocite}
+      \verb{doi}
+      \verb https://doi.org/10.1515/9780691218632
+      \endverb
+    \endentry
+    \entry{HANSENLUNDE2005}{article}{}
+      \name{author}{2}{}{%
+        {{un=2,uniquepart=given,hash=1b69f8d059ca7b024817e06b9be0fda6}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima R.},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=2}}%
+        {{un=0,uniquepart=base,hash=8d526c5bfbc93e7d59acb3e0d9853324}{%
+           family={Lunde},
+           familyi={L\bibinitperiod},
+           given={Asger},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{fullhash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{bibnamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authorbibnamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authornamehash}{938766e2ed127e1c0c61a8b9084ade36}
+      \strng{authorfullhash}{938766e2ed127e1c0c61a8b9084ade36}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Abstract We compare 330 ARCH-type models in terms of their ability to describe the conditional variance. The models are compared out-of-sample using DM–\$ exchange rate data and IBM return data, where the latter is based on a new data set of realized variance. We find no evidence that a GARCH(1,1) is outperformed by more sophisticated models in our analysis of exchange rates, whereas the GARCH(1,1) is clearly inferior to models that can accommodate a leverage effect in our analysis of IBM returns. The models are compared with the test for superior predictive ability (SPA) and the reality check for data snooping (RC). Our empirical results show that the RC lacks power to an extent that makes it unable to distinguish ‘good’ and ‘bad’ models in our analysis. Copyright © 2005 John Wiley \& Sons, Ltd.}
+      \field{journaltitle}{Journal of Applied Econometrics}
+      \field{number}{7}
+      \field{title}{A forecast comparison of volatility models: does anything beat a GARCH(1,1)?}
+      \field{volume}{20}
+      \field{year}{2005}
+      \field{pages}{873\bibrangedash 889}
+      \range{pages}{17}
+      \verb{doi}
+      \verb https://doi.org/10.1002/jae.800
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1002/jae.800
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jae.800
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jae.800
+      \endverb
+    \endentry
+    \entry{HANSENSPA2001}{article}{}
+      \name{author}{1}{}{%
+        {{un=2,uniquepart=given,hash=851986f5b859aa8517f12b14968c618d}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima Reinhard},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=2}}%
+      }
+      \list{publisher}{1}{%
+        {[American Statistical Association, Taylor & Francis, Ltd.]}%
+      }
+      \strng{namehash}{851986f5b859aa8517f12b14968c618d}
+      \strng{fullhash}{851986f5b859aa8517f12b14968c618d}
+      \strng{bibnamehash}{851986f5b859aa8517f12b14968c618d}
+      \strng{authorbibnamehash}{851986f5b859aa8517f12b14968c618d}
+      \strng{authornamehash}{851986f5b859aa8517f12b14968c618d}
+      \strng{authorfullhash}{851986f5b859aa8517f12b14968c618d}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We propose a new test for superior predictive ability. The new test compares favorably to the reality check (RC) for data snooping, because it is more powerful and less sensitive to poor and irrelevant alternatives. The improvements are achieved by two modifications of the Rc. We use a studentized test statistic that reduces the influence of erratic forecasts and invoke a sample-dependent null distribution. The advantages of the new test are confirmed by Monte Carlo experiments and an empirical exercise in which we compare a large number of regression-based forecasts of annual U.S. inflation to a simple random-walk forecast. The random-walk forecast is found to be inferior to regression-based forecasts and, interestingly, the best sample performance is achieved by models that have a Phillips curve structure.}
+      \field{issn}{07350015}
+      \field{journaltitle}{Journal of Business & Economic Statistics}
+      \field{number}{4}
+      \field{title}{A Test for Superior Predictive Ability}
+      \field{urlday}{25}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{23}
+      \field{year}{2005}
+      \field{urldateera}{ce}
+      \field{pages}{365\bibrangedash 380}
+      \range{pages}{16}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/27638834
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/27638834
+      \endverb
+    \endentry
+    \entry{ESL2004}{book}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=0cb8fe4210baa81c4b0e67913b4d2768}{%
+           family={Hastie},
+           familyi={H\bibinitperiod},
+           given={Trevor},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=88eea600247d798f8b2ce0b2dc614492}{%
+           family={Tibshirani},
+           familyi={T\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=971cf69058b64a94326dea0f2a8bbcce}{%
+           family={Friedman},
+           familyi={F\bibinitperiod},
+           given={Jerome},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4e7594e6f467294248e1040155656228}{%
+           family={Franklin},
+           familyi={F\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{fullhash}{508c92f267eeb826a6051b491ec31aa3}
+      \strng{bibnamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authorbibnamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authornamehash}{45eb7d473651da447f1d77717e7f8650}
+      \strng{authorfullhash}{508c92f267eeb826a6051b491ec31aa3}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}
+      \field{year}{2004}
+      \verb{doi}
+      \verb https://doi.org/10.1007/BF02985802
+      \endverb
+    \endentry
+    \entry{HENTSCHEL199571}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4f8886e6948f00a33097d49a74a8cb0f}{%
+           family={Hentschel},
+           familyi={H\bibinitperiod},
+           given={Ludger},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \strng{fullhash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \strng{bibnamehash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \strng{authorbibnamehash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \strng{authornamehash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \strng{authorfullhash}{4f8886e6948f00a33097d49a74a8cb0f}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper develops a parametric family of models of generalized autoregressive heteroskedasticity (GARCH). The family nests the most popular symmetric and asymmetric GARCH models, thereby highlighting the relation between the models and their treatment of asymmetry. Furthermore, the structure permits nested tests of different types of asymmetry and functional forms. Daily U.S. stock return data reject all standard GARCH models in favor of a model in which, roughly speaking, the conditional standard deviation depends on the shifted absolute value of the shocks raised to the power three halves and past standard deviations.}
+      \field{issn}{0304-405X}
+      \field{journaltitle}{Journal of Financial Economics}
+      \field{number}{1}
+      \field{title}{All in the family Nesting symmetric and asymmetric GARCH models}
+      \field{volume}{39}
+      \field{year}{1995}
+      \field{pages}{71\bibrangedash 104}
+      \range{pages}{34}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0304-405X(94)00821-H
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0304405X9400821H
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0304405X9400821H
+      \endverb
+      \keyw{GARCH,Asymmetry,Heteroskedasticity,Variance,Volatility}
+    \endentry
+    \entry{LI1987}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7b5d7a4ddf5246df1396f126e6446f11}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Ker-Chau},
+           giveni={K\bibinithyphendelim C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Institute of Mathematical Statistics}%
+      }
+      \strng{namehash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \strng{fullhash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \strng{bibnamehash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \strng{authorbibnamehash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \strng{authornamehash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \strng{authorfullhash}{7b5d7a4ddf5246df1396f126e6446f11}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Cp, CL, cross-validation and generalized cross-validation are useful data-driven techniques for selecting a good estimate from a proposed class of linear estimates. The asymptotic behaviors of these procedures are studied. Some easily interpretable conditions are derived to demonstrate the asymptotic optimality. It is argued that cross-validation and generalized cross-validation can be viewed as some special ways of applying CL. Applications in nearest-neighbor nonparametric regression and in model selection are discussed in detail.}
+      \field{issn}{00905364, 21688966}
+      \field{journaltitle}{The Annals of Statistics}
+      \field{number}{3}
+      \field{title}{Asymptotic Optimality for Cp, CL, Cross-Validation and Generalized Cross-Validation: Discrete Index Set}
+      \field{urlday}{18}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{15}
+      \field{year}{1987}
+      \field{urldateera}{ce}
+      \field{pages}{958\bibrangedash 975}
+      \range{pages}{18}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2241809
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2241809
+      \endverb
+    \endentry
+    \entry{GITHUB}{report}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=df8b9c11a20b978496bab3b32e1c9159}{%
+           family={Majidi},
+           familyi={M\bibinitperiod},
+           given={Shahriyar},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Starting Finance Club}%
+      }
+      \strng{namehash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{fullhash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{bibnamehash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{authorbibnamehash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{authornamehash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{authorfullhash}{df8b9c11a20b978496bab3b32e1c9159}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Forecast-Validation for optimal ARCH/GARCH model selection in Python}
+      \field{type}{techreport}
+      \field{year}{2026}
+      \verb{urlraw}
+      \verb https://github.com/donn-majidi/sfclubunibo-arch-fv
+      \endverb
+      \verb{url}
+      \verb https://github.com/donn-majidi/sfclubunibo-arch-fv
+      \endverb
+    \endentry
+    \entry{NELSON1991}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=fcf85ccf41cad5a831ea4c697a7dcd25}{%
+           family={Nelson},
+           familyi={N\bibinitperiod},
+           given={Daniel\bibnamedelima B.},
+           giveni={D\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Econometric Society]}%
+      }
+      \strng{namehash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \strng{fullhash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \strng{bibnamehash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \strng{authorbibnamehash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \strng{authornamehash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \strng{authorfullhash}{fcf85ccf41cad5a831ea4c697a7dcd25}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{GARCH models have been applied in modelling the relation between conditional variance and asset risk premia. These models, however, have at least three major drawbacks in asset pricing applications: (i) Researchers beginning with Black (1976) have found a negative correlation between current returns and future returns volatility. GARCH models rule this out by assumption. (ii) GARCH models impose parameter restrictions that are often violated by estimated coefficients and that may unduly restrict the dynamics of the conditional variance process. (iii) Interpreting whether shocks to conditional variance "persist" or not is difficult in GARCH models, because the usual norms measuring persistence often do not agree. A new form of ARCH is proposed that meets these objections. The method is used to estimate a model of the risk premium on the CRSP Value-Weighted Market Index from 1962 to 1987.}
+      \field{issn}{00129682, 14680262}
+      \field{journaltitle}{Econometrica}
+      \field{number}{2}
+      \field{title}{Conditional Heteroskedasticity in Asset Returns: A New Approach}
+      \field{urlday}{25}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{59}
+      \field{year}{1991}
+      \field{urldateera}{ce}
+      \field{pages}{347\bibrangedash 370}
+      \range{pages}{24}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2938260
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2938260
+      \endverb
+    \endentry
+    \entry{PAGAN199615}{article}{}
+      \name{author}{1}{}{%
+        {{un=1,uniquepart=given,hash=5afdc9f1bf49938d178da04dfd2cf76d}{%
+           family={Pagan},
+           familyi={P\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod},
+           givenun=1}}%
+      }
+      \strng{namehash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \strng{fullhash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \strng{bibnamehash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \strng{authorbibnamehash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \strng{authornamehash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \strng{authorfullhash}{5afdc9f1bf49938d178da04dfd2cf76d}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The paper provides a survey of the work that has been done in financial econometrics in the past decade. It proceeds by first establishing a set of stylized facts that are characteristics of financial series and then by detailing the range of techniques that have been developed to model series which possess these characteristics. Both univariate and multivariate models are considered.}
+      \field{issn}{0927-5398}
+      \field{journaltitle}{Journal of Empirical Finance}
+      \field{number}{1}
+      \field{title}{The econometrics of financial markets}
+      \field{volume}{3}
+      \field{year}{1996}
+      \field{pages}{15\bibrangedash 102}
+      \range{pages}{88}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0927-5398(95)00020-8
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0927539895000208
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0927539895000208
+      \endverb
+      \keyw{Porfolio choice,Asset pricing,Contingent pricing,Futures pricing,Information,Market efficiency}
+    \endentry
+    \entry{PAGAN1990267}{article}{}
+      \name{author}{2}{}{%
+        {{un=1,uniquepart=given,hash=ae80ad69df241940e939af1475ddf41e}{%
+           family={Pagan},
+           familyi={P\bibinitperiod},
+           given={Adrian\bibnamedelima R.},
+           giveni={A\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=1}}%
+        {{un=0,uniquepart=base,hash=ec6e72e3d637469d24f38384a7a78ed4}{%
+           family={Schwert},
+           familyi={S\bibinitperiod},
+           given={G.\bibnamedelimi William},
+           giveni={G\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{66aa3df02f6f5afa783e718bad7cee12}
+      \strng{fullhash}{66aa3df02f6f5afa783e718bad7cee12}
+      \strng{bibnamehash}{66aa3df02f6f5afa783e718bad7cee12}
+      \strng{authorbibnamehash}{66aa3df02f6f5afa783e718bad7cee12}
+      \strng{authornamehash}{66aa3df02f6f5afa783e718bad7cee12}
+      \strng{authorfullhash}{66aa3df02f6f5afa783e718bad7cee12}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper compares several statistical models for monthly stock return volatility. The focus is on U.S. data from 1834-1925 because the post-1926 data have been analyzed in more detail by others. Also, the Great Depression had levels of stock volatility that are inconsistent with stationary models for conditional heteroskedasticity. We show the importance of nonlinearities in stock return behavior that are not captured by conventional ARCH or GARCH models. We also show the nonstationarity of stock volatility.}
+      \field{issn}{0304-4076}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{1}
+      \field{title}{Alternative models for conditional stock volatility}
+      \field{volume}{45}
+      \field{year}{1990}
+      \field{pages}{267\bibrangedash 290}
+      \range{pages}{24}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0304-4076(90)90101-X
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/030440769090101X
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/030440769090101X
+      \endverb
+    \endentry
+    \entry{PATTON2011246}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a4a103d050a59b8cf50ce433a3cc51ec}{%
+           family={Patton},
+           familyi={P\bibinitperiod},
+           given={Andrew\bibnamedelima J.},
+           giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{fullhash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{bibnamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authorbibnamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authornamehash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \strng{authorfullhash}{a4a103d050a59b8cf50ce433a3cc51ec}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The use of a conditionally unbiased, but imperfect, volatility proxy can lead to undesirable outcomes in standard methods for comparing conditional variance forecasts. We motivate our study with analytical results on the distortions caused by some widely used loss functions, when used with standard volatility proxies such as squared returns, the intra-daily range or realised volatility. We then derive necessary and sufficient conditions on the functional form of the loss function for the ranking of competing volatility forecasts to be robust to the presence of noise in the volatility proxy, and derive some useful special cases of this class of “robust” loss functions. The methods are illustrated with an application to the volatility of returns on IBM over the period 1993 to 2003.}
+      \field{issn}{0304-4076}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{note}{Realized Volatility}
+      \field{number}{1}
+      \field{title}{Volatility forecast comparison using imperfect volatility proxies}
+      \field{volume}{160}
+      \field{year}{2011}
+      \field{pages}{246\bibrangedash 256}
+      \range{pages}{11}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.jeconom.2010.03.034
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S030440761000076X
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S030440761000076X
+      \endverb
+      \keyw{Forecast evaluation,Forecast comparison,Loss functions,Realised variance,Range}
+    \endentry
+    \entry{POON&GRANGER2003}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=4bc47a55acee6ff20185e96bafcdd26b}{%
+           family={Poon},
+           familyi={P\bibinitperiod},
+           given={Ser-Huang},
+           giveni={S\bibinithyphendelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d97fcd65b851bd0d341ce547227991a3}{%
+           family={Granger},
+           familyi={G\bibinitperiod},
+           given={Clive\bibnamedelima W.J.},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{fullhash}{046ded726611484c4c747d12a4ba3604}
+      \strng{bibnamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authorbibnamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authornamehash}{046ded726611484c4c747d12a4ba3604}
+      \strng{authorfullhash}{046ded726611484c4c747d12a4ba3604}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Economic Literature}
+      \field{number}{2}
+      \field{title}{Forecasting Volatility in Financial Markets: A Review}
+      \field{volume}{41}
+      \field{year}{2003}
+      \field{pages}{478\bibrangedash 539}
+      \range{pages}{62}
+      \verb{doi}
+      \verb 10.1257/002205103765762743
+      \endverb
+      \verb{urlraw}
+      \verb https://www.aeaweb.org/articles?id=10.1257/002205103765762743
+      \endverb
+      \verb{url}
+      \verb https://www.aeaweb.org/articles?id=10.1257/002205103765762743
+      \endverb
+    \endentry
+    \entry{SIN1996207}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=4f853a7a323df6b5725f6813eb3f89e0}{%
+           family={Sin},
+           familyi={S\bibinitperiod},
+           given={Chor-Yiu},
+           giveni={C\bibinithyphendelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \strng{fullhash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \strng{bibnamehash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \strng{authorbibnamehash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \strng{authornamehash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \strng{authorfullhash}{e81473f0331d92e12364fd1e64ac6fe2}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We consider penalized likelihood criteria for selecting models of dependent processes. The models may be strictly nested, overlapping or nonnested, linear or nonlinear, and correctly specified or misspecified. We provide sufficient conditions on the penalty to guarantee the selection, with probability one (or with probability approaching one), of the model attaining the lower average Kullback-Leibler Information Criterion (KLIC) or, when both have the same KLIC, the more parsimonious model. As special cases, our results describe the Akaike, Schwarz, and Hannan-Quinn information criteria. As examples, we consider selection of ARMAX-GARCH and STAR models.}
+      \field{issn}{0304-4076}
+      \field{journaltitle}{Journal of Econometrics}
+      \field{number}{1}
+      \field{title}{Information criteria for selecting possibly misspecified parametric models}
+      \field{volume}{71}
+      \field{year}{1996}
+      \field{pages}{207\bibrangedash 225}
+      \range{pages}{19}
+      \verb{doi}
+      \verb https://doi.org/10.1016/0304-4076(94)01701-8
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/0304407694017018
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/0304407694017018
+      \endverb
+      \keyw{Penalized likelihood,Kullback-Leibler information criterion,Akaike information criterion,Schwarz information criterion,Hannan-Quinn information criterion}
+    \endentry
+    \entry{WEST1996}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=c9458dd7fe490cece576ba5c37b500fb}{%
+           family={West},
+           familyi={W\bibinitperiod},
+           given={Kenneth\bibnamedelima D.},
+           giveni={K\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Econometric Society]}%
+      }
+      \strng{namehash}{c9458dd7fe490cece576ba5c37b500fb}
+      \strng{fullhash}{c9458dd7fe490cece576ba5c37b500fb}
+      \strng{bibnamehash}{c9458dd7fe490cece576ba5c37b500fb}
+      \strng{authorbibnamehash}{c9458dd7fe490cece576ba5c37b500fb}
+      \strng{authornamehash}{c9458dd7fe490cece576ba5c37b500fb}
+      \strng{authorfullhash}{c9458dd7fe490cece576ba5c37b500fb}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper develops procedures for inference about the moments of smooth functions of out-of-sample predictions and prediction errors, when there is a long time series of predictions and realizations. The aim is to provide tools for analysis of predictive accuracy and efficiency, and, more generally, of predictive ability. The paper allows for nonnested and nonlinear models, as well as for possible dependence of predictions and prediction errors on estimated regression parameters. Simulations indicate that the procedures can work well in samples of size typically available.}
+      \field{issn}{00129682, 14680262}
+      \field{journaltitle}{Econometrica}
+      \field{number}{5}
+      \field{title}{Asymptotic Inference about Predictive Ability}
+      \field{urlday}{18}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{64}
+      \field{year}{1996}
+      \field{urldateera}{ce}
+      \field{pages}{1067\bibrangedash 1084}
+      \range{pages}{18}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2171956
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2171956
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
