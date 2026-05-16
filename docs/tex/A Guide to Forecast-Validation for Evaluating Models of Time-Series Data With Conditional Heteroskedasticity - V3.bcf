@@ -2423,7 +2423,8 @@
     <bcf:citekey order="47" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
     <bcf:citekey order="48" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
     <bcf:citekey order="49" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
-    <bcf:citekey order="50" intorder="1" nocite="1">*</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
+    <bcf:citekey order="51" intorder="1" nocite="1">*</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

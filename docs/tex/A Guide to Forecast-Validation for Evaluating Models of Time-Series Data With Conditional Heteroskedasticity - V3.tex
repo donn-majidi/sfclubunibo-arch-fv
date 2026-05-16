@@ -221,22 +221,22 @@ backend=biber
 	Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i$. 
 	
 	Then, Mean Squared Error is defined as: 
-	\[
+	\begin{align}
 	L_{MSE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	(\hat{\sigma}_t^2-\hat{h}_{i,t}^2)^2.
-	\]
+	\end{align}
 	
 	MSE measures the quadratic distance between the realized variance proxy and the model forecast. His main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to outliers, since a few extreme volatility episodes can have a very high impact on the average loss.
 	
 	Quasi-Likelihood, instead, is defined as
-	\[
+	\begin{align}
 	L_{QLIKE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	\log(\hat{h}_{i,t}^2)
 	+
 	\frac{\hat{\sigma}_t^2}{\hat{h}_{i,t}^2}
-	\]
+	\end{align}
 	QLIKE has a natural quasi-likelihood interpretation, and it is particularly relevant since it penalizes significantly forecasts that underestimate realized volatility, specifically during high turmoil periods.
 	
 	The joint application of MSE and QLIKE allows evaluating models performance from complementary perspectives. MSE emphasizes absolute forecast error and is easy to interpret, while QLIKE is more linked to the logic of conditional variance models. If a model is competitive under both metrics, then the obtained ranking is more robust. If, instead, the results differ, this difference is still informative since it signals that the relative performance depends on the adopted accuracy definition. 
@@ -244,13 +244,13 @@ backend=biber
 	Later on in this paper, the main reference for the evaluation of the different models' performance will be these two loss functions.
 	
 	Operatively, once the loss function is chosen, the comparison between two models $i$ and $j$ is performed through the loss differential: 
-	\[
+	\begin{align}
 	d_{ij,t}
 	=
 	L(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	-
 	L(\hat{\sigma}_t^2,\hat{h}_{j,t}^2).
-	\]
+	\end{align}
 	Hence, the loss differential series represents the central empirical object on which the model comparison procedures are based. Following \textcite{HANSENLUNDE_NASON2011}, we assume that the process $\{d_{ij,t}\}$ is strictly stationary with finite moments and satisfies an $\alpha$-mixing condition. Importantly, these assumptions are imposed on the loss differentials rather than directly on the individual loss processes themselves. Consequently, certain forms of structural instability and nonstationarity may still be admissible, provided that they affect competing models in a sufficiently similar manner so that the stationarity of the loss differential process is preserved. 
 	
 	\subsection{Stepwise Multiple Testing}\label{sec:stepwise-testing}
@@ -388,16 +388,16 @@ backend=biber
 	The Model Confidence Set (MCS) procedure, introduced by \textcite{HANSENLUNDE_NASON2011}, deals with this problem by substituting the search for a single best model with the construction of a set of models that can include the best one or ones, at a fixed confidence level. The authors describe the MCS as the equivalent, within the problem of model selection, of a confidence interval for a parameter: when data are very informative, the final set can include few models and even reduce to just one; when, instead, data are less informative, the set remains broader, reflecting the inability to cleanly distinguish between the competing alternatives.\parencite{HANSENLUNDE_NASON2011}
 	
 	Let $\mathcal{M}^0$ be the initial set of candidate models and, as seen in the previous sections, let 
-	\[
+	\begin{align}
 	d_{ij,t}=L_{i,t}-L_{j,t}
-	\]
+	\end{align}
 	the loss differential between models $i$ and $j$ at time $t$.
 	Hence, the expected relative performance between two models is defined as
-	\[
+	\begin{align}
 	\mu_{ij}=E[d_{ij,t}].
-	\]
+	\end{align}
 	If $\mu_{ij}<0$, model $i$ presents a lower expected loss than model $j$ and results preferable with respect to the considered loss function. From this quantity, \textcite{HANSENLUNDE_NASON2011} define the superior models set as
-	\[
+	\begin{align}
 	\mathcal{M}^*
 	=
 	\left\{
@@ -405,25 +405,25 @@ backend=biber
 	\mu_{ij}\leq 0
 	\quad\quad \forall j \in \mathcal{M}^0
 	\right\}.
-	\]
+	\end{align}
 	Hence, the set $\mathcal{M}^*$ contains all models whose expected loss is no greater than that of any other model in the initial set. It is important to observe that a set can include more than one element: the procedure does not assume, nor requires, that a unique best model exists.  
 	
 	The aim of the MCS is the estimation of $\mathcal{M}^*$ through a sequential procedure based on equivalence testing and an elimination rule. For each current subset $\mathcal{M}\subseteq\mathcal{M}^0$, the null hypothesis of equal predictive ability is tested:
-	\[
+	\begin{align}
 	H_{0,\mathcal{M}}:
 	\mu_{ij}=0
 	\quad \text{per ogni } i,j\in\mathcal{M}.
-	\]
+	\end{align}
 	This hypothesis states that, within the current set, no model has expected predictive performance that differs from that of the others. If the null hypothesis is not rejected the procedure stops, and the current set can be identified as the Model Confidence Set. If, instead, it gets rejected, there is evidence that at least one of the models within $\mathcal{M}$ is inferior to the others. One elimination rule removes the model with the worst relative performance, and the test is repeated on the reduced subset. This iterative elimination algorithm constitutes the core of the procedure proposed by \textcite{HANSENLUNDE_NASON2011}. 
 	
 	Practically, the elimination rule determines which model has to be removed every time the null hypothesis of equal predictive capacity is rejected. In the implementation proposed by \textcite{HANSENLUNDE_NASON2011}, this rule is based on standardized loss differentials. Intuitively, the model removed at every step is the one that mostly contributes to the rejection of the null hypothesis, hence the model with the worse relative performance in the current set. The test is repeated on the restricted set until the null hypothesis cannot be rejected anymore.
 	
 	The final result is a random set of models, denoted by 
-	\[
+	\begin{align}
 	\widehat{\mathcal{M}}^{*}_{1-\alpha},
-	\]
+	\end{align}
 	built in such a way to contain the real superior models subset with probability at least equal to $1-\alpha$ in an asymptotic sense:
-	\[
+	\begin{align}
 	\liminf_{n\to\infty}
 	P\left(
 	\mathcal{M}^*
@@ -431,7 +431,7 @@ backend=biber
 	\widehat{\mathcal{M}}^{*}_{1-\alpha}
 	\right)
 	\geq 1-\alpha.
-	\]
+	\end{align}
 	This property justifies the term \textit{confidence set}: MCS does not claim to always identify a unique winner, but is constructed so that the truly superior models are excluded only with a controlled probability. The procedure yields a MCS p-value for each model. These p-values sum up the sequence of elimination tests and allow to assess if a given model belongs to the MCS for different confidence levels. A model is included in the MCS at a $1-\alpha$ level if and only if its p-value is bigger than $\alpha$. As a result, a low MCS p-value indicates that the model is less likely to belong to the superior models set, while a higher p-value shows that data do not give enough evidence to remove it from the set. As in standard statistical tests, this value is not to be intended as the probability that the given model is the best.
 	In finite samples, the final set can still contain inferior models. As the authors clarify, in fact, a model is removed only when it results significantly worse than at least one alternative, and not all models that survive the procedure are necessarily to be interpreted as good models in an absolute sense.
 	
