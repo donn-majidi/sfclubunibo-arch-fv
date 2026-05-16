@@ -59,6 +59,7 @@
       \field{title}{Forecasting financial market volatility: Sample frequency vis-à-vis forecast horizon}
       \field{volume}{6}
       \field{year}{1999}
+      \true{nocite}
       \field{pages}{457\bibrangedash 477}
       \range{pages}{21}
       \verb{doi}
@@ -100,6 +101,7 @@
       \field{title}{Asymptotic optimality of generalized CL, cross-validation, and generalized cross-validation in regression with heteroskedastic errors}
       \field{volume}{47}
       \field{year}{1991}
+      \true{nocite}
       \field{pages}{359\bibrangedash 377}
       \range{pages}{19}
       \verb{doi}
@@ -151,6 +153,7 @@
       \field{title}{A note on the validity of cross-validation for evaluating autoregressive time series prediction}
       \field{volume}{120}
       \field{year}{2018}
+      \true{nocite}
       \field{pages}{70\bibrangedash 83}
       \range{pages}{14}
       \verb{doi}
@@ -329,6 +332,7 @@
       \field{volume}{14}
       \field{year}{1996}
       \field{urldateera}{ce}
+      \true{nocite}
       \field{pages}{139\bibrangedash 151}
       \range{pages}{13}
       \verb{urlraw}
@@ -377,6 +381,7 @@
       \field{title}{A practical guide to volatility forecasting through calm and storm}
       \field{volume}{14}
       \field{year}{2012}
+      \true{nocite}
       \field{pages}{3\bibrangedash 22}
       \range{pages}{20}
       \verb{doi}
@@ -527,6 +532,41 @@
       \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05127.x
       \endverb
     \endentry
+    \entry{GIACOMINIWHITE2006}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=28ae0007b614e429c7a8c8a85cea0425}{%
+           family={Giacomini},
+           familyi={G\bibinitperiod},
+           given={Raffaella},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{448d0811c98157c469c1203c2f0bdfea}
+      \strng{fullhash}{448d0811c98157c469c1203c2f0bdfea}
+      \strng{bibnamehash}{448d0811c98157c469c1203c2f0bdfea}
+      \strng{authorbibnamehash}{448d0811c98157c469c1203c2f0bdfea}
+      \strng{authornamehash}{448d0811c98157c469c1203c2f0bdfea}
+      \strng{authorfullhash}{448d0811c98157c469c1203c2f0bdfea}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{6}
+      \field{title}{Tests of Conditional Predictive Ability}
+      \field{volume}{74}
+      \field{year}{2006}
+      \field{pages}{1545\bibrangedash 1578}
+      \range{pages}{34}
+    \endentry
     \entry{GLOSTEN1993}{article}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=4a29ab880fb251872f4356cd5005b404}{%
@@ -580,6 +620,56 @@
       \verb{url}
       \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.1993.tb05128.x
       \endverb
+    \endentry
+    \entry{HALLYAO2003}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=8922d50f77e8cc98c9ac19d6edca3701}{%
+           family={Hall},
+           familyi={H\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=719682f8a41306429bbf9671ef0fe9f5}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={Qiwei},
+           giveni={Q\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \strng{fullhash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \strng{bibnamehash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \strng{authorbibnamehash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \strng{authornamehash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \strng{authorfullhash}{5943cd25dcee08e73d398fe3ac8f28ad}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{ARCH and GARCH models directly address the dependency of conditional second moments, and have proved particularly valuable in modelling processes where a relatively large degree of fluctuation is present. These include financial time series, which can be particularly heavy tailed. However, little is known about properties of ARCH or GARCH models in the heavy–tailed setting, and no methods are available for approximating the distributions of parameter estimators there. In this paper we show that, for heavy–tailed errors, the asymptotic distributions of quasi–maximum likelihood parameter estimators in ARCH and GARCH models are nonnormal, and are particularly difficult to estimate directly using standard parametric methods. Standard bootstrap methods also fail to produce consistent estimators. To overcome these problems we develop percentile–t, subsample bootstrap approximations to estimator distributions. Studentizing is employed to approximate scale, and the subsample bootstrap is used to estimate shape. The good performance of this approach is demonstrated both theoretically and numerically.}
+      \field{journaltitle}{Econometrica}
+      \field{number}{1}
+      \field{title}{Inference in Arch and Garch Models with Heavy–Tailed Errors}
+      \field{volume}{71}
+      \field{year}{2003}
+      \true{nocite}
+      \field{pages}{285\bibrangedash 317}
+      \range{pages}{33}
+      \verb{doi}
+      \verb https://doi.org/10.1111/1468-0262.00396
+      \endverb
+      \verb{eprint}
+      \verb https://onlinelibrary.wiley.com/doi/pdf/10.1111/1468-0262.00396
+      \endverb
+      \verb{urlraw}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/1468-0262.00396
+      \endverb
+      \verb{url}
+      \verb https://onlinelibrary.wiley.com/doi/abs/10.1111/1468-0262.00396
+      \endverb
+      \keyw{autoregression,bootstrap,dependent data,domain of attraction,financial data,limit theory,percentile–t bootstrap,quasi–maximum likelihood,semiparametric inference,stable law,studentize,subsample bootstrap,time series}
     \endentry
     \entry{HAMILTON1994}{book}{}
       \name{author}{1}{}{%
@@ -645,6 +735,7 @@
       \field{title}{A forecast comparison of volatility models: does anything beat a GARCH(1,1)?}
       \field{volume}{20}
       \field{year}{2005}
+      \true{nocite}
       \field{pages}{873\bibrangedash 889}
       \range{pages}{17}
       \verb{doi}
@@ -659,6 +750,47 @@
       \verb{url}
       \verb https://onlinelibrary.wiley.com/doi/abs/10.1002/jae.800
       \endverb
+    \endentry
+    \entry{HANSENLUNDE_NASON2011}{article}{}
+      \name{author}{3}{}{%
+        {{un=2,uniquepart=given,hash=1b69f8d059ca7b024817e06b9be0fda6}{%
+           family={Hansen},
+           familyi={H\bibinitperiod},
+           given={Peter\bibnamedelima R.},
+           giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=2}}%
+        {{un=0,uniquepart=base,hash=8d526c5bfbc93e7d59acb3e0d9853324}{%
+           family={Lunde},
+           familyi={L\bibinitperiod},
+           given={Asger},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3ca7711233031156b6b4de630faa6724}{%
+           family={Nason},
+           familyi={N\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3635c3d620617105c21bc48d5dd037eb}
+      \strng{fullhash}{afc8041b233f6768b08a311935e640fe}
+      \strng{bibnamehash}{afc8041b233f6768b08a311935e640fe}
+      \strng{authorbibnamehash}{afc8041b233f6768b08a311935e640fe}
+      \strng{authornamehash}{3635c3d620617105c21bc48d5dd037eb}
+      \strng{authorfullhash}{afc8041b233f6768b08a311935e640fe}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{2}
+      \field{title}{The Model Confidence Set}
+      \field{volume}{79}
+      \field{year}{2011}
+      \field{pages}{453\bibrangedash 497}
+      \range{pages}{45}
     \endentry
     \entry{HANSENSPA2001}{article}{}
       \name{author}{1}{}{%
@@ -745,6 +877,7 @@
       \field{labeltitlesource}{title}
       \field{title}{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}
       \field{year}{2004}
+      \true{nocite}
       \verb{doi}
       \verb https://doi.org/10.1007/BF02985802
       \endverb
@@ -825,6 +958,7 @@
       \field{volume}{15}
       \field{year}{1987}
       \field{urldateera}{ce}
+      \true{nocite}
       \field{pages}{958\bibrangedash 975}
       \range{pages}{18}
       \verb{urlraw}
@@ -835,23 +969,35 @@
       \endverb
     \endentry
     \entry{GITHUB}{report}{}
-      \name{author}{1}{}{%
+      \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=df8b9c11a20b978496bab3b32e1c9159}{%
            family={Majidi},
            familyi={M\bibinitperiod},
            given={Shahriyar},
            giveni={S\bibinitperiod},
            givenun=0}}%
+        {{un=0,uniquepart=base,hash=d69823b031f0e9ecde37c7951f3a8ef2}{%
+           family={Sgrigna},
+           familyi={S\bibinitperiod},
+           given={Pietro},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=929209b16b2f0af5a0dfa03c18a90655}{%
+           family={Zeri},
+           familyi={Z\bibinitperiod},
+           given={Tommaso},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
       }
       \list{institution}{1}{%
         {Starting Finance Club}%
       }
-      \strng{namehash}{df8b9c11a20b978496bab3b32e1c9159}
-      \strng{fullhash}{df8b9c11a20b978496bab3b32e1c9159}
-      \strng{bibnamehash}{df8b9c11a20b978496bab3b32e1c9159}
-      \strng{authorbibnamehash}{df8b9c11a20b978496bab3b32e1c9159}
-      \strng{authornamehash}{df8b9c11a20b978496bab3b32e1c9159}
-      \strng{authorfullhash}{df8b9c11a20b978496bab3b32e1c9159}
+      \strng{namehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{fullhash}{32ddbfe08094f39406a137a6ec492895}
+      \strng{bibnamehash}{32ddbfe08094f39406a137a6ec492895}
+      \strng{authorbibnamehash}{32ddbfe08094f39406a137a6ec492895}
+      \strng{authornamehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{authorfullhash}{32ddbfe08094f39406a137a6ec492895}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{extradatescope}{labelyear}
@@ -861,6 +1007,7 @@
       \field{title}{Forecast-Validation for optimal ARCH/GARCH model selection in Python}
       \field{type}{techreport}
       \field{year}{2026}
+      \true{nocite}
       \verb{urlraw}
       \verb https://github.com/donn-majidi/sfclubunibo-arch-fv
       \endverb
@@ -1085,6 +1232,44 @@
       \verb https://www.aeaweb.org/articles?id=10.1257/002205103765762743
       \endverb
     \endentry
+    \entry{ROMANOWOLF2005}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=043cf59d11cb3a7265c4f148bff2975d}{%
+           family={Romano},
+           familyi={R\bibinitperiod},
+           given={Joseph\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=aba96a4246f521dcd0f7b0b6c402b9fc}{%
+           family={Wolf},
+           familyi={W\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8d07845b7b079e73e555273690538a19}
+      \strng{fullhash}{8d07845b7b079e73e555273690538a19}
+      \strng{bibnamehash}{8d07845b7b079e73e555273690538a19}
+      \strng{authorbibnamehash}{8d07845b7b079e73e555273690538a19}
+      \strng{authornamehash}{8d07845b7b079e73e555273690538a19}
+      \strng{authorfullhash}{8d07845b7b079e73e555273690538a19}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometrica}
+      \field{number}{4}
+      \field{title}{Stepwise Multiple Testing as Formalized Data Snooping}
+      \field{volume}{73}
+      \field{year}{2005}
+      \field{pages}{1237\bibrangedash 1282}
+      \range{pages}{46}
+      \verb{doi}
+      \verb 10.1111/j.1468-0262.2005.00615.x
+      \endverb
+    \endentry
     \entry{SIN1996207}{article}{}
       \name{author}{2}{}{%
         {{un=0,uniquepart=base,hash=4f853a7a323df6b5725f6813eb3f89e0}{%
@@ -1167,6 +1352,7 @@
       \field{volume}{64}
       \field{year}{1996}
       \field{urldateera}{ce}
+      \true{nocite}
       \field{pages}{1067\bibrangedash 1084}
       \range{pages}{18}
       \verb{urlraw}
@@ -1174,6 +1360,50 @@
       \endverb
       \verb{url}
       \verb http://www.jstor.org/stable/2171956
+      \endverb
+    \endentry
+    \entry{WHITE-BRC}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Econometric Society]}%
+      }
+      \strng{namehash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \strng{fullhash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \strng{bibnamehash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \strng{authorbibnamehash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \strng{authornamehash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \strng{authorfullhash}{426e452a5ec8e692f7740ce0d3e3655c}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Data snooping occurs when a given set of data is used more than once for purposes of inference or model selection. When such data reuse occurs, there is always the possibility that any satisfactory results obtained may simply be due to chance rather than to any merit inherent in the method yielding the results. This problem is practically unavoidable in the analysis of time-series data, as typically only a single history measuring a given phenomenon of interest is available for analysis. It is widely acknowledged by empirical researchers that data snooping is a dangerous practice to be avoided, but in fact it is endemic. The main problem has been a lack of sufficiently simple practical methods capable of assessing the potential dangers of data snooping in a given situation. Our purpose here is to provide such methods by specifying a straightforward procedure for testing the null hypothesis that the best model encountered in a specification search has no predictive superiority over a given benchmark model. This permits data snooping to be undertaken with some degree of confidence that one will not mistake results that could have been generated by chance for genuinely good results.}
+      \field{issn}{00129682, 14680262}
+      \field{journaltitle}{Econometrica}
+      \field{number}{5}
+      \field{title}{A Reality Check for Data Snooping}
+      \field{urlday}{11}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{volume}{68}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \field{pages}{1097\bibrangedash 1126}
+      \range{pages}{30}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2999444
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2999444
       \endverb
     \endentry
   \enddatalist

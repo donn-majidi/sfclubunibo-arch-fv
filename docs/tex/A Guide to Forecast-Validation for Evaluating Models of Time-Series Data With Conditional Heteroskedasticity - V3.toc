@@ -1,15 +1,17 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Overview of Model Selection}{3}{subsection.1.1}%
-\contentsline {section}{\numberline {2}Models of Conditional Heteroskedasticity}{5}{section.2}%
-\contentsline {subsection}{\numberline {2.1}GARCH Type Processes}{6}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Estimation}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {1.1}Relevance of Model Selection to Forecast Problems}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Models of Conditional Heteroskedasticity}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Canonical GARCH Class of Models}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Maximum Likelihood Estimation}{6}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Validation Framework}{7}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Rolling Window Estimation}{7}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Forecast Evaluation}{7}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Asymptotic Inference and The SPA Test}{7}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Empirical Analysis}{7}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Results}{7}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Diagnostic Tests}{7}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Conclusion}{7}{section.5}%
-\contentsline {section}{\numberline {A}Code Implementation}{8}{appendix.A}%
+\contentsline {subsection}{\numberline {3.1}Rolling Window Estimation Scheme}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Loss-Evaluation of Forecast Models}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Stepwise Multiple Testing}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Model Confidence Set}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Bootstrap Implementation}{12}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Empirical Analysis}{12}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Results}{12}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Diagnostic Tests}{12}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Conclusion}{12}{section.5}%
+\contentsline {section}{\numberline {A}Code Implementation}{13}{appendix.A}%
 \contentsfinish 
