@@ -210,62 +210,33 @@ backend=biber
 	In practice, recursive parameter estimation on expanding samples may lead to substantial parameter uncertainty and unstable forecast loss dynamics, particularly in the presence of structural breaks. Rolling window estimation alleviates some of these issues by stabilizing the distribution of the forecast loss differentials and reducing the influence of distant observations. As emphasized by \textcite{GIACOMINIWHITE2006} and \textcite{HANSENLUNDE_NASON2011}, the estimation scheme itself forms an integral part of the forecast evaluation framework and must therefore be explicitly accounted for in predictive ability analysis.
 		
 	\subsection{Loss-Evaluation of Forecast Models}\label{sec:loss-evaluation}
-	------ XXX
 	We evaluate and compare different forecast models by their average out-of-sample forecast losses. To this end, we would need to compute the loss entailed by each model by comparing the model forecasts with the observed volatilities. An immediate problem that arises, however, is that volatility is a latent variable and it cannot be observed. Therefore, we have to rely on (imperfect) proxies for the loss-evaluation of the forecast models. Further exacerbating the problem is the fact that loss functions are generally not robust to the noise involved in the proxies. This can lead to inconsistent evaluation schemes with often contradictory results, making the entire loss-evaluation procedure inefficient and even invalid. See \textcite{PAGAN1990267}, \textcite{BOLLERSLEVGHYSEL1994} and \textcite{ANDERSEN1999457} for a discourse on this issue.
+		
+	Comparisons between volatility forecasts are based on the distance, or expected loss, to the true conditional variance. \textcite{PATTON2011246} focuses on the definition of the loss function since, if the ranking of two forecasts obtained from a so-called "imperfect" volatility proxy is the same as the ranking that would be obtained from the latent variable, which is actually unfeasible, then the loss function can be identified as "robust". A robust loss function allows for the comparison of the accuracy of a forecast, on average, even if the latent variable of interest is not observable. 
 	
-	Instead of "real" use the term "latent" to refer to the unobserved volatilities.
+	However, a robust loss function does not automatically make the proxy choice irrelevant. Its role is to guarantee that the comparison between forecasts is not systematically distorted by the usage of an imperfect variable in place of the latent conditional variance. Nevertheless, the proxy still influences the noise of the evaluation, the precision of the loss differential estimations, and in the end, the following statistical inference. In empirical applications, the most used volatility proxies are squared returns and realized volatility. The former are simpler to compute and daily data are sufficient to provide availability, while the latter provides a more informative ex-post measure, when intraday data are available.
 	
-	------ XXX
+	Following \textcite{PATTON2011246}, a loss function $L(\cdot, \cdot)$ can be defined as robust if the expected ranking between the two forecasts is preserved when the latent conditional variance is substituted by its observable proxy. Among the most used loss functions, in this paper we choose to use only Mean Squared Error (MSE) and Quasi-Likelihood loss (QLIKE), since these are the only two proven to be robust in the sense discussed in the cited paper. 
 	
+	Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i$. 
 	
-	Another fundamental problem to address in forecasting variables is the inability to observe the variable of interest, even \textit{ex-post}. This issue is of crucial importance in volatility forecasting, which is the main subject treated in this paper, and can be resolved at least partially, since unbiased estimators are available. Two of the most used conditionally unbiased proxies are squared returns and realized volatility. 
-	
-	Comparisons between volatility forecasts are based on the distance, or expected loss, to the true conditional variance. \textcite{PATTON2011246} focuses on the definition of the loss function since, if the ranking of two forecasts obtained from a so-called \textit{imperfect} volatility proxy is the same as the ranking that would be obtained from the real variable, which is actually unfeasible, then the loss function can be identified as "robust". A robust loss function allows for the comparison of the accuracy of a forecast, on average, even if the real variable of interest is not observable. 
-	
-	However, a robust loss function does not automatically make the proxy choice irrelevant. Its role is to guarantee that the comparison between forecasts is not systematically distorted by the usage of an imperfect variable in place of the real conditional variance. Nevertheless, the proxy still influences the noise of the valuation, the precision of the loss differential estimations, and in the end, the following statistical inference. 
-	This distinction is particularly important in the comparison between squared returns and realized variance. The first are easy to compute and available for every series of daily prices, but are a very noisy proxy of the conditional variance. Realized variance, on the other hand, built from intraday returns, gives a more informative measure of the effectively realized volatility, still introducing practical problems such as microstructure noise and data availability, given the intraday nature of the series used.
-	
-	Formally, let $\hat\sigma_t^2$ be the real conditional variance, and let $\hat{\sigma}_t^2$ be a proxy observable ex-post, such as squared returns or realized variance. A loss function $L(\cdot, \cdot)$ can be defined as robust if the expected ranking between the two forecasts is preserved when the real conditional variance is substituted by its observable proxy.  
-	Following \textcite{PATTON2011246}, if model $i$ produces a better forecast than model $j$, with respect to the real conditional variance, so if
-	\[
-	E\left[L(\hat\sigma_t^2,\hat{h}_{i,t}^2)\right]
-	<
-	E\left[L(\hat\sigma_t^2,\hat{h}_{j,t}^2)\right],
-	\]
-	then a robust loss function should preserve the same order when the evaluation is done using the proxy
-	\[
-	E\left[L(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)\right]
-	<
-	E\left[L(\hat{\sigma}_t^2,\hat{h}_{j,t}^2)\right].
-	\]
-	
-	Going further in the research, two main robust loss functions are considered: Mean Squared Error (MSE) and Quasi-Likelihood loss (QLIKE). Both are proven to be robust in the sense already discussed. In \textcite{PATTON2011246}, this proof is obtained under three different assumptions for the conditional distribution of daily returns:
-	\[
-	r_t\,|\mathcal F_{t-1} \sim \begin{cases}
-		F_t(0, \sigma^2_t)\\
-		\text{Student's }t(0,\sigma^2_t, \nu)\\
-		\mathcal{N}(0,\sigma^2_t)
-	\end{cases}
-	\]
-	where $F_t(0, \sigma^2_t)$ is some unspecified distribution with null mean and variance $\sigma^2_t$, and Student's $t(0,\sigma^2_t, \nu)$ is a Student's t distribution with mean zero, variance $\sigma^2_t$, and $\nu$ degrees of freedom. In all these cases, the squared daily returns, used for the estimation, are a valid volatility proxy. Amongst all nine widely used loss functions analyzed in the already cited paper, only MSE and QLIKE lead to an optimal forecast $h^*_t=\mathbb{E}_{t-1}[\hat\sigma_t]=\sigma_t$ and so can be considered robust.
-	
-	Mean Squared Error is defined as: 
-	\[
+	Then, Mean Squared Error is defined as: 
+	\begin{align}
 	L_{MSE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	(\hat{\sigma}_t^2-\hat{h}_{i,t}^2)^2.
-	\]
+	\end{align}
 	
 	MSE measures the quadratic distance between the realized variance proxy and the model forecast. His main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to outliers, since a few extreme volatility episodes can have a very high impact on the average loss.
 	
 	Quasi-Likelihood, instead, is defined as
-	\[
+	\begin{align}
 	L_{QLIKE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	\log(\hat{h}_{i,t}^2)
 	+
 	\frac{\hat{\sigma}_t^2}{\hat{h}_{i,t}^2}
-	\]
+	\end{align}
 	QLIKE has a natural quasi-likelihood interpretation, and it is particularly relevant since it penalizes significantly forecasts that underestimate realized volatility, specifically during high turmoil periods.
 	
 	The joint application of MSE and QLIKE allows evaluating models performance from complementary perspectives. MSE emphasizes absolute forecast error and is easy to interpret, while QLIKE is more linked to the logic of conditional variance models. If a model is competitive under both metrics, then the obtained ranking is more robust. If, instead, the results differ, this difference is still informative since it signals that the relative performance depends on the adopted accuracy definition. 
@@ -273,13 +244,13 @@ backend=biber
 	Later on in this paper, the main reference for the evaluation of the different models' performance will be these two loss functions.
 	
 	Operatively, once the loss function is chosen, the comparison between two models $i$ and $j$ is performed through the loss differential: 
-	\[
+	\begin{align}
 	d_{ij,t}
 	=
 	L(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	-
 	L(\hat{\sigma}_t^2,\hat{h}_{j,t}^2).
-	\]
+	\end{align}
 	Hence, the loss differential series represents the central empirical object on which the model comparison procedures are based. Following \textcite{HANSENLUNDE_NASON2011}, we assume that the process $\{d_{ij,t}\}$ is strictly stationary with finite moments and satisfies an $\alpha$-mixing condition. Importantly, these assumptions are imposed on the loss differentials rather than directly on the individual loss processes themselves. Consequently, certain forms of structural instability and nonstationarity may still be admissible, provided that they affect competing models in a sufficiently similar manner so that the stationarity of the loss differential process is preserved. 
 	
 	\subsection{Stepwise Multiple Testing}\label{sec:stepwise-testing}
@@ -412,28 +383,21 @@ backend=biber
 	
 	
 	\subsection{Model Confidence Set}\label{sec:model-confidence-set}
-	---------- XXX
-	Mention MCS p-values and the mechanics of the elimination rule.
-	
-	---------- XXX
-	
-	A simple ranking of models competing with respect to the average loss is not sufficient to determine which one is the best model. Even if one of them presents the lowest sample loss, the difference observed between the remaining alternatives could be too small to be statistically significant. As \textcite{HANSENLUNDE_NASON2011} highlights, in many empirical applications, data do not contain sufficient information to univocally identify a single dominant model. In these cases, forcing the selection of a unique winner is likely to produce excessively confident conclusions compared to the evidence that is effectively available. 
+	In many forecast comparison problems, no natural benchmark is available against which all competing specifications can be tested. In this setting, a procedure that starts from a set of plausible models and narrows it down to the best-performing alternatives is more appropriate than forcing a benchmark-based comparison.	Moreover, as \textcite{HANSENLUNDE_NASON2011} highlights, in many empirical applications, data do not contain sufficient information to univocally identify a single dominant model. In these cases, forcing the selection of a unique winner is likely to produce excessively confident conclusions compared to the evidence that is effectively available. 
 	
 	The Model Confidence Set (MCS) procedure, introduced by \textcite{HANSENLUNDE_NASON2011}, deals with this problem by substituting the search for a single best model with the construction of a set of models that can include the best one or ones, at a fixed confidence level. The authors describe the MCS as the equivalent, within the problem of model selection, of a confidence interval for a parameter: when data are very informative, the final set can include few models and even reduce to just one; when, instead, data are less informative, the set remains broader, reflecting the inability to cleanly distinguish between the competing alternatives.\parencite{HANSENLUNDE_NASON2011}
 	
-	
-	
 	Let $\mathcal{M}^0$ be the initial set of candidate models and, as seen in the previous sections, let 
-	\[
+	\begin{align}
 	d_{ij,t}=L_{i,t}-L_{j,t}
-	\]
+	\end{align}
 	the loss differential between models $i$ and $j$ at time $t$.
 	Hence, the expected relative performance between two models is defined as
-	\[
+	\begin{align}
 	\mu_{ij}=E[d_{ij,t}].
-	\]
+	\end{align}
 	If $\mu_{ij}<0$, model $i$ presents a lower expected loss than model $j$ and results preferable with respect to the considered loss function. From this quantity, \textcite{HANSENLUNDE_NASON2011} define the superior models set as
-	\[
+	\begin{align}
 	\mathcal{M}^*
 	=
 	\left\{
@@ -441,23 +405,25 @@ backend=biber
 	\mu_{ij}\leq 0
 	\quad\quad \forall j \in \mathcal{M}^0
 	\right\}.
-	\]
+	\end{align}
 	Hence, the set $\mathcal{M}^*$ contains all models whose expected loss is no greater than that of any other model in the initial set. It is important to observe that a set can include more than one element: the procedure does not assume, nor requires, that a unique best model exists.  
 	
 	The aim of the MCS is the estimation of $\mathcal{M}^*$ through a sequential procedure based on equivalence testing and an elimination rule. For each current subset $\mathcal{M}\subseteq\mathcal{M}^0$, the null hypothesis of equal predictive ability is tested:
-	\[
+	\begin{align}
 	H_{0,\mathcal{M}}:
 	\mu_{ij}=0
 	\quad \text{per ogni } i,j\in\mathcal{M}.
-	\]
+	\end{align}
 	This hypothesis states that, within the current set, no model has expected predictive performance that differs from that of the others. If the null hypothesis is not rejected the procedure stops, and the current set can be identified as the Model Confidence Set. If, instead, it gets rejected, there is evidence that at least one of the models within $\mathcal{M}$ is inferior to the others. One elimination rule removes the model with the worst relative performance, and the test is repeated on the reduced subset. This iterative elimination algorithm constitutes the core of the procedure proposed by \textcite{HANSENLUNDE_NASON2011}. 
 	
+	Practically, the elimination rule determines which model has to be removed every time the null hypothesis of equal predictive capacity is rejected. In the implementation proposed by \textcite{HANSENLUNDE_NASON2011}, this rule is based on standardized loss differentials. Intuitively, the model removed at every step is the one that mostly contributes to the rejection of the null hypothesis, hence the model with the worse relative performance in the current set. The test is repeated on the restricted set until the null hypothesis cannot be rejected anymore.
+	
 	The final result is a random set of models, denoted by 
-	\[
+	\begin{align}
 	\widehat{\mathcal{M}}^{*}_{1-\alpha},
-	\]
+	\end{align}
 	built in such a way to contain the real superior models subset with probability at least equal to $1-\alpha$ in an asymptotic sense:
-	\[
+	\begin{align}
 	\liminf_{n\to\infty}
 	P\left(
 	\mathcal{M}^*
@@ -465,8 +431,8 @@ backend=biber
 	\widehat{\mathcal{M}}^{*}_{1-\alpha}
 	\right)
 	\geq 1-\alpha.
-	\]
-	This property justifies the term \textit{confidence set}: MCS does not claim to always identify a unique winner, but is constructed so that the truly superior models are excluded only with a controlled probability.
+	\end{align}
+	This property justifies the term \textit{confidence set}: MCS does not claim to always identify a unique winner, but is constructed so that the truly superior models are excluded only with a controlled probability. The procedure yields a MCS p-value for each model. These p-values sum up the sequence of elimination tests and allow to assess if a given model belongs to the MCS for different confidence levels. A model is included in the MCS at a $1-\alpha$ level if and only if its p-value is bigger than $\alpha$. As a result, a low MCS p-value indicates that the model is less likely to belong to the superior models set, while a higher p-value shows that data do not give enough evidence to remove it from the set. As in standard statistical tests, this value is not to be intended as the probability that the given model is the best.
 	In finite samples, the final set can still contain inferior models. As the authors clarify, in fact, a model is removed only when it results significantly worse than at least one alternative, and not all models that survive the procedure are necessarily to be interpreted as good models in an absolute sense.
 	
 	In this research context, the MCS is applied to the loss differential series generated by MSE and QLIKE loss functions. In this way, the procedure makes it possible to identify, for each evaluation criterion, the set of volatility models that cannot be considered significantly inferior to the best models within the initial set. The MCS addresses a different question compared to stepwise multiple testing discussed in the previous section. While the latter verifies which models outperform a pre-specified benchmark, MCS determines which models belong to the best models set without imposing an ex-ante reference model, feature that \textcite{HANSENLUNDE_NASON2011} identify as one of the principal benefits of this procedure compared to the superior predictive ability tests. 
