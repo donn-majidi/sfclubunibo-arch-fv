@@ -108,20 +108,20 @@ backend=biber
 	\newpage
 	
 	\section{Introduction}
-	A critical task in portfolio management is forecasting the conditional variance of financial returns. Conditional variance forecasts are necessary inputs for modeling risk, pricing derivatives, and hedging portfolios. This wide-spread interest in forecasting the conditional variance has led to the rise of the enormous volatility forecasting literature, starting with the seminal paper of \textcite{ENGLE1982}. Ever since the introduction of the ARCH and GARCH class of models (\textcite{ENGLE1982} and \textcite{BOLLERSLEV1986307}), a great number of models has been developed, extending the baseline ARCH framework to include more sophisticated dynamics and to incorporate more of the observed empirical regularities of the financial time-series. See \textcite{PAGAN199615} and \textcite{POON&GRANGER2003} for a comprehensive review.
+	A critical task in portfolio management is forecasting the conditional variance of financial returns. Forecasts of the conditional variance are necessary inputs for modeling risk, pricing derivatives, and hedging portfolios. This wide-spread interest in forecasting the conditional variance has led to the rise of the enormous volatility forecasting literature, starting with the seminal paper of \textcite{ENGLE1982}. Ever since the introduction of the ARCH and GARCH class of models (\textcite{ENGLE1982} and \textcite{BOLLERSLEV1986307}), a great number of models has been developed, extending the baseline ARCH framework to include more sophisticated dynamics and to accommodate for the empirical regularities observed in financial markets. See \textcite{PAGAN199615} and \textcite{POON&GRANGER2003} for a comprehensive review.
 	
-	This impressive pace in the development of volatility forecast models, however, had remained unmatched for the most part by model assessment methods that tend to select good models with plausible properties and satisfactory out-of-sample performance. This has led to an overwhelmingly large set of volatility forecast models that a practitioner has to choose from, which is often a difficult choice, given the degree of similarity between the models and the lack of consistent forecast selection rules. The aim of this paper is to alleviate this problem by bringing in the results of some of the most recent developments within the model selection literature and integrate them with volatility forecast models to provide an adaptable model selection procedure in a unified framework.
+	This impressive pace in the development of volatility forecast models, however, had remained unmatched for the most part by model assessment methods to evaluate these models and to assess and compare their out-of-sample performance. This has led to an overwhelmingly large set of volatility forecast models that a practitioner has to choose from, which is often an onerous task, given the degree of similarity between the models and the lack of consistent forecast selection rules. This paper seeks to address this issue by developing a validation framework to evaluate models based on the forecasts that they produce. Our framework is founded on the grounds of multiple comparison procedures within the model selection literature, and can easily be adapted to forecast evaluation problems.
 	
-	\subsection{Relevance of Model Selection to Forecast Problems}
+	\subsection{Relevance of Model Selection to Volatility Forecast Problems}
 	 An often challenging task during the course of an econometric analysis is the comparison of different models for modeling the particular data set at hand. Depending on the specific application, the comparison can be based on different metrics. A common metric for comparing different models, as in criterion based model selection, is the likelihood score, often penalized with the number of parameters being estimated in some way, with the penalty being higher for models with a larger number of unknown parameters. Penalizing models based on the number of parameters is rooted in the idea that by using estimates rather than the true values of the parameters, the model will drift farther apart from reality. Therefore, the information criteria generally favor more parsimonious models with fewer parameters over more complex models. The validity of the information criteria as reliable model assessment tools, however, relies heavily on the assumption that the models are not misspecified, at least not intentionally. This is a rather strong assumption that is often violated, for example in the case of Quasi-Maximum Likelihood Estimation, where the likelihood function is misspecified. See \textcite{BOLLERSLEV19942959} and \textcite{SIN1996207}. 
 	 
-	 An alternative for comparing forecast models is the loss-evaluation of out-of-sample forecasts. This procedure requires the comparison of an appropriately defined loss function on the out-of-sample forecasts produced by each model, which is obtained by employing a rolling-window forecasting scheme. The choice between the rolling-window and the expanding-window forecasting schemes is often based on the assumptions surrounding the models and the data set. For models with time-varying parameters, and for series with rather short memories, the rolling-window scheme is deemed more appropriate in that it adapts to the most recent data while leaving out observations from the distant past that could become irrelevant as time moves forward within the sample. Moreover, by updating the estimates upon each rolling forward of the training sample within the data set, the time-variability of the parameter estimates can be appropriately accounted for. Once the series of forecast losses for each model is obtained, they can be compared to determine the model with the minimum overall loss.
+	 An alternative for comparing forecast models is the loss-evaluation of out-of-sample forecasts. This procedure requires the comparison of an appropriately defined loss function on the out-of-sample forecasts produced by each model, which is obtained by employing a rolling-window forecasting scheme. The choice between the rolling-window and the expanding-window forecasting schemes is often based on the assumptions surrounding the models and the data. For models with time-varying parameters, and for time-series data with rather short memories, the rolling-window scheme is deemed more appropriate in that it adapts to the most recent data while leaving out observations from the distant past that could become irrelevant as time moves forward. Moreover, by updating the parameter estimates upon each rolling forward of the training sample within the data set, the time-variability of the parameters can be appropriately accounted for. Once the series of forecast losses for each model is obtained, they can be compared to determine the model with the smallest overall loss.
 	 
 	 One fundamental flaw with the direct comparison of the overall losses, however, is that it is prone to data snooping (or data mining). The effects of data snooping become prominent when multiple models are evaluated on the same data set, where some yield exceptionally smaller losses than others by chance alone, even if in reality they are equally good or even inferior. It is important, therefore, to control for the effects of data snooping in a hypothesis testing framework. The first to setup a testing framework of this kind was \textcite{WHITE-BRC}. The technique that \textcite{WHITE-BRC} employs involves the pairwise comparison of all the models with a given benchmark, and then to determine whether the benchmark is outperformed by any of the other models in the sample in a multiple testing framework. The size of this test, which is known as the Family Wise Error rate (FWE) is the main instrument by which tests of this kind control for data snooping.\footnote{The FWE is formally defined as the probability of incorrectly identifying at least one forecast model as superior to the benchmark (which again can happen due to the effects of data snooping).}
 	 
-	 In addition to controlling for data snooping via the FWE, a desirable property for the statistical testing framework to be developed here is power. There are several different notions of power in statistical hypothesis testing. Perhaps the most familiar is the uniformly most powerful test, which has the greatest power among all tests of a given size. Even though the uniformly most powerful test can rather easily be achieved when testing for a single null hypothesis, when conducting a test of multiple hypotheses, power is restricted by the level enforced for the family wise error rate. For example, in the Bonferroni method for testing two hypotheses in a single multiple testing framework, each individual hypothesis can be conducted at most at a size $\alpha/2$ to ensure that the FWE is controlled at level $\alpha$.\footnote{See \textcite{ROMANOWOLF2005} section 2.3 and \textcite{ROMANOWOLF2005} appendix D for illuminating examples.} Nevertheless, some design considerations regarding the tests can lead to increased power while controlling the FWE at the same level. Two such mechanisms that we consider in this paper are the Step Wise Multiple testing procedure of \textcite{ROMANOWOLF2005} and the Model Confidence Set of \textcite{HANSENLUNDE_NASON2011}.\footnote{There are of course other testing procedures which have the same objectives over power and the FWE. Some examples include the SPA test of \textcite{HANSENSPA2001}, and the BRC of \textcite{WHITE-BRC}. Although a complete survey of all the existing methods is not possible in a single paper, the methods that we introduce in this paper are flexible and powerful enough to accommodate for most forecast selection problems that a practitioner faces on a daily basis.} Each of these testing mechanisms, which fall under the category of multiple comparison procedures, exploit the dependency structure of the test statistics involved to improve the power of the tests, while maintaining control over the FWE. These procedures will be discussed in detail in section \ref{sec:valid_fw}.
+	 In addition to controlling for data snooping via the FWE, a desirable property for the statistical testing framework that we seek to develop is power. There are several different notions of power in statistical hypothesis testing. Perhaps the most familiar is the uniformly most powerful test, which has the greatest power among all tests of a given size. Even though the uniformly most powerful test can rather easily be achieved when testing for a single null hypothesis, when conducting a test of multiple hypotheses, power is restricted by the level enforced for the family wise error rate. For example, in the Bonferroni method for testing two hypotheses in a single multiple testing framework, each individual hypothesis can be conducted at most at a size $\alpha/2$ to ensure that the FWE is controlled at level $\alpha$.\footnote{See \textcite{ROMANOWOLF2005} section 2.3 and \textcite{ROMANOWOLF2005} appendix D for illuminating examples.} Nevertheless, some design considerations regarding the tests can lead to increased power while controlling the FWE at the same level. Two such mechanisms that we consider in this paper are the Step Wise Multiple testing procedure of \textcite{ROMANOWOLF2005} (abbreviated as StepM) and the Model Confidence Set of \textcite{HANSENLUNDE_NASON2011} (abbreviated as MCS).\footnote{There are of course other testing procedures which have the same objectives over power and the FWE. Some examples include the SPA test of \textcite{HANSENSPA2001}, and the BRC of \textcite{WHITE-BRC}. Although a complete survey of all the existing methods is not admissible, the methods that we introduce in this paper are flexible and powerful enough to accommodate for most forecast selection problems that a practitioner faces on a daily basis.} Each of these testing mechanisms, which fall under the category of multiple comparison procedures, exploit the dependency structure of the test statistics involved to improve the power of the tests, while maintaining control over the FWE. These procedures will be discussed in detail in section \ref{sec:valid_fw}.
 	 
-	 A final consideration about power arises from the fact that most testing mechanisms rely on asymptotic results either for conducting the test itself or for imposing the regularity assumptions required to establish the validity of the tests. The scope of the asymptotic theory, however, is fairly limited in finite samples, and many of its results may not hold. This can significantly erode the power of the tests, unless a more powerful mechanism is implemented to accommodate for finite samples in the same way that asymptotic theory does for large samples. This can be achieved via an appropriately implemented bootstrap algorithm. As we will show later in section \ref{sec:bootstrap}, the bootstrap can be used to directly estimate the density of the test statistics and to obtain the critical values for conducting the tests. We will use the bootstrap to this end, and to ultimately increase the power of our tests. 
+	 A final consideration about power arises from the fact that most testing mechanisms rely on asymptotic results either for conducting the test itself or for imposing the regularity assumptions required to establish the validity of the tests. The scope of the asymptotic theory, however, is fairly limited in finite samples, and many of its results may not hold. This can significantly erode the power of the tests, unless a more powerful mechanism is implemented to estimate the distributions of the test statistics in finite samples. This can be achieved via an appropriately implemented bootstrap algorithm. As we will later show in section \ref{sec:bootstrap}, the bootstrap can be used to directly estimate the density of the test statistics and to obtain the critical values for conducting the tests. We will use the bootstrap to this end, and to ultimately increase the power of our tests. 
 	 
 	 The remainder of this paper is organized as follows. Section \ref{sec:models_CH} introduces the GARCH class of models and discusses their maximum likelihood estimation. Section \ref{sec:valid_fw} presents the validation framework and in particular the loss evaluation of forecast models. Stepwise Multiple Testing and the Model Confidence Set along with their bootstrap implementation are also covered in this section. Section \ref{sec:empirical} applies our framework to real market data and compares different volatility models for equities and FX rates. Later in the section, some diagnostic tests are presented for \textit{ex-post} analysis of the results. Section \ref{sec:conclusion} concludes and appendix \ref{app:code_a} contains practical guidelines for code implementation.
 	 
@@ -129,27 +129,27 @@ backend=biber
 	\section{Models of Conditional Heteroskedasticity}\label{sec:models_CH}
 	Early in the history of financial econometrics, it was discovered that financial return series, as statistical time-series objects exhibit certain peculiar patterns. These recorded patterns are collectively known as empirical regularities of the financial markets, and have served as the main driver of research in empirical finance. Many of the proposed models for modeling financial time-series and their dynamics are aimed at reproducing some or many of the empirical regularities that are commonly observed in the financial markets, and new discoveries on the front of empirical observation have helped refine and reassess already proposed models. One of the most prominent features concerning the empirical regularities of financial returns revolve around volatility. It is a well-established fact that financial returns exhibit volatility clustering with periods of high volatility followed by periods of high volatility and vice versa for periods of low volatility. Incidentally, in an effort to provide further refinements to the estimated variances of forecasts of macroeconomic aggregates, \textcite{ENGLE1982} discovers a conditionally heteroskedastic stochastic process that is capable of reproducing the volatility clustering effect that is so commonplace in financial markets. Less than four years later, in another ground-breaking paper, \textcite{BOLLERSLEV1986307} generalizes the ARCH model to the GARCH class (Generalized-Auto Regressive Conditional Heteroskedasticity), and lays the foundations for much of modern empirical finance, including conditional volatility forecasting in financial markets. 
 	
-	In the most general, abstract terms, an autoregressive conditionally heteroskedastic stochastic process $\{r_t\}_{t=1}^T$ is defined as:
+	In the most general and abstract terms, an autoregressive conditionally heteroskedastic stochastic process $\{r_t\}_{t=1}^T$ is defined as:
 	
 	\begin{align}
 		r_t = h_t(\mathcal{F}_{t-1};\theta) z_t, \label{eq:model_main_ch}
 	\end{align}
-	where $\{z_t\}_{t=1}^T$ is an i.i.d. process stochastically independent from the process $\{r_t\}$, and with zero conditional mean $\mathbb{E}[z_t|\mathcal{F}_{t-1}] = 0$. The function $h_t(\mathcal{F}_{t-1};\theta)$ is an $\mathcal{F}_{t-1}$-measurable function, parametrized by the parameter vector $\theta$, with $\mathcal{F}_{t}$ denoting the $\sigma$-algebra induced by the process up to time $t$. The novelty in this specification of the return series is its non-linearity which accommodates for the correlation of non-linear transformations of the return series over time. This is plausible, since it is a very well-known fact that return series, although linearly uncorrelated, exhibit strong auto-correlation in absolute value or in quadratic terms. To see the non-linearity of the process in \eqref{eq:model_main_ch}, consider the Hilbert space $\mathcal{H}_t^r$ representing the return process $\{r_t\}$ which is defined over a complete probability space $L(\Omega, \mathcal{F}_t, \mathcal{P})$, and let $\mathcal{H}_{t-1}^r \subset \mathcal{H}_t^r$ denote the Hilbert space containing the sub-process $\{r_s|s < t\}$. If we let further $\mathcal{H}_t^z$ denote the Hilbert space representing the i.i.d. process $\{z_t\}$, we can decompose $\{\mathcal{H}_t^r\}$ as:
+	where $\{z_t\}_{t=1}^T$ is an i.i.d. process stochastically independent from the process $\{r_t\}$, and with zero conditional mean $\mathbb{E}[z_t|\mathcal{F}_{t-1}] = 0$. The function $h_t(\mathcal{F}_{t-1};\theta)$ is an $\mathcal{F}_{t-1}$-measurable function, parametrized by the parameter vector $\theta$, with $\mathcal{F}_{t}$ denoting the $\sigma$-algebra induced by the process up to time $t$. The novelty in this specification of the return series is its non-linearity which accommodates for the correlation of non-linear transformations of the return series over time. This is plausible, since it is a very well-known fact that return series, although linearly uncorrelated, exhibit strong auto-correlation in absolute value or in quadratic terms. To see the non-linearity of the process in \eqref{eq:model_main_ch}, consider the Hilbert space $\mathcal{H}_t^r$ representing the return process $\{r_t\}$ which is defined over a complete probability space $L(\Omega, \mathcal{F}_t, \mathcal{P})$, and let $\mathcal{H}_{t-1}^r \subset \mathcal{H}_t^r$ denote the Hilbert space spanned by the sub-process $\{r_s|s < t\}$. If we let further $\mathcal{H}_t^z$ denote the Hilbert space representing the i.i.d. process $\{z_t\}$, we can decompose $\{\mathcal{H}_t^r\}$ as:
 	\begin{align}
 		\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \otimes \mathcal{H}_t^z,
 	\end{align}
-	which defines the process $\{r_t\}$ as the tensor product between the sub-process $\{r_s | s<t\}$ and the i.i.d. process $\{z_t\}$ which is trivially non-linear.\footnote{It is worth mentioning that linear processes can always be decomposed as the direct sum of two or more orthogonal processes of the form: $\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \oplus \mathcal{H}_{t-1}^{r\perp}$ where $\mathcal{H}_{t-1}^{r\perp}$ is the orthogonal complement of $\mathcal{H}_{t-1}^r$.} The conditional variance of the return process is then given by:
+	which defines the process $\{r_t\}$ as the tensor product between the sub-process $\{r_s | s<t\}$ and the i.i.d. process $\{z_t\}$, which is trivially non-linear.\footnote{It is worth mentioning that linear processes can always be decomposed as the direct sum of two or more orthogonal processes of the form: $\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \oplus \mathcal{H}_{t-1}^{r\perp}$ where $\mathcal{H}_{t-1}^{r\perp}$ is the orthogonal complement of $\mathcal{H}_{t-1}^r$.} The conditional variance of the return process is then given by:
 	\begin{align}
 		Var\left( r_t | \mathcal{F}_{t-1} \right) = h_t^2(\mathcal{F}_{t-1};\theta), \label{eq:cond_var_function}
 	\end{align}
-	which is heteroskedastic as it varies deterministically with time. The fundamental problem is now to specify a process for $h_t(\mathcal{F}_{t-1};\theta)$ and estimate the vector of parameters $\theta$, which is the subject of the next sub sections. Finally, it is worth mentioning that different models differ in their specification of the function $h_t(\mathcal{F}_{t-1};\theta)$ but their modeling logic remains fundamentally the same. 
+	which is heteroskedastic as it varies deterministically with time. The fundamental problem now becomes to specify a process for $h_t(\mathcal{F}_{t-1};\theta)$ and to estimate the vector of parameters $\theta$, which is the subject of the next sub sections. Finally, it is worth mentioning that different models differ in their specification of the function $h_t(\mathcal{F}_{t-1};\theta)$ but their modeling logic remains fundamentally the same. 
 	
 	\subsection{Canonical GARCH Class of Models}
 	A standard specification for the conditional variance function in \eqref{eq:cond_var_function} is the GARCH(p,q) process which is given by:
 	\begin{align}
 		h_t^2 = \omega + \sum_{i=1}^q \alpha_i r_{t-i}^2 + \sum_{i=1}^p \beta_i h_{t-i}^2.
 	\end{align}
-	The GARCH process is extensively studied in the literature and its properties are well known. Key features of this process are its stationarity, imposed by the constraint $\sum_{i=1}^q\alpha_i+\sum_{i=1}^p\beta_i<1$ and its symmetry, implying that both positive and negative returns influence future volatility equally. The baseline GARCH process has evolved over time and much of this evolution has been guided by empirical findings. A prominent finding that dates back to very early in the history of the literature is that negative returns have a larger impact on future volatility than positive returns of the same magnitude. This effect, commonly referred to as the leverage effect was first discovered by \textcite{Black1976} and later illustrated by \textcite{PAGAN1990267} and \textcite{ENGLE_NG1993} in the context of the news impact curve. A natural way to incorporate the leverage effect into the GARCH process is to adjust the coefficients of the lagged squared returns so that the coefficients are smaller when the returns are positive. This is the GJR-GARCH process of \textcite{GLOSTEN1993}:
+	The GARCH process is extensively studied in the literature and its properties are well known. Key features of this process are its stationarity, imposed by the constraint $\sum_{i=1}^q\alpha_i+\sum_{i=1}^p\beta_i<1$ and its symmetry, implying that both positive and negative returns influence future volatility equally. The baseline GARCH process has evolved over time and much of this evolution has been guided by empirical findings. A prominent finding that dates back to very early in the history of the literature is that negative returns have a larger impact on future volatility than positive returns of the same magnitude. This effect, commonly known as the leverage effect was first discovered by \textcite{Black1976} and later illustrated by \textcite{PAGAN1990267} and \textcite{ENGLE_NG1993} in the context of the news impact curve. A natural way to incorporate the leverage effect into the GARCH process is to adjust the coefficients of the lagged squared returns so that the coefficients are smaller when the returns are positive. This is the GJR-GARCH process of \textcite{GLOSTEN1993}:
 	\begin{align}
 		h_t^2 = \omega + \sum_{i=1}^q \left( \alpha_i + \gamma_i \mathbb{I}_{{[r_{t-i}>0]}} \right) r_{t-i}^2 + \sum_{i=1}^p h_{t-i}^2.
 	\end{align}
@@ -161,16 +161,16 @@ backend=biber
 	\begin{align}
 		h_t^\delta = \omega + \sum_{i=1}^q \alpha_i \left[ |r_{t-i} - \gamma_i r_{t-i} | \right]^\delta + \sum_{i=1}^p \beta_i h_{t-i}^\delta.
 	\end{align}
-	By allowing the degree the degree of the process $\delta$ to be a free parameter, the APARCH model is more flexible in capturing the dynamics of the conditional variance than other specifications. There exist many other models for the conditional variance, and the list of the models presented here is by no means exhaustive. Nevertheless, the models mentioned so far are among the most commonly used and nest many of the other specifications. See \textcite{DING199383} and \textcite{HENTSCHEL199571}.
+	By allowing the degree of the process, $\delta$, to be a free parameter, the APARCH model is more flexible in capturing the dynamics of the conditional variance than other specifications. There exist many other models for the conditional variance, and the list of the models presented here is by no means exhaustive. Nevertheless, the models mentioned so far are among the most commonly used and nest many of the other specifications. See \textcite{DING199383} and \textcite{HENTSCHEL199571}.
 	
 	\subsection{Maximum Likelihood Estimation}
 	The parameters of the GARCH-type processes\footnote{We refer to the GARCH class of processes which include the GARCH process and its different varieties collectively as the GARCH-type processes.} are naturally estimated with the maximum likelihood estimator. Under Fisher regularity conditions, the maximum likelihood estimator achieves the Cramer-Rao bound, and is therefore asymptotically efficient. An exception, however, may arise if the Fisher information matrix is singular, which happens if the fourth-order moment of the underlying process is infinite. In such cases, the (quasi)-maximum likelihood estimator may still be consistent, however, it will no longer be efficient. Under these circumstances, practitioners may prefer to use a heavy-tailed distribution for the likelihood function such as the Student-t. It must be noted, however, that this can introduce bias into the estimator. In fact, \textcite{HALLYAO2003} show that  within the class of maximum likelihood estimators, the Gaussian QMLE is the only distribution-free, and therefore consistent estimator. Any other misspecified likelihood function is bound to be asymptotically biased. Therefore, any possible gains in efficiency must be weighed against the potential bias due to the misspecification of the likelihood function.
 	
-	Maximum likelihood estimation of the GARCH-type processes with the Gaussian likelihood function is a standard practice and can be found in most modern text books and related articles. See \textcite{HAMILTON1994}, \textcite{ENGLE1982}, and \textcite{BOLLERSLEV1986307} among others. An important contribution is due to \textcite{HALLYAO2003} where they show that the asymptotic distribution of the Gaussian QMLE is Levy-stable (although not Gaussian) and that its rate of convergence is $T^{1-\alpha/2}$, where $\alpha$ is the tail index of the density of innovations in the process, $z_t$. Moreover, they show that the (robust) asymptotic covariance matrix of the estimator is given by:
+	Maximum likelihood estimation of the GARCH-type processes with the Gaussian likelihood function is a standard practice and can be found in most modern text books and related articles. See \textcite{HAMILTON1994}, \textcite{ENGLE1982}, and \textcite{BOLLERSLEV1986307} among others. An important contribution is due to \textcite{HALLYAO2003} where they show that the asymptotic distribution of the Gaussian QMLE is Levy-stable (although not Gaussian) and that its rate of convergence is $T^{1-\alpha/2}$, where $\alpha$ is the tail index of the density of standardized returns, $z_t$. Moreover, they show that the (robust) asymptotic covariance matrix of the quasi-maximum likelihood estimator is given by:
 	\begin{align}
 		\Sigma = H^{-1} V H^{-1},
 	\end{align}
-	where $V$ is the asymptotic covariance matrix of the score function and $H^-1$ is the inverse of the Hessian of the likelihood function. 
+	where $V$ is the asymptotic covariance matrix of the score function and $H^{-1}$ is the inverse of the Hessian of the likelihood function. 
 	
 	Regardless of the choice of the estimator for GARCH-type processes, the conditions for the existence of the fourth-order moment of the underlying processes can be driven analytically. These conditions, however, are generally unknown and must be driven for each specific process individually.\footnote{The necessary and sufficient condition for the GARCH(1,1) process for instance is: $3\alpha_1^2 + 2\alpha_1 \beta_1 + \beta_1^2 < 1$.} Therefore, in practical applications, it is more convenient to employ an empirical method for testing for the finiteness of the fourth-order moment of the process \textit{ex-post}, such as estimating the tail index of the standardized residuals. See section \ref{sec:diagnostics} for more details.
 	
@@ -197,7 +197,7 @@ backend=biber
 		\hat{h}_{T|T-1,m}^2 \right\}.
 	\end{align}
 	
-	A further justification for the rolling estimation scheme arises from the asymptotic theory of forecast comparison procedures. Let
+	A further justification for the rolling window estimation scheme arises from the asymptotic theory of forecast comparison procedures. Let
 	\begin{align}
 		d_{ij,t}
 		=
@@ -210,26 +210,22 @@ backend=biber
 	In practice, recursive parameter estimation on expanding samples may lead to substantial parameter uncertainty and unstable forecast loss dynamics, particularly in the presence of structural breaks. Rolling window estimation alleviates some of these issues by stabilizing the distribution of the forecast loss differentials and reducing the influence of distant observations. As emphasized by \textcite{GIACOMINIWHITE2006} and \textcite{HANSENLUNDE_NASON2011}, the estimation scheme itself forms an integral part of the forecast evaluation framework and must therefore be explicitly accounted for in predictive ability analysis.
 		
 	\subsection{Loss-Evaluation of Forecast Models}\label{sec:loss-evaluation}
-	We evaluate and compare different forecast models by their average out-of-sample forecast losses. To this end, we would need to compute the loss entailed by each model by comparing the model forecasts with the observed volatilities. An immediate problem that arises, however, is that volatility is a latent variable and it cannot be observed. Therefore, we have to rely on (imperfect) proxies for the loss-evaluation of the forecast models. Further exacerbating the problem is the fact that loss functions are generally not robust to the noise involved in the proxies. This can lead to inconsistent evaluation schemes with often contradictory results, making the entire loss-evaluation procedure inefficient and even invalid. See \textcite{PAGAN1990267}, \textcite{BOLLERSLEVGHYSEL1994} and \textcite{ANDERSEN1999457} for a discourse on this issue.
-		
-	Comparisons between volatility forecasts are based on the distance, or expected loss, to the true conditional variance. \textcite{PATTON2011246} focuses on the definition of the loss function since, if the ranking of two forecasts obtained from a so-called "imperfect" volatility proxy is the same as the ranking that would be obtained from the latent variable, which is actually unfeasible, then the loss function can be identified as "robust". A robust loss function allows for the comparison of the accuracy of a forecast, on average, even if the latent variable of interest is not observable. 
+	We evaluate and compare different forecast models by their average out-of-sample forecast losses. To this end, we would need to compute the loss entailed by each model by comparing the model forecasts with the observed volatilities. An immediate problem that arises, however, is that volatility is a latent variable and it cannot be observed. Therefore, we have to rely on (imperfect) proxies for the loss-evaluation of the forecast models. Further exacerbating the problem is the fact that loss functions are generally not robust to the noise involved in the proxies. This can lead to inconsistent evaluation schemes with often contradictory results, making the entire loss-evaluation procedure inefficient and in the most extreme case, altogether invalid. See \textcite{PAGAN1990267}, \textcite{BOLLERSLEVGHYSEL1994} and \textcite{ANDERSEN1999457} for a discourse on this issue.
 	
-	However, a robust loss function does not automatically make the proxy choice irrelevant. Its role is to guarantee that the comparison between forecasts is not systematically distorted by the usage of an imperfect variable in place of the latent conditional variance. Nevertheless, the proxy still influences the noise of the evaluation, the precision of the loss differential estimations, and in the end, the following statistical inference. In empirical applications, the most used volatility proxies are squared returns and realized volatility. The former are simpler to compute and daily data are sufficient to provide availability, while the latter provides a more informative ex-post measure, when intraday data are available.
+	The inability to obtain consistent rankings of volatility forecast models has been looming over the gigantic volatility forecasting literature until \textcite{PATTON2011246}, in his thorough analysis of loss-evaluation of volatility forecast models showed that the issue is related to the robustness (or the lack of) of the loss functions commonly employed for the evaluation of volatility forecast models, to the noise involved in the volatility proxies such as squared returns or realized volatility. In the absence of robustness, a loss-function evaluated on a series of imperfect proxies, yields as the optimal forecast a quantity other than the conditional expectation of the variable of interest. In other words, the noise involved in the proxies can distort and change the argmin of the loss function, making it incapable of measuring the distance between the model forecasts and the conditional expectations of the latent variances, even asymptotically.
 	
-	Following \textcite{PATTON2011246}, a loss function $L(\cdot, \cdot)$ can be defined as robust if the expected ranking between the two forecasts is preserved when the latent conditional variance is substituted by its observable proxy. Among the most used loss functions, in this paper we choose to use only Mean Squared Error (MSE) and Quasi-Likelihood loss (QLIKE), since these are the only two proven to be robust in the sense discussed in the cited paper. 
+	\textcite{PATTON2011246} defines robustness as the property whereby the ranking of two forecasts obtained from imperfect volatility proxies is the same as the ranking that would have been obtained from the infeasible latent variances. A robust loss function allows for the consistent comparison of forecast models, even if the latent variable of interest is not observable. It should be noted, however, that the use of robust loss functions does not automatically render the choice of the volatility proxy irrelevant. Robustness is a measure to guarantee that the comparison between forecasts is not systematically distorted by the use of an imperfect variable in place of the latent conditional variance. Nevertheless, the proxy still influences the noise of the evaluation, the precision of the loss differential estimations, and in the end, the following statistical inference. In empirical applications, the most widely used volatility proxies are squared returns and realized volatility. The former is simpler to compute and daily data are sufficient to provide availability, while the latter provides a more informative ex-post measure, when intraday data are available.
 	
-	Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i$. 
-	
-	Then, Mean Squared Error is defined as: 
+	As mentioned earlier, a loss function $L(\cdot, \cdot)$ is defined as robust if the expected ranking between the two forecasts is preserved when the latent conditional variance is substituted by its observable proxy. \textcite{PATTON2011246} finds that among the most commonly used loss functions in the literature, only two satisfy this property: the Mean Squared Error (MSE) and the loss implied by the  Quasi-Likelihood function (QLIKE). The MSE and the QLIKE loss function are defined as follows. Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i \in M$. Then, the Mean Squared Error is defined as: 
 	\begin{align}
 	L_{MSE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	(\hat{\sigma}_t^2-\hat{h}_{i,t}^2)^2.
 	\end{align}
 	
-	MSE measures the quadratic distance between the realized variance proxy and the model forecast. His main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to outliers, since a few extreme volatility episodes can have a very high impact on the average loss.
+	The MSE measures the quadratic distance between the variance proxy and the model forecast. Its main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to outliers, since a few extreme volatility episodes can have a very high impact on the average loss.
 	
-	Quasi-Likelihood, instead, is defined as
+	The Quasi-Likelihood loss function, instead, is defined as
 	\begin{align}
 	L_{QLIKE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
@@ -237,13 +233,13 @@ backend=biber
 	+
 	\frac{\hat{\sigma}_t^2}{\hat{h}_{i,t}^2}
 	\end{align}
-	QLIKE has a natural quasi-likelihood interpretation, and it is particularly relevant since it penalizes significantly forecasts that underestimate realized volatility, specifically during high turmoil periods.
+	QLIKE has a natural quasi-likelihood interpretation, and it is particularly relevant since it penalizes forecasts that underestimate volatility, especially during high turmoil periods.
 	
-	The joint application of MSE and QLIKE allows evaluating models performance from complementary perspectives. MSE emphasizes absolute forecast error and is easy to interpret, while QLIKE is more linked to the logic of conditional variance models. If a model is competitive under both metrics, then the obtained ranking is more robust. If, instead, the results differ, this difference is still informative since it signals that the relative performance depends on the adopted accuracy definition. 
+	The joint application of MSE and QLIKE allows evaluating models' relative performance from complementary perspectives. MSE emphasizes absolute forecast error and is easy to interpret, while QLIKE is more linked to the logic of conditional variance models. If a model is competitive under both metrics, then the obtained ranking is more robust. If, instead, the results differ, this difference is still informative since it signals that the relative performance depends on the adopted accuracy definition. In the context of this paper, the main reference for the evaluation of the different models' performance will be these two loss functions.
 	
-	Later on in this paper, the main reference for the evaluation of the different models' performance will be these two loss functions.
+	\newpage
 	
-	Operatively, once the loss function is chosen, the comparison between two models $i$ and $j$ is performed through the loss differential: 
+	From a practical standpoint, once the loss function is chosen, the comparison between two models $i$ and $j$ is performed through the loss differential: 
 	\begin{align}
 	d_{ij,t}
 	=
@@ -251,7 +247,11 @@ backend=biber
 	-
 	L(\hat{\sigma}_t^2,\hat{h}_{j,t}^2).
 	\end{align}
-	Hence, the loss differential series represents the central empirical object on which the model comparison procedures are based. Following \textcite{HANSENLUNDE_NASON2011}, we assume that the process $\{d_{ij,t}\}$ is strictly stationary with finite moments and satisfies an $\alpha$-mixing condition. Importantly, these assumptions are imposed on the loss differentials rather than directly on the individual loss processes themselves. Consequently, certain forms of structural instability and nonstationarity may still be admissible, provided that they affect competing models in a sufficiently similar manner so that the stationarity of the loss differential process is preserved. 
+	Hence, the loss differential series represents the central empirical object on which multiple comparison procedures are based. We further impose the following assumption on the loss differentials, which is strong enough to permit the employment of bootstrap methods to implement our forecast-validation framework.
+	
+	Assumption 1: For some $r>2$ and $\gamma > 0$, we have that $\mathbb{E}|d_{ij,t}|^{r + \gamma} < \infty$ for all $i,j \in M$ and that $\{d_{ij,t}\}$ is strictly stationary and $\alpha$-mixing of order $-r/(r-2)$.
+	
+	It should be noted that this assumption places restrictions on the loss differentials rather than directly on the individual loss series. Consequently, certain forms of structural instability and non-stationarity may still be admissible, provided that they affect competing models in a sufficiently similar manner so that the stationarity of the loss differential processes is preserved. 
 	
 	\subsection{Stepwise Multiple Testing}\label{sec:stepwise-testing}
 	
@@ -259,7 +259,7 @@ backend=biber
 	
 	Suppose that a collection of competing volatility forecast models
 	\begin{align}
-		\mathcal{M} = \{M_1, M_2, \dots, M_m\}
+		\mathcal{M} = \{\mathcal{M}_1, \mathcal{M}_2, \dots, \mathcal{M}_m\}
 	\end{align}
 	is evaluated on the basis of their out-of-sample forecast losses. Even if all competing models possess identical predictive ability, repeated comparisons across many specifications increase the probability of falsely identifying at least one model as superior. Consequently, conventional pairwise testing procedures may produce misleading inference when applied repeatedly over a large universe of competing models.
 	
@@ -269,17 +269,23 @@ backend=biber
 	
 	To formalize the multiple testing problem, let
 	\begin{align}
-		H_s : \theta_s \leq 0,
+		H_j : \mu_j \leq 0,
 		\qquad
-		H_s' : \theta_s > 0,
+		H_j' : \mu_j > 0,
 	\end{align}
-	for $s = 1,\dots,S$, denote the collection of hypotheses associated with the competing forecasting models. Here, $\theta_s$ represents the predictive performance measure of model $s$ relative to a benchmark or reference model. The objective is to identify as many models as possible for which $\theta_s > 0$ while controlling the familywise error rate asymptotically.
+	for $j = 1,\dots,m$, denote the collection of hypotheses associated with the competing forecasting models. Here, $\mu_js$ represents the difference between the average forecast loss of a predefined benchmark or reference model and a model $j \in \mathcal{M}$. Therefore, under each individual null hypothesis, the benchmark yields a smaller overall forecast loss than or equal to the model $j \in \mathcal{M}$ against which it is being compared:
+	
+	\begin{align}
+		\mu_j = \mathbb{E}[d_{sj,t}] = \mathbb{E}[L_{s,t}] - \mathbb{E}[L_{j,t}] \leq 0,
+	\end{align}
+	
+	where the index $s$ corresponds to the benchmark or the reference model. The objective is to identify as many outperforming models as possible for which $\mu_j > 0$ while controlling the familywise error rate asymptotically.
 	
 	Let
 	\begin{align}
-		w_{T,s}
+		w_{T,j}
 	\end{align}
-	denote the test statistic associated with hypothesis $H_s$. The stepwise procedure begins by ordering the statistics from largest to smallest,
+	denote the test statistic associated with hypothesis $H_j$. The stepwise procedure begins by ordering the statistics from largest to smallest,
 	\begin{align}
 		w_{T,r_1}
 		\geq
@@ -287,13 +293,13 @@ backend=biber
 		\geq
 		\dots
 		\geq
-		w_{T,r_S},
+		w_{T,r_m},
 	\end{align}
-	where the relabeling indices $(r_1,\dots,r_S)$ correspond to the ordered hypotheses.
+	where the relabeling indices $(r_1,\dots,r_m)$ correspond to the ordered hypotheses.
 	
 	The central idea of \textcite{ROMANOWOLF2005} is to construct joint confidence regions for the vector
 	\begin{align}
-		(\theta_{r_1},\dots,\theta_{r_S})',
+		(\mu_{r_1},\dots,\mu_{r_m})',
 	\end{align}
 	with nominal joint coverage probability $1-\alpha$. In the first step, the joint confidence region takes the rectangular form
 	\begin{align}
@@ -301,37 +307,37 @@ backend=biber
 		\times
 		\dots
 		\times
-		[w_{T,r_S}-c_1,\infty),
+		[w_{T,r_m}-c_1,\infty),
 	\end{align}
 	where the common critical value $c_1$ is chosen such that the confidence region attains the required asymptotic coverage probability.
 	
 	The hypotheses are then tested within this confidence region. Specifically, if the interval
 	\begin{align}
-		[w_{T,r_s}-c_1,\infty)
+		[w_{T,r_j}-c_1,\infty)
 	\end{align}
-	does not contain zero, the corresponding null hypothesis $H_{r_s}$ is rejected.
+	does not contain zero, the corresponding null hypothesis $H_{r_j}$ is rejected.
 	
-	Unlike conventional single-step procedures, however, the stepwise methodology continues after the first rejection stage. Once rejected hypotheses are removed, a new joint confidence region is constructed over the reduced hypothesis space,
+	Unlike conventional single-step procedures, however, the stepwise methodology continues after the first rejection stage. Suppose that in the first step, the first $R_1$ hypotheses are rejected. Once the rejected hypotheses are removed, a new joint confidence region is constructed over the reduced hypothesis space,
 	\begin{align}
 		[w_{T,r_{R_1+1}}-c_2,\infty)
 		\times
 		\dots
 		\times
-		[w_{T,r_S}-c_2,\infty),
+		[w_{T,r_m}-c_2,\infty),
 	\end{align}
-	where the updated critical value $c_2$ is recalibrated over the remaining hypotheses. The procedure is then repeated sequentially until no additional hypotheses can be rejected.
+	where the updated critical value $c_2$ is re-calibrated over the remaining hypotheses to obtain nominal joint coverage probability of $1-\alpha$. The procedure is then repeated sequentially until no additional hypotheses are rejected.
 	
 	The recursive updating of the confidence regions constitutes the primary source of the power improvement of the procedure. Standard single-step methods construct critical values that protect against the worst-case multiple testing scenario over the entire hypothesis space and therefore tend to be excessively conservative. In contrast, the stepwise procedure progressively reduces the dimension of the hypothesis space and recomputes the associated confidence regions at each stage. This leads to less conservative critical values and substantially improves the probability of rejecting false null hypotheses while still asymptotically controlling the familywise error rate.
 	
-	In practice, the critical values $c_1,c_2,\dots$ depend on the unknown sampling distribution of the statistics and are therefore approximated through bootstrap resampling methods. By estimating the joint dependence structure of the statistics directly from the data, the bootstrap procedure further improves the power of the tests relative to traditional correction methods such as Bonferroni-type procedures.
+	In practice, the critical values $c_1,c_2,\dots$ depend on the unknown sampling distribution of the statistics and are therefore approximated through bootstrap resampling methods. By estimating the joint dependence structure of the statistics directly from the data, the bootstrap procedure further improves the power of the tests relative to traditional correction methods such as Bonferroni-type procedures. Details are deferred to section \ref{sec:bootstrap}.
 	
-	The exposition above follows the basic StepM framework of \textcite{ROMANOWOLF2005} based on generic test statistics $w_{T,s}$. In empirical applications, however, studentized statistics are often preferable because the variability of the test statistics may differ substantially across competing models. The studentized statistic is defined as
+	The exposition above follows the basic StepM framework of \textcite{ROMANOWOLF2005} based on generic test statistics $w_{T,j}$. In empirical applications, however, studentized statistics are often preferable because the variability of the test statistics may differ substantially across competing models. The studentized statistic is defined as
 	\begin{align}
-		z_{T,s}
+		z_{T,j}
 		=
-		\frac{w_{T,s}}{\hat{\sigma}_{T,s}},
+		\frac{w_{T,j}}{\hat{\sigma}_{T,j}},
 	\end{align}
-	where $\hat{\sigma}_{T,s}$ denotes an estimator of the standard deviation of $w_{T,s}$. The hypotheses are then ordered according to the studentized statistics rather than the raw statistics:
+	where $\hat{\sigma}_{T,j}$ denotes a consistent estimator\footnote{A popular choice is a kernel estimator.} of the standard deviation of $w_{T,j}$. The hypotheses are then ordered according to the studentized statistics rather than the raw statistics:
 	\begin{align}
 		z_{T,r_1}
 		\geq
@@ -339,64 +345,53 @@ backend=biber
 		\geq
 		\dots
 		\geq
-		z_{T,r_S}.
+		z_{T,r_m}.
 	\end{align}
 	
-	The corresponding bootstrap critical value at step $j$ is obtained from the distribution of the maximum studentized statistic over the remaining hypotheses:
+	The procedure is identical to the one introduced earlier for the raw test statistics, and at each step $k$, the rectangular confidence region is formed as:
+	
 	\begin{align}
-		\hat{d}_j
-		=
-		\inf
-		\left\{
-		x :
-		\mathbb{P}_{\hat{P}_T}
-		\left(
-		\max_{R_{j-1}+1 \leq s \leq S}
-		\frac{
-			w^{*}_{T,r_s}
-			-
-			\theta^{*}_{T,r_s}
-		}
-		{\hat{\sigma}^{*}_{T,r_s}}
-		\leq x
-		\right)
-		\geq
-		1-\alpha
-		\right\}.
+		[w_{T,r_{R_k+1}}-\hat{\sigma}_{T,1} d_k,\infty)
+		\times
+		\dots
+		\times
+		[w_{T,r_m}- \hat{\sigma}_{T,m} d_k ,\infty),
 	\end{align}
 	
-	The null hypothesis $H_{r_s}$ is rejected whenever the corresponding studentized confidence interval excludes zero:
+	where the common critical value $d_k$ is chosen such that the confidence region has a nominal coverage probability of $1-\alpha$. The null hypothesis $H_{r_j}$ is rejected if the corresponding studendized confidence interval excludes zero:
+	
 	\begin{align}
 		0
 		\notin
 		\left[
-		w_{T,r_s}
+		w_{T,r_j}
 		-
-		\hat{\sigma}_{T,r_s}\hat{d}_j,
+		\hat{\sigma}_{T,r_j}d_k,
 		\infty
 		\right).
 	\end{align}
 	
 	Thus, studentization changes the scale on which the hypotheses are ordered and tested, but it does not change the logic of the StepM procedure. The method still constructs joint confidence regions, eliminates rejected hypotheses, and recomputes the critical values over the reduced hypothesis space. Its main advantage is that it accounts for heteroskedasticity and scale differences across test statistics, which makes the comparisons more balanced in finite samples.
 	
-	The Model Confidence Set procedure developed by \textcite{HANSENLUNDE_NASON2011}, presented in the following section, extends this sequential testing logic to identify the subset of models that can be regarded as statistically indistinguishable from the best model at a given confidence level.
+	The Model Confidence Set procedure developed by \textcite{HANSENLUNDE_NASON2011}, presented in the following section, extends this sequential testing logic to identify the subset of models that can be regarded as statistically indistinguishable from the each other in terms of predictive ability at a given confidence level.
 	
 	
 	\subsection{Model Confidence Set}\label{sec:model-confidence-set}
-	In many forecast comparison problems, no natural benchmark is available against which all competing specifications can be tested. In this setting, a procedure that starts from a set of plausible models and narrows it down to the best-performing alternatives is more appropriate than forcing a benchmark-based comparison.	Moreover, as \textcite{HANSENLUNDE_NASON2011} highlights, in many empirical applications, data do not contain sufficient information to univocally identify a single dominant model. In these cases, forcing the selection of a unique winner is likely to produce excessively confident conclusions compared to the evidence that is effectively available. 
+	In many forecast comparison problems, no natural benchmark is available against which all competing specifications can be tested. In this setting, a procedure that starts from a set of plausible models and narrows it down to the best-performing alternatives is more appropriate than forcing a benchmark-based comparison.	Moreover, as \textcite{HANSENLUNDE_NASON2011} highlight, in many empirical applications, data do not contain sufficient information to univocally identify a single dominant model. In these cases, forcing the selection of a unique winner is likely to produce excessively confident conclusions compared to the evidence that is effectively available.
 	
-	The Model Confidence Set (MCS) procedure, introduced by \textcite{HANSENLUNDE_NASON2011}, deals with this problem by substituting the search for a single best model with the construction of a set of models that can include the best one or ones, at a fixed confidence level. The authors describe the MCS as the equivalent, within the problem of model selection, of a confidence interval for a parameter: when data are very informative, the final set can include few models and even reduce to just one; when, instead, data are less informative, the set remains broader, reflecting the inability to cleanly distinguish between the competing alternatives.\parencite{HANSENLUNDE_NASON2011}
+	The Model Confidence Set (MCS) is a multiple comparison procedure developed by \textcite{HANSENLUNDE_NASON2011}, and it approaches the problem of model selection from the perspective of random set theory. The fundamental premise of this procedure is that given a random set of models, when there is not enough data available to identify a single superior model that outperforms every other model within the set, steps can be taken to at least remove the obvious under-performers and to reduce the set of the original models to a smaller confidence set that contains models whose relative performance is statistically indistinguishable from one another at a given confidence level. How smaller can this set get is a direct consequence of the informativeness of the available data. Therefore, in essence, the MCS can be considered as the equivalent, within the problem of model selection, of a confidence interval for an estimated parameter: when the data are informative, the final set can include few models and even reduce to just one; when, instead, data are less informative, the set remains broader, reflecting the inability to cleanly distinguish between the competing alternatives.
 	
-	Let $\mathcal{M}^0$ be the initial set of candidate models and, as seen in the previous sections, let 
+	Let $\mathcal{M}^0$ be the initial set of candidate models and, as seen in previous sections, let 
 	\begin{align}
 	d_{ij,t}=L_{i,t}-L_{j,t}
 	\end{align}
-	the loss differential between models $i$ and $j$ at time $t$.
-	Hence, the expected relative performance between two models is defined as
+	denote the loss differential between models $i$ and $j$ at time $t$.
+	Hence, the expected relative performance between the two models is defined as\footnote{In contrast to the StepM procedure, there is no benchmark in here, therefore the pairwise loss differentials are defined for all possible pairs within the set. As will be discussed later in section \ref{sec:bootstrap}, this leads to the definition of the average loss induced by all models within the set as the reference value for constructing the test statistics.}:
+	
 	\begin{align}
 	\mu_{ij}=E[d_{ij,t}].
 	\end{align}
-	If $\mu_{ij}<0$, model $i$ presents a lower expected loss than model $j$ and results preferable with respect to the considered loss function. From this quantity, \textcite{HANSENLUNDE_NASON2011} define the superior models set as
+	If $\mu_{ij}<0$, model $i$ presents a lower expected loss than model $j$ and results preferable with respect to the considered loss function. Naturally, we can define a set $\mathcal{M}^*$ such that:
 	\begin{align}
 	\mathcal{M}^*
 	=
@@ -406,39 +401,27 @@ backend=biber
 	\quad\quad \forall j \in \mathcal{M}^0
 	\right\}.
 	\end{align}
-	Hence, the set $\mathcal{M}^*$ contains all models whose expected loss is no greater than that of any other model in the initial set. It is important to observe that a set can include more than one element: the procedure does not assume, nor requires, that a unique best model exists.  
+	Hence, the set $\mathcal{M}^*$ contains all the models whose expected loss is no greater than that of any other model in the initial set. It is important to observe that the set $\mathcal{M}^*$ can include more than one element: the procedure does not assume, nor requires, that a unique best model exists.  
 	
-	The aim of the MCS is the estimation of $\mathcal{M}^*$ through a sequential procedure based on equivalence testing and an elimination rule. For each current subset $\mathcal{M}\subseteq\mathcal{M}^0$, the null hypothesis of equal predictive ability is tested:
+	The MCS procedure seeks to estimate $\mathcal{M}^*$ through the sequential application of a of an equivalence test and an elimination rule. Starting from the initial set of models $\mathcal{M}^0$, the equivalence test is set up to test the hypothesis that all the expected pairwise differential losses of the models within the set are equal to zero\footnote{It should be noted that the tests conducted in here are two-sided, whereas in the StepM procedure the tests are one-sided.}:
 	\begin{align}
-	H_{0,\mathcal{M}}:
+	H_{0,\mathcal{M}^0}:
 	\mu_{ij}=0
-	\quad \text{per ogni } i,j\in\mathcal{M}.
+	\quad \text{for all } i,j\in\mathcal{M}^0.		
 	\end{align}
-	This hypothesis states that, within the current set, no model has expected predictive performance that differs from that of the others. If the null hypothesis is not rejected the procedure stops, and the current set can be identified as the Model Confidence Set. If, instead, it gets rejected, there is evidence that at least one of the models within $\mathcal{M}$ is inferior to the others. One elimination rule removes the model with the worst relative performance, and the test is repeated on the reduced subset. This iterative elimination algorithm constitutes the core of the procedure proposed by \textcite{HANSENLUNDE_NASON2011}. 
-	
-	Practically, the elimination rule determines which model has to be removed every time the null hypothesis of equal predictive capacity is rejected. In the implementation proposed by \textcite{HANSENLUNDE_NASON2011}, this rule is based on standardized loss differentials. Intuitively, the model removed at every step is the one that mostly contributes to the rejection of the null hypothesis, hence the model with the worse relative performance in the current set. The test is repeated on the restricted set until the null hypothesis cannot be rejected anymore.
-	
-	The final result is a random set of models, denoted by 
+	In the event that the null hypothesis is rejected, the elimination rule will be invoked to eliminate the model whose average forecast loss is the largest among all the models within the set. A distinctive feature of the elimination rule is that it is coherent with the equivalence test in that it eliminates from the set the model that yields the most extreme test statistic for the constituent hypotheses of the composite null hypothesis $H_{0,\mathcal{M}^0}$. The procedure then continues on the reduced subset and on all the subsets after that until the null hypothesis is not rejected anymore. In the most extreme case, the final subset is a singleton that contains the model whose average forecast loss is the smallest, and for which the null hypothesis of the equivalence test is by construction always true with probability exactly equal to one:
 	\begin{align}
-	\widehat{\mathcal{M}}^{*}_{1-\alpha},
+		H_{0,\mathcal{M}^m}: \mu_{mm} = \mathbb{E}[L_{m,t}] - \mathbb{E}[L_{m,t}] = 0, \qquad Pr(H_{0,\mathcal{M}^m}) = 1
 	\end{align}
-	built in such a way to contain the real superior models subset with probability at least equal to $1-\alpha$ in an asymptotic sense:
-	\begin{align}
-	\liminf_{n\to\infty}
-	P\left(
-	\mathcal{M}^*
-	\subseteq
-	\widehat{\mathcal{M}}^{*}_{1-\alpha}
-	\right)
-	\geq 1-\alpha.
-	\end{align}
-	This property justifies the term \textit{confidence set}: MCS does not claim to always identify a unique winner, but is constructed so that the truly superior models are excluded only with a controlled probability. The procedure yields a MCS p-value for each model. These p-values sum up the sequence of elimination tests and allow to assess if a given model belongs to the MCS for different confidence levels. A model is included in the MCS at a $1-\alpha$ level if and only if its p-value is bigger than $\alpha$. As a result, a low MCS p-value indicates that the model is less likely to belong to the superior models set, while a higher p-value shows that data do not give enough evidence to remove it from the set. As in standard statistical tests, this value is not to be intended as the probability that the given model is the best.
-	In finite samples, the final set can still contain inferior models. As the authors clarify, in fact, a model is removed only when it results significantly worse than at least one alternative, and not all models that survive the procedure are necessarily to be interpreted as good models in an absolute sense.
 	
-	In this research context, the MCS is applied to the loss differential series generated by MSE and QLIKE loss functions. In this way, the procedure makes it possible to identify, for each evaluation criterion, the set of volatility models that cannot be considered significantly inferior to the best models within the initial set. The MCS addresses a different question compared to stepwise multiple testing discussed in the previous section. While the latter verifies which models outperform a pre-specified benchmark, MCS determines which models belong to the best models set without imposing an ex-ante reference model, feature that \textcite{HANSENLUNDE_NASON2011} identify as one of the principal benefits of this procedure compared to the superior predictive ability tests. 
+	The set of the remaining models at the end of the procedure is the MCS estimate of the set $\mathcal{M}^*$ and is referred to as the model confidence set. Key features of the model confidence set, denoted $\widehat{\mathcal{M}}^*_{1-\alpha}$, are its asymptotic coverage probability: $\liminf_{n\to\infty} Pr(\mathcal{M}^* \subset \widehat{\mathcal{M}}^*_{1-\alpha}) \geq 1 - \alpha$, and its limiting power that equals one: $\lim_{n\to\infty}Pr(i \in \widehat{\mathcal{M}}^*_{1-\alpha}) = 0 \text{ for all } i \notin \mathcal{M}^*$. Moreover, by conducting the equivalence test at each step of the procedure at the same level $\alpha$, the family wise error rate is trivially bounded by that same level.
+	
+	The MCS procedure also conveniently yields a p-value for every model in the original set, which determines the statistical threshold at which the models can belong to the model confidence set. Just as in classical hypothesis testing, the MCS p-values, denoted $\hat{p}_i \forall i \in \mathcal{M}^0$, quantify the probability of committing a type-I error by excluding the corresponding model from the confidence set. The elimination rule, naturally eliminates all the models whose MCS p-values are less than the pre-defined threshold $\alpha$.
+	
+	The MCS p-values are computed in a step-down procedure - just as in the StepM method - starting from the first subset of $\mathcal{M}^0 = \mathcal{M}_1$\footnote{At first sight this might appear to be rather confusing, but essentially, for the sake of argument, the equivalence tests are conducted on the subsets of $\mathcal{M}^0$ and not on $\mathcal{M}^0$ itself. Trivially, however, one of the subsets of any set, is the set itself, which in here is denoted by $\mathcal{M}_1$ and is exactly equal to $\mathcal{M}^0$.} and conducting the corresponding equivalence test for the hypothesis $H_{0,\mathcal{M}_1}$, proceeding to the next subsets defined as $\mathcal{M}^0 = \mathcal{M}_1 \supset \mathcal{M}_2 \supset \dots \supset \mathcal{M}_m$ and testing the corresponding sequence of null hypotheses $ H_{0,\mathcal{M}_2}, \, H_{0,\mathcal{M}_3}, \, H_{0,\mathcal{M}_m}$. The MCS p-value for each model is then defined as the maximum p-value obtained for any composite hypothesis during the entire procedure while the corresponding model constituted one of the constituent hypotheses. That is to say, after the first null hypothesis $H_{0,\mathcal{M}_1}$ is tested, the MCS p-value for every model is set to the p-value obtained for this hypothesis. If the hypothesis is rejected, and thus a model eliminated, the MCS procedure advances to the next step, where then the hypothesis $H_{0,\mathcal{M}_2}$ is tested. Given that in the previous step the model with the most extreme test statistic is eliminated, as is necessitated by the coherency requirement of the elimination rule, the p-value for $H_{0,\mathcal{M}_2}$ is necessarily greater than or equal to the p-value for $H_{0,\mathcal{M}_1}$. Therefore, the sequence of p-values obtained from the MCS procedure is monotonically non-decreasing. If the p-value obtained for the hypothesis $H_{0,\mathcal{M}_1}$ is different (essentially greater) than the p-value obtained in the previous step, the MCS p-value for all the remaining models is updated and set to the p-value obtained at this step. The procedure continues, until the final subset $\mathcal{M}_m$ is reached, for which the p-value of the corresponding hypothesis, and consequently the MCS p-value, is by construction equal to one. 
 	
 	\subsection{Bootstrap Implementation}\label{sec:bootstrap}
-	Unless the sample size is large enough relative to the number of models being considered for the test statistics to uniformly converge to their asymptotic distributions, it is not possible to obtain precise estimates of the covariance matrix of the test statistics for carrying out the tests. Furthermore, the test statistics considered here have non-standard asymptotic distributions since they depend on nuisance parameters. Therefore, it is convenient to use a bootstrap implementation that that does not require an explicit estimate of the covariance matrix and that it can handle the issue related to nuisance parameters implicitly. By appropriately employing a bootstrapping algorithm, we can directly compute the critical values for constructing the confidence regions in the StepM procedure and directly estimate the MCS p-values.
+	Unless the sample size is large enough relative to the number of models being considered for the test statistics to uniformly converge to their asymptotic distributions, it is not prequiredossible to obtain precise estimates of the covariance matrix of the test statistics for carrying out the tests. Furthermore, the test statistics considered here have non-standard asymptotic distributions since they depend on nuisance parameters. Therefore, it is convenient to use a bootstrap implementation that that does not require an explicit estimate of the covariance matrix and that it can handle the issue related to nuisance parameters implicitly. By appropriately employing a bootstrapping algorithm, we can directly compute the critical values for constructing the confidence regions in the StepM procedure and directly estimate the MCS p-values.
 	
 	
 	
