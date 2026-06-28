@@ -100,7 +100,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>2</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
@@ -335,7 +335,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxcitenames</bcf:key>
-      <bcf:value>2</bcf:value>
+      <bcf:value>3</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>maxsortnames</bcf:key>
@@ -2407,7 +2407,11 @@
     <bcf:citekey order="43" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
     <bcf:citekey order="44" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
     <bcf:citekey order="45" intorder="1">HANSENLUNDE_NASON2011</bcf:citekey>
-    <bcf:citekey order="46" intorder="1" nocite="1">*</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">SHEPPARCH</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">ROMANOWOLF2005</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">ANDREWS1991</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">ANDREWSMONAHAN1992</bcf:citekey>
+    <bcf:citekey order="50" intorder="1" nocite="1">*</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

@@ -22,6 +22,8 @@
 \usepackage{subcaption}
 \usepackage{multicol}
 \usepackage{braket}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{hyperref}
 \hypersetup{
 	colorlinks=true,
@@ -30,18 +32,16 @@
 	urlcolor=cyan,
 	citecolor=blue,
 }
+
 \usepackage{titletoc}
-%\usepackage[style=authoryear, backend=biber]{biblatex}
-%\usepackage[style=authoryear, natbib=true, backend=biber]{biblatex}
 \usepackage[
 style=authoryear, 
-maxcitenames=2, 
-%    mincitenames=1, 
+maxcitenames=3, 
 uniquelist=false, 
-backend=biber
+backend=biber,
+natbib=true
 ]{biblatex}
-\addbibresource{references.bib} % The name of your file
-
+\addbibresource{references.bib}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
@@ -82,7 +82,7 @@ backend=biber
 \usepackage{fancyhdr}
 
 \title{\textbf{A Guide to Forecast-Validation for Evaluating Conditional Volatility Forecast Models}}
-\author{Takhmina Baizullina, Shahriyar Majidi, Pietro Sgrigna, Tommaso Zeri\\\\ Riot Investment Research}
+\author{Takhmina Baizullina, Shahriyar D. Majidi, Pietro Sgrigna, Tommaso Zeri\\\\ Riot Investment Research}
 \date{\today}
 
 \begin{document}
@@ -115,7 +115,7 @@ backend=biber
 	\subsection{Relevance of Model Selection to Volatility Forecast Problems}
 	 An often challenging task during the course of an econometric analysis is the comparison of different models for modeling the particular data set at hand. Depending on the specific application, the comparison can be based on different metrics. A common metric for comparing different models, as in criterion based model selection, is the likelihood score, often penalized with the number of parameters being estimated in some way, with the penalty being higher for models with a larger number of unknown parameters. Penalizing models based on the number of parameters is rooted in the idea that by using estimates rather than the true values of the parameters, the model will drift farther apart from reality. Therefore, the information criteria generally favor more parsimonious models with fewer parameters over more complex models. The validity of the information criteria as reliable model assessment tools, however, relies heavily on the assumption that the models are not misspecified, at least not intentionally. This is a rather strong assumption that is often violated, for example in the case of Quasi-Maximum Likelihood Estimation, where the likelihood function is misspecified. See \textcite{BOLLERSLEV19942959} and \textcite{SIN1996207}. 
 	 
-	 An alternative for comparing forecast models is the loss-evaluation of out-of-sample forecasts. This procedure requires the comparison of an appropriately defined loss function on the out-of-sample forecasts produced by each model, which is obtained by employing a rolling-window forecasting scheme. The choice between the rolling-window and the expanding-window forecasting schemes is often based on the assumptions surrounding the models and the data. For models with time-varying parameters, and for time-series data with rather short memories, the rolling-window scheme is deemed more appropriate in that it adapts to the most recent data while leaving out observations from the distant past that could become irrelevant as time moves forward. Moreover, by updating the parameter estimates upon each rolling forward of the training sample within the data set, the time-variability of the parameters can be appropriately accounted for. Once the series of forecast losses for each model is obtained, they can be compared to determine the model with the smallest overall loss.
+	 An alternative for comparing forecast models is the loss-evaluation of out-of-sample forecasts. This procedure requires the comparison of an appropriately defined loss function on the out-of-sample forecasts produced by each model, which is obtained by employing either a rolling or an expanding-window forecasting scheme. The choice between the rolling-window and the expanding-window forecasting schemes is often based on the assumptions surrounding the models and the data. For models with time-varying parameters, and for time-series data with rather short memories, the rolling-window scheme is deemed more appropriate in that it adapts to the most recent data while leaving out observations from the distant past that could become irrelevant as time moves forward. Moreover, by updating the parameter estimates upon each rolling forward of the training sample within the data set, the time-variability of the parameters can be appropriately accounted for. Once the series of forecast losses for each model is obtained, they can be compared to determine the model with the minimum overall loss.
 	 
 	 One fundamental flaw with the direct comparison of the overall losses, however, is that it is prone to data snooping (or data mining). The effects of data snooping become prominent when multiple models are evaluated on the same data set, where some yield exceptionally smaller losses than others by chance alone, even if in reality they are equally good or even inferior. It is important, therefore, to control for the effects of data snooping in a hypothesis testing framework. The first to setup a testing framework of this kind was \textcite{WHITE-BRC}. The technique that \textcite{WHITE-BRC} employs involves the pairwise comparison of all the models with a given benchmark, and then to determine whether the benchmark is outperformed by any of the other models in the sample in a multiple testing framework. The size of this test, which is known as the Family Wise Error rate (FWE) is the main instrument by which tests of this kind control for data snooping.\footnote{The FWE is formally defined as the probability of incorrectly identifying at least one forecast model as superior to the benchmark (which again can happen due to the effects of data snooping).}
 	 
@@ -134,22 +134,22 @@ backend=biber
 	\begin{align}
 		r_t = h_t(\mathcal{F}_{t-1};\theta) z_t, \label{eq:model_main_ch}
 	\end{align}
-	where $\{z_t\}_{t=1}^T$ is an i.i.d. process stochastically independent from the process $\{r_t\}$, and with zero conditional mean $\mathbb{E}[z_t|\mathcal{F}_{t-1}] = 0$. The function $h_t(\mathcal{F}_{t-1};\theta)$ is an $\mathcal{F}_{t-1}$-measurable function, parametrized by the parameter vector $\theta$, with $\mathcal{F}_{t}$ denoting the $\sigma$-algebra induced by the process up to time $t$. The novelty in this specification of the return series is its non-linearity which accommodates for the correlation of non-linear transformations of the return series over time. This is plausible, since it is a very well-known fact that return series, although linearly uncorrelated, exhibit strong auto-correlation in absolute value or in quadratic terms. To see the non-linearity of the process in \eqref{eq:model_main_ch}, consider the Hilbert space $\mathcal{H}_t^r$ representing the return process $\{r_t\}$ which is defined over a complete probability space $L(\Omega, \mathcal{F}_t, \mathcal{P})$, and let $\mathcal{H}_{t-1}^r \subset \mathcal{H}_t^r$ denote the Hilbert space spanned by the sub-process $\{r_s|s < t\}$. If we let further $\mathcal{H}_t^z$ denote the Hilbert space representing the i.i.d. process $\{z_t\}$, we can decompose $\{\mathcal{H}_t^r\}$ as:
+	where $\{z_t\}_{t=1}^T$ is an i.i.d. process stochastically independent from the process $\{r_t\}$, and with zero conditional mean $\mathbb{E}[z_t|\mathcal{F}_{t-1}] = 0$. The function $h_t(\mathcal{F}_{t-1};\theta)$ is an $\mathcal{F}_{t-1}$-measurable function, parametrized by the parameter vector $\theta$, with $\mathcal{F}_{t}$ denoting the $\sigma$-algebra induced by the process up to time $t$. The novelty in this specification of the return series is its non-linearity which accommodates for the correlation of non-linear transformations of the return series over time. This is plausible, since it is a very well-known fact that return series, although linearly uncorrelated, exhibit strong auto-correlation in absolute value or in quadratic terms. To see the non-linearity of the process in \eqref{eq:model_main_ch}, consider the Hilbert space $\mathcal{H}_t^r$ representing the return process $\{r_t\}$ which is defined over a complete probability space $L(\Omega, \mathcal{F}_t, \mathcal{P})$, and let $\mathcal{H}_{t-1}^r \subset \mathcal{H}_t^r$ denote the Hilbert space spanned by the sub-process $\{r_s|s < t\}$. If we let further $\mathcal{H}_t^z$ denote the Hilbert space representing the i.i.d. process $\{z_t\}$, we can decompose $\mathcal{H}_t^r$ as:
 	\begin{align}
 		\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \otimes \mathcal{H}_t^z,
 	\end{align}
-	which defines the process $\{r_t\}$ as the tensor product between the sub-process $\{r_s | s<t\}$ and the i.i.d. process $\{z_t\}$, which is trivially non-linear.\footnote{It is worth mentioning that linear processes can always be decomposed as the direct sum of two or more orthogonal processes of the form: $\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \oplus \mathcal{H}_{t-1}^{r\perp}$ where $\mathcal{H}_{t-1}^{r\perp}$ is the orthogonal complement of $\mathcal{H}_{t-1}^r$.} The conditional variance of the return process is then given by:
+	which defines the process $\{r_t\}$ as the tensor product between the sub-process $\{r_s | s<t\}$ and the i.i.d. process $\{z_t\}$, which is trivially non-linear.\footnote{It is worth mentioning that linear processes can always be decomposed as the direct sum of two or more orthogonal processes of the form: $\mathcal{H}_t^r = \mathcal{H}_{t-1}^r \oplus \mathcal{H}_{t-1}^{r\perp}$ where $\mathcal{H}_{t-1}^{r\perp}$ is the orthogonal complement of $\mathcal{H}_{t-1}^r$.} The conditional variance of the return process is thus given by:
 	\begin{align}
 		Var\left( r_t | \mathcal{F}_{t-1} \right) = h_t^2(\mathcal{F}_{t-1};\theta), \label{eq:cond_var_function}
 	\end{align}
-	which is heteroskedastic as it varies deterministically with time. The fundamental problem now becomes to specify a process for $h_t(\mathcal{F}_{t-1};\theta)$ and to estimate the vector of parameters $\theta$, which is the subject of the next sub sections. Finally, it is worth mentioning that different models differ in their specification of the function $h_t(\mathcal{F}_{t-1};\theta)$ but their modeling logic remains fundamentally the same. 
+	which is heteroskedastic as it varies deterministically with time. The fundamental problem then becomes to specify a process for $h_t(\mathcal{F}_{t-1};\theta)$ and to estimate the vector of parameters $\theta$, which is the subject of the next sub sections. Finally, it is worth mentioning that different models differ in their specification of the function $h_t(\mathcal{F}_{t-1};\theta)$ but their modeling logic remains fundamentally the same. 
 	
 	\subsection{Canonical GARCH Class of Models}
 	A standard specification for the conditional variance function in \eqref{eq:cond_var_function} is the GARCH(p,q) process which is given by:
 	\begin{align}
 		h_t^2 = \omega + \sum_{i=1}^q \alpha_i r_{t-i}^2 + \sum_{i=1}^p \beta_i h_{t-i}^2.
 	\end{align}
-	The GARCH process is extensively studied in the literature and its properties are well known. Key features of this process are its stationarity, imposed by the constraint $\sum_{i=1}^q\alpha_i+\sum_{i=1}^p\beta_i<1$ and its symmetry, implying that both positive and negative returns influence future volatility equally. The baseline GARCH process has evolved over time and much of this evolution has been guided by empirical findings. A prominent finding that dates back to very early in the history of the literature is that negative returns have a larger impact on future volatility than positive returns of the same magnitude. This effect, commonly known as the leverage effect was first discovered by \textcite{Black1976} and later illustrated by \textcite{PAGAN1990267} and \textcite{ENGLE_NG1993} in the context of the news impact curve. A natural way to incorporate the leverage effect into the GARCH process is to adjust the coefficients of the lagged squared returns so that the coefficients are smaller when the returns are positive. This is the GJR-GARCH process of \textcite{GLOSTEN1993}:
+	The GARCH process is extensively studied in the literature and its properties are well known. Key features of this process are its covariance-stationarity, imposed by the constraint $\sum_{i=1}^q\alpha_i+\sum_{i=1}^p\beta_i<1$  and its symmetry, implying that both positive and negative returns influence future volatility equally. The baseline GARCH process has evolved over time and much of this evolution has been guided by empirical findings. A prominent finding that dates back to very early in the history of the literature is that negative returns have a larger impact on future volatility than positive returns of the same magnitude. This effect, commonly known as the leverage effect was first discovered by \textcite{Black1976} and later illustrated by \textcite{PAGAN1990267} and \textcite{ENGLE_NG1993} in the context of the news impact curve. A natural way to incorporate the leverage effect into the GARCH process is to adjust the coefficients of the lagged squared returns so that the coefficients are smaller when the returns are positive. This is the GJR-GARCH process of \textcite{GLOSTEN1993}:
 	\begin{align}
 		h_t^2 = \omega + \sum_{i=1}^q \left( \alpha_i + \gamma_i \mathbb{I}_{{[r_{t-i}>0]}} \right) r_{t-i}^2 + \sum_{i=1}^p h_{t-i}^2.
 	\end{align}
@@ -166,7 +166,7 @@ backend=biber
 	\subsection{Maximum Likelihood Estimation}
 	The parameters of the GARCH-type processes\footnote{We refer to the GARCH class of processes which include the GARCH process and its different varieties collectively as the GARCH-type processes.} are naturally estimated with the maximum likelihood estimator. Under Fisher regularity conditions, the maximum likelihood estimator achieves the Cramer-Rao bound, and is therefore asymptotically efficient. An exception, however, may arise if the Fisher information matrix is singular, which happens if the fourth-order moment of the underlying process is infinite. In such cases, the (quasi)-maximum likelihood estimator may still be consistent, however, it will no longer be efficient. Under these circumstances, practitioners may prefer to use a heavy-tailed distribution for the likelihood function such as the Student-t. It must be noted, however, that this can introduce bias into the estimator. In fact, \textcite{HALLYAO2003} show that  within the class of maximum likelihood estimators, the Gaussian QMLE is the only distribution-free, and therefore consistent estimator. Any other misspecified likelihood function is bound to be asymptotically biased. Therefore, any possible gains in efficiency must be weighed against the potential bias due to the misspecification of the likelihood function.
 	
-	Maximum likelihood estimation of the GARCH-type processes with the Gaussian likelihood function is a standard practice and can be found in most modern text books and related articles. See \textcite{HAMILTON1994}, \textcite{ENGLE1982}, and \textcite{BOLLERSLEV1986307} among others. An important contribution is due to \textcite{HALLYAO2003} where they show that the asymptotic distribution of the Gaussian QMLE is Levy-stable (although not Gaussian) and that its rate of convergence is $T^{1-\alpha/2}$, where $\alpha$ is the tail index of the density of standardized returns, $z_t$. Moreover, they show that the (robust) asymptotic covariance matrix of the quasi-maximum likelihood estimator is given by:
+	Maximum likelihood estimation of the GARCH-type processes is a standard practice and can be found in most modern text books and related articles. See \textcite{HAMILTON1994}, \textcite{ENGLE1982}, and \textcite{BOLLERSLEV1986307} among others. An important contribution is due to \textcite{HALLYAO2003} where they show that the asymptotic distribution of the Gaussian QMLE is Levy-stable (although not Gaussian) and that its rate of convergence is $T^{1-\alpha/2}$, where $\alpha$ is the tail index of the density of standardized returns. Moreover, they show that the (robust) asymptotic covariance matrix of the quasi-maximum likelihood estimator is given by:
 	\begin{align}
 		\Sigma = H^{-1} V H^{-1},
 	\end{align}
@@ -307,7 +307,7 @@ backend=biber
 		\times
 		\dots
 		\times
-		[w_{T,r_m}-c_1,\infty),
+		[w_{T,r_m}-c_1,\infty),  \label{eq:stepm_raw_cr}
 	\end{align}
 	where the common critical value $c_1$ is chosen such that the confidence region attains the required asymptotic coverage probability.
 	
@@ -319,7 +319,7 @@ backend=biber
 	
 	Unlike conventional single-step procedures, however, the stepwise methodology continues after the first rejection stage. Suppose that in the first step, the first $R_1$ hypotheses are rejected. Once the rejected hypotheses are removed, a new joint confidence region is constructed over the reduced hypothesis space,
 	\begin{align}
-		[w_{T,r_{R_1+1}}-c_2,\infty)
+		[w_{T,r_{R_{1+1}}}-c_2,\infty)
 		\times
 		\dots
 		\times
@@ -351,11 +351,11 @@ backend=biber
 	The procedure is identical to the one introduced earlier for the raw test statistics, and at each step $k$, the rectangular confidence region is formed as:
 	
 	\begin{align}
-		[w_{T,r_{R_k+1}}-\hat{\sigma}_{T,1} d_k,\infty)
+		[w_{T,r_{R_{k+1}}}-\hat{\sigma}_{T,1} d_k,\infty)
 		\times
 		\dots
 		\times
-		[w_{T,r_m}- \hat{\sigma}_{T,m} d_k ,\infty),
+		[w_{T,r_m}- \hat{\sigma}_{T,m} d_k ,\infty), \label{eq:stepm_stu_cr}
 	\end{align}
 	
 	where the common critical value $d_k$ is chosen such that the confidence region has a nominal coverage probability of $1-\alpha$. The null hypothesis $H_{r_j}$ is rejected if the corresponding studendized confidence interval excludes zero:
@@ -420,8 +420,88 @@ backend=biber
 	
 	The MCS p-values are computed in a step-down procedure - just as in the StepM method - starting from the first subset of $\mathcal{M}^0 = \mathcal{M}_1$\footnote{At first sight this might appear to be rather confusing, but essentially, for the sake of argument, the equivalence tests are conducted on the subsets of $\mathcal{M}^0$ and not on $\mathcal{M}^0$ itself. Trivially, however, one of the subsets of any set, is the set itself, which in here is denoted by $\mathcal{M}_1$ and is exactly equal to $\mathcal{M}^0$.} and conducting the corresponding equivalence test for the hypothesis $H_{0,\mathcal{M}_1}$, proceeding to the next subsets defined as $\mathcal{M}^0 = \mathcal{M}_1 \supset \mathcal{M}_2 \supset \dots \supset \mathcal{M}_m$ and testing the corresponding sequence of null hypotheses $ H_{0,\mathcal{M}_2}, \, H_{0,\mathcal{M}_3}, \, H_{0,\mathcal{M}_m}$. The MCS p-value for each model is then defined as the maximum p-value obtained for any composite hypothesis during the entire procedure while the corresponding model constituted one of the constituent hypotheses. That is to say, after the first null hypothesis $H_{0,\mathcal{M}_1}$ is tested, the MCS p-value for every model is set to the p-value obtained for this hypothesis. If the hypothesis is rejected, and thus a model eliminated, the MCS procedure advances to the next step, where then the hypothesis $H_{0,\mathcal{M}_2}$ is tested. Given that in the previous step the model with the most extreme test statistic is eliminated, as is necessitated by the coherency requirement of the elimination rule, the p-value for $H_{0,\mathcal{M}_2}$ is necessarily greater than or equal to the p-value for $H_{0,\mathcal{M}_1}$. Therefore, the sequence of p-values obtained from the MCS procedure is monotonically non-decreasing. If the p-value obtained for the hypothesis $H_{0,\mathcal{M}_1}$ is different (essentially greater) than the p-value obtained in the previous step, the MCS p-value for all the remaining models is updated and set to the p-value obtained at this step. The procedure continues, until the final subset $\mathcal{M}_m$ is reached, for which the p-value of the corresponding hypothesis, and consequently the MCS p-value, is by construction equal to one. 
 	
+	For all the simplicity regarding the decision rule for constructing the model confidence set on the basis of the MCS p-values, the computation of the p-values themselves is more intricate and involves a quadratic-from test of some kind, which requires a consistent estimator for the covariance matrix of the test statistics, and a large enough sample to allow for asymptotic inference. Even if reliable estimates of the covariance matrix are feasible to obtain and the sample size is large enough to satisfy the standard regularity conditions for asymptotic inference, the limiting distributions of the test statistics are non-standard and depend on nuisance parameters that may or may not be feasible to estimate.\footnote{The issue of nuisance parameters is due to the possible correlations between the test statistics, the very same property which we are trying to exploit to improve the power of our multiple testing framework.} Therefore, it would be more convenient to estimate the finite-sample distributions of the test statistics using a consistent bootstrap method, rather than drawing on asymptotic theory. The computation of the p-values then follows trivially, and it is the subject of the next sub section.
+	
 	\subsection{Bootstrap Implementation}\label{sec:bootstrap}
-	Unless the sample size is large enough relative to the number of models being considered for the test statistics to uniformly converge to their asymptotic distributions, it is not prequiredossible to obtain precise estimates of the covariance matrix of the test statistics for carrying out the tests. Furthermore, the test statistics considered here have non-standard asymptotic distributions since they depend on nuisance parameters. Therefore, it is convenient to use a bootstrap implementation that that does not require an explicit estimate of the covariance matrix and that it can handle the issue related to nuisance parameters implicitly. By appropriately employing a bootstrapping algorithm, we can directly compute the critical values for constructing the confidence regions in the StepM procedure and directly estimate the MCS p-values.
+	Unless the sample size is large enough relative to the number of models being considered for the test statistics to uniformly converge to their asymptotic distributions, it is not possible to obtain precise estimates of the covariance matrix of the test statistics for carrying out the tests. Furthermore, the test statistics considered here have non-standard asymptotic distributions that depend on nuisance parameters. Therefore, it is convenient to use a bootstrap implementation that that does not require an explicit estimate of the covariance matrix and that it can handle the issue of nuisance parameters implicitly. By appropriately employing a bootstrapping algorithm, we can compute the critical values for constructing the confidence regions in the StepM procedure and directly estimate the MCS p-values.
+	
+	The objective is to estimate the finite-sample distributions of the test statistics via the bootstrap. Given the stochastic nature of the loss series under evaluation, the appropriate scheme would be a time-series bootstrap. Among popular choices are the moving blocks bootstrap, the circular blocks bootstrap and the stationary bootstrap. The moving blocks bootstrap displays certain edge effects (data points at the edges of the sample have a lower probability of appearing in a particular bootstrap sequence than data points in the middle of the series), and together with the circular blocks bootstrap lacks stationarity.\footnote{Regardless of the original series being stationary, stationarity is lost in the bootstrap resamples when blocks of fixed size are pieced together.} The circular blocks bootstrap and stationary bootstrap overcome the issue of edge effects by wrapping the data into a circular sequence and the stationary bootstrap further resolves the non-stationarity problem by making the choice of the block sizes for drawing the bootstrap resamples random at each iteration. In the following, we consider all three bootstrap methods and provide an algorithm for choosing the block sizes (or the expected block size for the case of the stationary bootstrap) for drawing the bootstrap resamples.
+	
+	We proceed by demonstrating the computation of the critical values for constructing the confidence regions for testing the null hypothesis of the StepM procedure and the MCS p-values via the bootstrap. As we shall see, the principal value on which the computations are founded is the maximum of the individual test statistics in either procedure. We then present an algorithm for choosing the appropriate bootstrap block sizes.
+	
+	\subsubsection{Computation of Critical Values for The StepM Procedure}
+	Given the probability mechanism $P$ that generated the test statistics that produce the confidence region in \eqref{eq:stepm_raw_cr}, the critical value for testing the null hypothesis at level $\alpha$ is naturally computed by taking the $1 - \alpha$ quantile of the sampling distribution of $\max_{1 \leq j \leq m}(w_{T,r_j} - \mu_{r_j})$. By considering the maximum of the individual test statistics, the joint confidence region in \eqref{eq:stepm_raw_cr} is ensured to have a nominal coverage probability of at least $1 - \alpha$.\footnote{Readers will realize that this is more restrictive than if we were to test each hypothesis individually, in which case for the other test statistics we would choose a smaller critical value. However, in that framework, we would need to conduct the individual tests at a nominal level strictly less than $\alpha$ in the lines of the Bonferroni method to ensure that the FWE is bounded by $\alpha$.} Therefore, the common critical value for the construction of the joint confidence region is given by:
+	
+	\begin{align}
+		c_1 \equiv c_1 (1 - \alpha, P) = \inf \left\{ x : Prob_p \left\{ \max_{1 \leq j \leq m} (w_{T,r_j} - \mu_j) \leq x \right\} \geq 1 - \alpha \right\}. \label{eq:stepm_raw_crit}
+	\end{align}
+	
+	
+	The problem, however, is that the probability mechanism $P$ is generally unknown which makes the computation of the ideal quantiles infeasible. As a workaround to this problem, we will use the bootstrap to estimate $P$, and subsequently the critical value in \eqref{eq:stepm_raw_crit}. First consider a generic bootstrap mechanism $\hat{P}_T$, with the corresponding true parameter vector denoted by $\mu_T^* = \mu(\hat{P}_T)$. Then the critical value $c_1$ in \eqref{eq:stepm_raw_crit} is estimated by $\hat{c}_1$ via the bootstrap as follows:
+	
+	\begin{algorithm}
+		\caption{Computation of the Critical Values for The StepM Procedure via The Bootstrap}
+		\label{alg:stepm_bootstrap_raw}
+		\begin{algorithmic}[1]
+			\State Given the ordered test statistics, generate $B$ bootstrap data matrices $X_T^{*,1}, \dots , X_T^{*,B}$.
+			\For{each bootstrap data matrix $X_T^{*,b}$, where $1 \leq b \leq B$}
+			\State Compute the individual test statistics $w_{T,1}^{*,b}, \dots, w_{T,m}^{*,b}$.
+			\EndFor
+			\For{$1 \leq b \leq B$}
+			\State Compute $\max_{T,1}^{*,b} = \max_{1 \leq j \leq m} (w_{T,r_j}^{*,b} - \mu_{T,r_j}^*)$.
+			\EndFor
+			\State Compute $\hat{c}_1$ as the $1 - \alpha$ empirical quantile of the $B$ values $\max_{T,1}^{*,1}, \dots, \max_{T,1}^{*,B}$.
+		\end{algorithmic}
+	\end{algorithm}
+	
+	For all the subsequent steps of the procedure, the critical values are computed via the same fashion as outlined in algorithm \ref{alg:stepm_bootstrap_raw}. For the case of the studentized test statistics, the procedure is similar. In particular, we compute the common critical value at the $k$th step of the procedure for the joint confidence region \eqref{eq:stepm_stu_cr} as:
+	
+	\begin{align}
+		d_k \equiv d_k (1 - \alpha, P) = \inf \left\{ x : Prob_p \left\{ \max_{R_{k+1} \leq j \leq m} (w_{T,r_j} - \mu_j)/\hat{\sigma}_{T,r_j} \leq x \right\} \geq 1 - \alpha \right\}. 	\label{eq:stepm_stu_crit}
+	\end{align}	
+	
+	The only difference is that for every test statistic $w_{T,r_j}$, we also need to estimate the standard deviation $\hat{\sigma}_{T,r_j}$ to obtain the studentized test statistic. The choice of the estimator for the standard deviations is not unique and depends on the specific application. For i.i.d. data, for example, one can rely on sample estimators, whereas for time-series data one has to choose a robust estimator instead. In addition, a combination of bootstrap and kernel smoothing methods can be used\footnote{This is the method that we use for our empirical analysis. Details are panned out in the source files of \textcite{SHEPPARCH}.}. For more details see \textcite{ROMANOWOLF2005}, \textcite{ANDREWS1991} and \textcite{ANDREWSMONAHAN1992}. The critical values in \eqref{eq:stepm_stu_crit} are estimated similarly via algorithm \ref{alg:stepm_bootstrap_stu}, which is an extension of algorithm \ref{alg:stepm_bootstrap_raw}.
+	\begin{algorithm}
+	\caption{Computation of the Studentized Critical Values for The StepM Procedure via The Bootstrap}
+	\label{alg:stepm_bootstrap_stu}
+		\begin{algorithmic}[1]
+		\State Given the ordered test statistics, generate $B$ bootstrap data matrices $X_T^{*,1}, \dots , X_T^{*,B}$.
+		\For{each bootstrap data matrix $X_T^{*,b}$, where $1 \leq b \leq B$}
+		\State Compute the individual test statistics $w_{T,1}^{*,b}, \dots, w_{T,m}^{*,b}$, and the corresponding standard errors $\hat{\sigma}_{T,1}^{*,b}, \dots, \hat{\sigma}_{T,m}^{*,b}$.
+		\EndFor
+		\For{$1 \leq b \leq B$}
+		\State Compute $\max_{T,k}^{*,b} = \max_{R_k \leq j \leq m} (w_{T,r_j}^{*,b} - \mu_{T,r_j}^*)/\hat{\sigma}_{T,r_j}^{*,b}$.
+		\EndFor
+		\State Compute $\hat{d}_k$ as the $1 - \alpha$ empirical quantile of the $B$ values $\max_{T,k}^{*,1}, \dots, \max_{T,k}^{*,B}$.
+		\end{algorithmic}
+	\end{algorithm}
+
+	With the common critical values for the raw and studentized test statistics computed via algorithms \ref{alg:stepm_bootstrap_raw} and \ref{alg:stepm_bootstrap_stu}, we construct the joint confidence regions for the $k$th step of the procedure as:
+	\begin{align}
+		[w_{T,r_{R_{k+1}}}-\hat{c}_k,\infty)
+		\times
+		\dots
+		\times
+		[w_{T,r_m}-\hat{c}_k,\infty),
+	\end{align}
+	
+	for the raw test statistics and:
+	
+	\begin{align}
+		[w_{T,r_{R_{k+1}}}-\hat{\sigma}_{T,1} d_k,\infty)
+		\times
+		\dots
+		\times
+		[w_{T,r_m}-\hat{\sigma}_{T,m} d_k ,\infty),
+	\end{align}
+	
+	for the studentized test statistics. 
+	
+	\subsubsection{Computation of MCS p-values}
+	
+	
+	\subsubsection{Choice of Block Sizes}
+	
 	
 	
 	
