@@ -517,7 +517,7 @@ natbib=true
 	Once the p-value for the test statistic $T_{\max, \mathcal{M}}$ is estimated, the MCS procedure proceeds naturally. At each step of the procedure, if the null hypothesis is rejected, the MCS p-values are updated and the model corresponding to $T_{\max, \mathcal{M}} = \arg \max_i t_i$ is eliminated from the set. If the null hypothesis is not rejected, the procedure terminates and the set of remaining models will be returned as the model confidence set. 
 	
 	\subsubsection{Choice of Block Sizes}
-	In order to implement a time series bootstrap, that is, one of the moving blocks, circular blocks, or the stationary bootstrap, it is required to choose an appropriate bootstrap block size $b$. The practical procedures for choosing the block size are mostly ad-hoc, under the light of the asymptotic requirements which involve $b \to \infty$ and $b/T \to 0$ as $T \to \infty$. We use Sheppard's (\textcite{SHEPPARCH}) implementation of the algorithm proposed by \textcite{POLITISWHITE2004} and \textcite{PATTONPOLITIS2009} to choose the optimal block size for the bootstrap. The algorithm involves a tuning parameter $m$, which is chosen as the first integer value where $k_n$ consecutive autocorrelations of the input series are all inside a conservative band of $\pm 2 \sqrt{log_{10}(T)/T}$ where $T$ is the sample size. The maximum value of $m$ is set to $\sqrt{T} + k_n$ where $k_n = \max\{{5, log_{10}(T)}\}$. Having chosen the tuning parameter $m$, the variance of the time series is estimated via the kernel estimator:
+	In order to implement a time series bootstrap, that is, one of the moving blocks, circular blocks, or the stationary bootstrap, it is required to choose an appropriate bootstrap block size $b$. The practical procedures for choosing the block size are mostly ad-hoc, under the light of the asymptotic requirements which involve $b \to \infty$ and $b/T \to 0$ as $T \to \infty$. We use Sheppard's (\textcite{SHEPPARCH}) implementation of the algorithm proposed by \textcite{POLITISWHITE2004} and \textcite{PATTONPOLITIS2009} to choose the optimal block size for the bootstrap. The algorithm involves a tuning parameter $m$, which is chosen as the first integer value where $k_n$ consecutive autocorrelations of the input series are all inside a conservative band of $\pm 2 \sqrt{log_{10}(T)/T}$ where $T$ is the sample size. The maximum value of $m$ is set to $\lceil \sqrt{T} + k_n \rceil$ where $k_n = \max[5, log_{10}(T)]$. Having chosen the tuning parameter $m$, the variance of the time series is estimated via the kernel estimator:
 	\begin{align}
 		\hat{\sigma}^2 = \sum_{k=-m}^{m} h(k/m) \hat{\gamma}_k,
 	\end{align}
@@ -533,7 +533,7 @@ natbib=true
 	\begin{align}
 		b_i^{OPT} = \left( \frac{ 2 g^2 }{ c_i (\hat{\sigma}^2)^2 } T \right)^{1/3}.
 	\end{align}
-	In the expression above, the constant $c_i$ is set to $2$ for the stationary bootstrap and $4/3$ for the circular and the moving block bootstrap.
+	In the expression above, the constant $c_i$ is set to $2$ for the stationary bootstrap and $4/3$ for the circular and the moving blocks bootstrap.
 	\section{Empirical Analysis}\label{sec:empirical}
 	\subsection{Results}
 	\subsection{Diagnostic Tests}\label{sec:diagnostics}
