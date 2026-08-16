@@ -2,7 +2,7 @@
 \documentclass{article} % This defines the style of your paper
 %\usepackage[top = 2.5cm, bottom = 2.5cm, left = 2.5cm, right = 2.5cm]{geometry} 
 
-% Unfortunately, LaTeX has a hard time interpreting German Umlaute. The following two lines and packages should help. If it doesn't work for you please let me know.
+% Unfortunately, LaTeX ts a hard time interpreting German Umlaute. The following two lines and packages should help. If it doesn't work for you please let me know.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -82,7 +82,7 @@ natbib=true
 \usepackage{fancyhdr}
 
 \title{\textbf{A Guide to Forecast-Validation for Evaluating Conditional Volatility Forecast Models}}
-\author{Takhmina Baizullina, Shahriyar D. Majidi, Pietro Sgrigna, Tommaso Zeri\\\\ Riot Investment Research}
+\author{Takhmina Baizullina, Shahriyar Majidi, Pietro Sgrigna, Tommaso Zeri\\\\ Riot Investment Research}
 \date{\today}
 
 \begin{document}
@@ -164,7 +164,7 @@ natbib=true
 	By allowing the degree of the process, $\delta$, to be a free parameter, the APARCH model is more flexible in capturing the dynamics of the conditional variance than other specifications. There exist many other models for the conditional variance, and the list of the models presented here is by no means exhaustive. Nevertheless, the models mentioned so far are among the most commonly used and nest many of the other specifications. See \textcite{DING199383} and \textcite{HENTSCHEL199571}.
 	
 	\subsection{Maximum Likelihood Estimation}
-	The parameters of the GARCH-type processes\footnote{We refer to the GARCH class of processes which include the GARCH process and its different varieties collectively as the GARCH-type processes.} are naturally estimated with the maximum likelihood estimator. Under Fisher regularity conditions, the maximum likelihood estimator achieves the Cramer-Rao bound, and is therefore asymptotically efficient. An exception, however, may arise if the Fisher information matrix is singular, which happens if the fourth-order moment of the underlying process is infinite. In such cases, the (quasi)-maximum likelihood estimator may still be consistent, however, it will no longer be efficient. Under these circumstances, practitioners may prefer to use a heavy-tailed distribution for the likelihood function such as the Student-t. It must be noted, however, that this can introduce bias into the estimator. In fact, \textcite{HALLYAO2003} show that  within the class of maximum likelihood estimators, the Gaussian QMLE is the only distribution-free, and therefore consistent estimator. Any other misspecified likelihood function is bound to be asymptotically biased. Therefore, any possible gains in efficiency must be weighed against the potential bias due to the misspecification of the likelihood function.
+	The parameters of the GARCH-type processes\footnote{We refer to the GARCH class of processes which include the GARCH process and its different varieties collectively as the GARCH-type processes.} are naturally estimated via maximum likelihood. Under Fisher regularity conditions, the maximum likelihood estimator achieves the Cramer-Rao bound, and is therefore asymptotically efficient. An exception, however, may arise if the Fisher information matrix is singular, which happens if the fourth-order moment of the underlying process is infinite. In such cases, the (quasi)-maximum likelihood estimator may still be consistent, however, it will no longer be efficient. Under these circumstances, practitioners may prefer to use a heavy-tailed distribution for the likelihood function such as the Student-t. It must be noted, however, that this can introduce bias into the estimator. In fact, \textcite{HALLYAO2003} show that  within the class of maximum likelihood estimators, the Gaussian QMLE is the only distribution-free, and therefore consistent estimator. Any other misspecified likelihood function is bound to be asymptotically biased. Therefore, any possible gains in efficiency must be weighed against the potential bias due to the misspecification of the likelihood function.
 	
 	Maximum likelihood estimation of the GARCH-type processes is a standard practice and can be found in most modern text books and related articles. See \textcite{HAMILTON1994}, \textcite{ENGLE1982}, and \textcite{BOLLERSLEV1986307} among others. An important contribution is due to \textcite{HALLYAO2003} where they show that the asymptotic distribution of the Gaussian QMLE is Levy-stable (although not Gaussian) and that its rate of convergence is $T^{1-\alpha/2}$, where $\alpha$ is the tail index of the density of standardized returns. Moreover, they show that the (robust) asymptotic covariance matrix of the quasi-maximum likelihood estimator is given by:
 	\begin{align}
@@ -214,16 +214,16 @@ natbib=true
 	
 	The inability to obtain consistent rankings of volatility forecast models has been looming over the gigantic volatility forecasting literature until \textcite{PATTON2011246}, in his thorough analysis of loss-evaluation of volatility forecast models showed that the issue is related to the robustness (or the lack of) of the loss functions commonly employed for the evaluation of volatility forecast models, to the noise involved in the volatility proxies such as squared returns or realized volatility. In the absence of robustness, a loss-function evaluated on a series of imperfect proxies, yields as the optimal forecast a quantity other than the conditional expectation of the variable of interest. In other words, the noise involved in the proxies can distort and change the argmin of the loss function, making it incapable of measuring the distance between the model forecasts and the conditional expectations of the latent variances, even asymptotically.
 	
-	\textcite{PATTON2011246} defines robustness as the property whereby the ranking of two forecasts obtained from imperfect volatility proxies is the same as the ranking that would have been obtained from the infeasible latent variances. A robust loss function allows for the consistent comparison of forecast models, even if the latent variable of interest is not observable. It should be noted, however, that the use of robust loss functions does not automatically render the choice of the volatility proxy irrelevant. Robustness is a measure to guarantee that the comparison between forecasts is not systematically distorted by the use of an imperfect variable in place of the latent conditional variance. Nevertheless, the proxy still influences the noise of the evaluation, the precision of the loss differential estimations, and in the end, the following statistical inference. In empirical applications, the most widely used volatility proxies are squared returns and realized volatility. The former is simpler to compute and daily data are sufficient to provide availability, while the latter provides a more informative ex-post measure, when intraday data are available.
+	\textcite{PATTON2011246} defines robustness as the property whereby the ranking of two forecasts obtained from imperfect volatility proxies is the same as the ranking that would be obtained from the infeasible latent variances. A robust loss function allows for the consistent comparison of forecast models, even if the latent variable of interest is not observable. It should be noted, however, that the use of robust loss functions does not automatically render the choice of the volatility proxy irrelevant. Robustness is a measure to guarantee that the comparison between forecasts is not systematically distorted by the use of an imperfect variable in place of the latent conditional variance. Nevertheless, the proxy still influences the noise of the evaluation, the precision of the loss differential estimations, and in the end, the following statistical inference. In empirical applications, the most widely used volatility proxies are squared returns and realized volatility. The former is simpler to compute and daily data are sufficient to provide availability, while the latter provides a more informative ex-post measure, when intraday data are available.
 	
-	As mentioned earlier, a loss function $L(\cdot, \cdot)$ is defined as robust if the expected ranking between the two forecasts is preserved when the latent conditional variance is substituted by its observable proxy. \textcite{PATTON2011246} finds that among the most commonly used loss functions in the literature, only two satisfy this property: the Mean Squared Error (MSE) and the loss implied by the  Quasi-Likelihood function (QLIKE). The MSE and the QLIKE loss function are defined as follows. Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i \in M$. Then, the Mean Squared Error is defined as: 
+	As mentioned earlier, a loss function $L(\cdot, \cdot)$ is defined as robust if the expected ranking between the two forecasts is preserved when the latent conditional variance is substituted by its observable proxy. \textcite{PATTON2011246} finds that among the most commonly used loss functions in the literature, only two satisfy this property: the Mean Squared Error (MSE) and the quasi likelihood loss implied by the Gaussian likelihood function (QLIKE). The MSE and the QLIKE are defined as follows. Formally, let $\hat{\sigma}_t^2$ be an ex-post observable proxy, and let $\hat{h}_{i,t}$ denote the conditional variance forecast produced by model $i \in \mathcal{M}$. Then, the Mean Squared Error is defined as: 
 	\begin{align}
 	L_{MSE}(\hat{\sigma}_t^2,\hat{h}_{i,t}^2)
 	=
 	(\hat{\sigma}_t^2-\hat{h}_{i,t}^2)^2.
 	\end{align}
 	
-	The MSE measures the quadratic distance between the variance proxy and the model forecast. Its main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to outliers, since a few extreme volatility episodes can have a very high impact on the average loss.
+	The MSE measures the quadratic distance between the variance proxy and the model forecast. Its main upside is the fact that it is immediately interpreted: wider forecasting errors are increasingly penalized, yielding an easy-to-compute and report metric. On the other hand, it is very sensitive to tail observations, since a few extreme volatility episodes can have a very high impact on the average loss.
 	
 	The Quasi-Likelihood loss function, instead, is defined as
 	\begin{align}
@@ -273,7 +273,7 @@ natbib=true
 		\qquad
 		H_j' : \mu_j > 0,
 	\end{align}
-	for $j = 1,\dots,m$, denote the collection of hypotheses associated with the competing forecasting models. Here, $\mu_js$ represents the difference between the average forecast loss of a predefined benchmark or reference model and a model $j \in \mathcal{M}$. Therefore, under each individual null hypothesis, the benchmark yields a smaller overall forecast loss than or equal to the model $j \in \mathcal{M}$ against which it is being compared:
+	for $j = 1,\dots,m$, denote the collection of hypotheses associated with the competing forecasting models. Here, $\mu_j$ represents the difference between the average forecast loss of a predefined benchmark or reference model and a model $j \in \mathcal{M}$. Therefore, under each individual null hypothesis, the benchmark yields an average forecast loss that is less than or equal to that of model $j \in \mathcal{M}$ against which it is being compared:
 	
 	\begin{align}
 		\mu_j = \mathbb{E}[d_{sj,t}] = \mathbb{E}[L_{s,t}] - \mathbb{E}[L_{j,t}] \leq 0,
@@ -498,13 +498,42 @@ natbib=true
 	for the studentized test statistics. 
 	
 	\subsubsection{Computation of MCS p-values}
+	To compute the p-values associated with each model in the MCS procedure, we first need to develop a test for testing the null hypothesis $H_{0,\mathcal{M}}$ at each step of the process. Given the expected relative loss differentials $\mu_{ij} = \mathbb{E}[d_{ij,t}] = \mathbb{E}[L_{i,t} - L_{t,j}]$, let us define the relative sample loss statistics $\bar{d}_{ij} = T^{-1} \sum_{t=1}^T d_{ij,t}$ and $\bar{d}_i = m^{-1} \sum_{i \in \mathcal{M}} \bar{d}_i$. Here $\bar{d}_{ij}$ is the sample counter part of the expected loss of model $i$ relative to model $j$ and $\bar{d}_i$ is the sample loss of model $i$ relative to the average across all models in $\mathcal{M}$. Recall from section \ref{sec:model-confidence-set} that under the null hypothesis $H_{0,\mathcal{M}}$, the expected relative loss differentials are all equal to zero:
+	\begin{align}
+		H_{0,\mathcal{M}}: \mu_{ij} = 0 \quad \text{for all} \quad i,j \in \mathcal{M}.
+	\end{align}
+	The statement $\mu_{ij} = 0 \,\, \forall i,j \in \mathcal{M}$ is equivalent to $\mu_i = 0 \,\, \forall i \in \mathcal{M}$ where $\mu_i \equiv \mathbb{E}[\bar{d}_i]$. Therefore, the null hypothesis can be restated as:
+	\begin{align}
+		H_{0,\mathcal{M}}: \mu_i = 0 \quad \text{for all} \quad i \in \mathcal{M}.
+	\end{align} 
+	We can test the null hypothesis stated above by constructing the following test statistic for every model $i \in \mathcal{M}$:
+	\begin{align}
+		t_i = \frac{\bar{d}_{i}}{ \sqrt{\widehat{\text{var}}\left(\bar{d}_i\right) } }.
+	\end{align}
+	Since it is enough for just one of the relative expected loss differentials to be different from zero to reject the null hypothesis, we choose the test statistic with the largest value among all $t_i$ and concentrate all the power in a single test. Therefore, to test the null hypothesis $H_{0,\mathcal{M}}$ at each step of the MCS procedure, we compute the test statistics $t_i$ for every model and then choose $T_{\max , \mathcal{M}} = \max_{i \in \mathcal{M}}t_i$ to carry out the test.
 	
+	The asymptotic distribution of the test statistics $t_i$ is nonstandard and this can readily be seen from the way that the relative average sample losses $d_i$ are constructed. Each relative sample loss is defined as the difference between the average sample loss of model $i$ and the average sample loss across all models, meaning that both the average relative sample losses, and consequently the test statistics are correlated. Therefore, the (joint) asymptotic distribution of the test statistics depends on a nuisance correlation matrix that makes the inference problem nonstandard.\footnote{It should be noted that the correlation structure of the test statistics per se is of no interest at all, and any attempt at estimating the correlation matrix would be an unfruitful squandering of information that will only result in losing degrees of freedom.} In this case, implementing an appropriate bootstrapping mechanism not only resolves the issue related to the nuisance correlation matrix, but also improves the efficiency of the tests by furnishing p-values for each test based on direct estimates of the finite sample distributions of the test statistics. As already mentioned in the previous section, any of the moving blocks bootstrap, circular bootstrap, or the stationary bootstrap methods can be used given an appropriately sized (expected) block size.
+	
+	Once the p-value for the test statistic $T_{\max, \mathcal{M}}$ is estimated, the MCS procedure proceeds naturally. At each step of the procedure, if the null hypothesis is rejected, the MCS p-values are updated and the model corresponding to $T_{\max, \mathcal{M}} = \arg \max_i t_i$ is eliminated from the set. If the null hypothesis is not rejected, the procedure terminates and the set of remaining models will be returned as the model confidence set. 
 	
 	\subsubsection{Choice of Block Sizes}
-	
-	
-	
-	
+	In order to implement a time series bootstrap, that is, one of the moving blocks, circular blocks, or the stationary bootstrap, it is required to choose an appropriate bootstrap block size $b$. The practical procedures for choosing the block size are mostly ad-hoc, under the light of the asymptotic requirements which involve $b \to \infty$ and $b/T \to 0$ as $T \to \infty$. We use Sheppard's (\textcite{SHEPPARCH}) implementation of the algorithm proposed by \textcite{POLITISWHITE2004} and \textcite{PATTONPOLITIS2009} to choose the optimal block size for the bootstrap. The algorithm involves a tuning parameter $m$, which is chosen as the first integer value where $k_n$ consecutive autocorrelations of the input series are all inside a conservative band of $\pm 2 \sqrt{log_{10}(T)/T}$ where $T$ is the sample size. The maximum value of $m$ is set to $\sqrt{T} + k_n$ where $k_n = \max\{{5, log_{10}(T)}\}$. Having chosen the tuning parameter $m$, the variance of the time series is estimated via the kernel estimator:
+	\begin{align}
+		\hat{\sigma}^2 = \sum_{k=-m}^{m} h(k/m) \hat{\gamma}_k,
+	\end{align}
+	where $\hat{\gamma}_k$ is the sample estimator of the $k^{th}$ autocovariance of the series which is given by:
+	\begin{align}
+		\hat{\gamma}_k = \frac{1}{T} \sum_{j=k+1}^T (x_j - \bar{x}) (x_{j-1} - \bar{x}).
+	\end{align}
+	The kernel function is given by $h(x) = \min(1, 2 (1 - |x|))$. Additionally, the autocovariance-generating function is estimated via the same kernel function as:
+	\begin{align}
+		g = \sum_{k=-m}^m h(k/m) |k| \hat{\gamma}_k.
+	\end{align}
+	Finally, the optimal block size is computed as:
+	\begin{align}
+		b_i^{OPT} = \left( \frac{ 2 g^2 }{ c_i (\hat{\sigma}^2)^2 } T \right)^{1/3}.
+	\end{align}
+	In the expression above, the constant $c_i$ is set to $2$ for the stationary bootstrap and $4/3$ for the circular and the moving block bootstrap.
 	\section{Empirical Analysis}\label{sec:empirical}
 	\subsection{Results}
 	\subsection{Diagnostic Tests}\label{sec:diagnostics}

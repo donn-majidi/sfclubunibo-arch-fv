@@ -1092,11 +1092,11 @@
     \endentry
     \entry{GITHUB}{software}{}
       \name{author}{4}{}{%
-        {{un=0,uniquepart=base,hash=5318a5acc896f3e573d310855acb1a79}{%
+        {{un=0,uniquepart=base,hash=df8b9c11a20b978496bab3b32e1c9159}{%
            family={Majidi},
            familyi={M\bibinitperiod},
-           given={Shahriyar\bibnamedelima Donn},
-           giveni={S\bibinitperiod\bibinitdelim D\bibinitperiod},
+           given={Shahriyar},
+           giveni={S\bibinitperiod},
            givenun=0}}%
         {{un=0,uniquepart=base,hash=8b5eaa16089f953ce953fbf2185d3fc3}{%
            family={Sgrigno},
@@ -1120,12 +1120,12 @@
       \list{publisher}{1}{%
         {GitHub}%
       }
-      \strng{namehash}{0126f481f36302f1d57b5f50e2de79a1}
-      \strng{fullhash}{58adc029c6bc1fab2f29f947354cf683}
-      \strng{bibnamehash}{0126f481f36302f1d57b5f50e2de79a1}
-      \strng{authorbibnamehash}{0126f481f36302f1d57b5f50e2de79a1}
-      \strng{authornamehash}{0126f481f36302f1d57b5f50e2de79a1}
-      \strng{authorfullhash}{58adc029c6bc1fab2f29f947354cf683}
+      \strng{namehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{fullhash}{a98aa06e05ca5a8be5db5f501fbe80b8}
+      \strng{bibnamehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{authorbibnamehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{authornamehash}{2091ce5d8e85552db53548b07fc5ae96}
+      \strng{authorfullhash}{a98aa06e05ca5a8be5db5f501fbe80b8}
       \field{sortinit}{M}
       \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
       \field{extradatescope}{labelyear}
@@ -1271,14 +1271,71 @@
       \verb https://www.sciencedirect.com/science/article/pii/030440769090101X
       \endverb
     \endentry
+    \entry{PATTONPOLITIS2009}{article}{}
+      \name{author}{3}{}{%
+        {{un=1,uniquepart=given,hash=5c12858b3be7528793958387a767cbf7}{%
+           family={Patton},
+           familyi={P\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod},
+           givenun=1}}%
+        {{un=0,uniquepart=base,hash=316247c93f9ac61484ddbcbbf2b77150}{%
+           family={Politis},
+           familyi={P\bibinitperiod},
+           given={Dimitris\bibnamedelima N.},
+           giveni={D\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{33e52aff13d288b512d491e71bad68f4}
+      \strng{fullhash}{33e52aff13d288b512d491e71bad68f4}
+      \strng{bibnamehash}{33e52aff13d288b512d491e71bad68f4}
+      \strng{authorbibnamehash}{33e52aff13d288b512d491e71bad68f4}
+      \strng{authornamehash}{33e52aff13d288b512d491e71bad68f4}
+      \strng{authorfullhash}{33e52aff13d288b512d491e71bad68f4}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometric Reviews}
+      \field{number}{4}
+      \field{title}{Correction to “Automatic Block-Length Selection for the Dependent Bootstrap” by D. Politis and H. White}
+      \field{volume}{28}
+      \field{year}{2009}
+      \true{nocite}
+      \field{pages}{372\bibrangedash 375}
+      \range{pages}{4}
+      \verb{doi}
+      \verb 10.1080/07474930802459016
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1080/07474930802459016
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1080/07474930802459016
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1080/07474930802459016
+      \endverb
+    \endentry
     \entry{PATTON2011246}{article}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=a4a103d050a59b8cf50ce433a3cc51ec}{%
+        {{un=1,uniquepart=given,hash=a4a103d050a59b8cf50ce433a3cc51ec}{%
            family={Patton},
            familyi={P\bibinitperiod},
            given={Andrew\bibnamedelima J.},
            giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
-           givenun=0}}%
+           givenun=1}}%
       }
       \strng{namehash}{a4a103d050a59b8cf50ce433a3cc51ec}
       \strng{fullhash}{a4a103d050a59b8cf50ce433a3cc51ec}
@@ -1399,6 +1456,57 @@
       \endverb
       \verb{url}
       \verb https://doi.org/10.1080/01621459.1994.10476870
+      \endverb
+    \endentry
+    \entry{POLITISWHITE2004}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=316247c93f9ac61484ddbcbbf2b77150}{%
+           family={Politis},
+           familyi={P\bibinitperiod},
+           given={Dimitris\bibnamedelima N.},
+           giveni={D\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=426e452a5ec8e692f7740ce0d3e3655c}{%
+           family={White},
+           familyi={W\bibinitperiod},
+           given={Halbert},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis}%
+      }
+      \strng{namehash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \strng{fullhash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \strng{bibnamehash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \strng{authorbibnamehash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \strng{authornamehash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \strng{authorfullhash}{66d3c7a615ff2b43798c74ec2eee4bfb}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Econometric Reviews}
+      \field{number}{1}
+      \field{title}{Automatic Block-Length Selection for the Dependent Bootstrap}
+      \field{volume}{23}
+      \field{year}{2004}
+      \true{nocite}
+      \field{pages}{53\bibrangedash 70}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1081/ETC-120028836
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1081/ETC-120028836
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1081/ETC-120028836
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1081/ETC-120028836
       \endverb
     \endentry
     \entry{POON&GRANGER2003}{article}{}
