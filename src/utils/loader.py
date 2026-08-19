@@ -65,36 +65,3 @@ def impute_missing(series: pd.Series, max_iter: int = 50) -> pd.Series:
     imputed_values = np.where(np.isnan(y), smoothed_means, y)
 
     return pd.Series(imputed_values, index=series.index, name=series.name)
-
-def log_transform(series: pd.Series) -> pd.Series:
-    """
-    Transform price series into log returns.
-    
-    Formula
-    -------
-        r_t = log(p_t) - log(p_{t-1})
-
-    Parameters
-    ----------
-    series : pd.Series
-        Univariate price series, if the series contains missing values must
-        first be imputed with the impute_missing() function.
-
-    Returns
-    -------
-    seires : pd.Series
-        Series of log returns with length equal to len(input)-1 and index as
-        the input series.
-
-    Raises
-    ------
-    ValueError
-        If the series has missing values.
-
-    """
-    
-    if series.isna().any():
-        raise ValueError("Series contains missing values. Consider imputing first.")
-        
-    log_returns = np.log(series).diff().dropna()
-    return log_returns
