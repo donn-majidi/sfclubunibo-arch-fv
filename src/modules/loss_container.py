@@ -8,7 +8,7 @@ from statsmodels.tools.validation import (string_like,
                                           int_like,
                                           )
 
-class Loss_container:
+class LossContainer:
     '''
     Container computing pointwise forecast-evaluation loss series (MSE, MAE,
     QLIKE) between one or more volatility forecasts and their realized
@@ -95,7 +95,7 @@ class Loss_container:
             index=columns,
         ).round(6)
 
-        header = f"Loss_container: {self._nobs} observations, {len(columns)} model(s)"
+        header = f"LossContainer: {self._nobs} observations, {len(columns)} model(s)"
         return f"{header}\n{summary.to_string()}"
 
     def __repr__(self):
