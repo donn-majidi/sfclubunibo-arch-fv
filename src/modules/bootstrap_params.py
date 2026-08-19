@@ -9,6 +9,34 @@ from statsmodels.tools.validation import (string_like,
                                           )
 
 def bootstrap_block_size(series: pd.DataFrame | pd.Series) -> pd.DataFrame:
+    '''
+    Computes the data-driven optimal block size for the stationary, circular,
+    and moving-blocks bootstraps, for each column of a (possibly
+    multivariate) series, via the automatic block-length selection procedure
+    of Politis & White (2004) / Patton, Politis & White (2009).
+
+    Parameters
+    ----------
+    series : pd.DataFrame | pd.Series
+        Series to compute block sizes for. If a ``DataFrame``, each column is
+        treated as a separate univariate series.
+
+    Returns
+    -------
+    pd.DataFrame
+        Indexed by ``series``'s columns (or name, for a ``Series``), with
+        columns ``'Stationary Bootstrap'``, ``'Circular Bootstrap'``, and
+        ``'Moving-Blocks Bootstrap'`` holding each series' optimal block size
+        for the corresponding bootstrap.
+
+    References
+    ----------
+    Politis, D. N., & White, H. (2004). Automatic block-length selection for
+        the dependent bootstrap. Econometric Reviews, 23(1), 53-70.
+    Patton, A., Politis, D. N., & White, H. (2009). Correction to "Automatic
+        block-length selection for the dependent bootstrap". Econometric
+        Reviews, 28(4), 372-375.
+    '''
     x_series = array_like(series, 'series', ndim=2)
     opt_bs = [_bootstrap_block_size_univariate(col) for col in x_series.T]
     
@@ -25,6 +53,45 @@ def bootstrap_block_size(series: pd.DataFrame | pd.Series) -> pd.DataFrame:
     
     
 def _bootstrap_block_size_univariate(series: np.array) -> tuple[float, float, float]:
+    '''
+    Computes the data-driven optimal block size for a single series, for the
+    stationary, circular, and moving-blocks bootstraps, via the automatic
+    block-length selection procedure of Politis & White (2004) / Patton,
+    Politis & White (2009).
+
+    The tuning parameter ``m`` (the lag beyond which autocorrelations are
+    treated as negligible) is chosen as the smallest lag after which ``kn``
+    consecutive sample autocorrelations fall within the white-noise
+    confidence band ``cv``, doubled per Politis-White's flat-top-kernel
+    correction; it falls back to ``m_max`` if no such lag is found. ``m`` then
+    sets the bandwidth of the flat-top kernel estimates of the
+    autocovariance-generating function ``g`` and the long-run variance
+    ``lr_acv``, from which the optimal block sizes are derived:
+
+        b_sb = ( g^2 / lr_acv^2 * n ) ** (1/3)          (stationary bootstrap)
+        b_cb = b_mb = ( 2*g^2 / (4/3*lr_acv^2) * n ) ** (1/3)   (circular / moving-blocks)
+
+    each capped at ``b_max = ceil(min(3*sqrt(n), n/3))``.
+
+    Parameters
+    ----------
+    series : np.array
+        Univariate series to compute block sizes for. Must be 1-dimensional.
+
+    Returns
+    -------
+    tuple[float, float, float]
+        ``(b_sb, b_cb, b_mb)``: optimal block size for the stationary,
+        circular, and moving-blocks bootstraps, respectively.
+
+    References
+    ----------
+    Politis, D. N., & White, H. (2004). Automatic block-length selection for
+        the dependent bootstrap. Econometric Reviews, 23(1), 53-70.
+    Patton, A., Politis, D. N., & White, H. (2009). Correction to "Automatic
+        block-length selection for the dependent bootstrap". Econometric
+        Reviews, 28(4), 372-375.
+    '''
     x_series = array_like(series, 'series', ndim=1)
     nobs = x_series.shape[0]
     
