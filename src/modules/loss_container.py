@@ -9,8 +9,41 @@ from statsmodels.tools.validation import (string_like,
                                           )
 
 class Loss_container:
-    
-    def __init__(self, forecasts: pd.Series | pd.DataFrame, 
+    '''
+    Container computing pointwise forecast-evaluation loss series (MSE, MAE,
+    QLIKE) between one or more volatility forecasts and their realized
+    observations.
+
+    Parameters
+    ----------
+    forecasts : pd.Series | pd.DataFrame
+        Forecasted (strictly positive) variances, one column per model.
+    observations : pd.Series
+        Realized (strictly positive) variances, aligned with ``forecasts``.
+    forecast_horizon : int | None, optional
+        Forecast horizon associated with this set of forecasts. Stored for
+        reference only; not used in the loss computations. The default is
+        None.
+
+    Attributes
+    ----------
+    MSE : pd.DataFrame | np.ndarray
+        Squared-error loss series, (forecast - observation)^2.
+    MAE : pd.DataFrame | np.ndarray
+        Absolute-error loss series, |forecast - observation|.
+    QLIKE : pd.DataFrame | np.ndarray
+        Quasi-likelihood loss series, log(forecast) + observation/forecast.
+        Returned as a ``pd.DataFrame`` (indexed/columned like ``forecasts``)
+        when ``forecasts`` is a pandas object, otherwise as a raw ndarray.
+
+    Raises
+    ------
+    ValueError
+        If ``forecasts`` and ``observations`` have a different number of
+        observations, or either contains non-positive values.
+    '''
+
+    def __init__(self, forecasts: pd.Series | pd.DataFrame,
                  observations: pd.Series, forecast_horizon: int | None = None):
         
         self._forecasts = array_like(forecasts, 'forecasts', ndim=2)
