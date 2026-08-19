@@ -3,13 +3,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy.stats import jarque_bera, skew, kurtosis
 from scipy.stats import chi2 as _chi2, norm as _norm
-from dataclasses import dataclass
+from scipy.stats import skew as _skew, kurtosis as _kurtosis
 from statsmodels.base.model import GenericLikelihoodModel
 from statsmodels.tools.validation import (string_like,
                                           array_like,
-                                          bool_like,
                                           float_like,
                                           int_like,
                                           )
@@ -47,17 +45,9 @@ __HANSEN_SUPF_M1__ = {
     0.35: (-0.50, 0.96, 2.1),
 }   # trim -> (theta0, theta1, eta)
 
-@dataclass
-class CUSUM_SupFResult:
-    """ Results container for the SupF moment-stability test. """
-    supF: float             # sup_t phi(t)^2 / (t/T * (1 - t/T)) over the trimmed range
-    z: float                # Test statistic value
-    pvalue: float           # Asymptotic p-value for the test statistic
-    breakpoint_time: int    # t (1-indexed) at which supF is attained
-
 def cusum_supf_test(x: np.ndarray, moment: int, alpha: float | None = 0.05,
                 trim: float | None = 0.15, bandwidth: int | None = 8,
-                ax: plt.Axes | None = None) -> CUSUM_SupFResult:
+                ax: plt.Axes | None = None):
     '''
     Parameters
     ----------
@@ -86,10 +76,12 @@ def cusum_supf_test(x: np.ndarray, moment: int, alpha: float | None = 0.05,
 
     Returns
     -------
-    CUSUM_SupFResult
-        Dataclass with the SupF statistic, its location, and  Hansen
-        approximate p-value for the test statistic.
-        
+    dict
+        Dictionary with keys ``'SupF'`` (the SupF statistic), ``'Test Statistic'``
+        (the Hansen-approximated chi-squared statistic), ``'P-value'`` (the Hansen
+        approximate p-value), and ``'Break Point'`` (the index at which the SupF
+        statistic is maximized).
+
     References
     ----------
     Andrews, D. W. K. (1993). Tests for parameter instability and structural
@@ -195,7 +187,10 @@ def cusum_supf_test(x: np.ndarray, moment: int, alpha: float | None = 0.05,
         ax.legend()
         ax.set_title(f'CUSUM SupF Test - Moment Order : {moment}')
         
-    return CUSUM_SupFResult(supF, z, pvalue, breakpoint_time)
+    return {'SupF': supF,
+            'Test Statistic': z,
+            'P-value': pvalue,
+            'Break Point': breakpoint_time}
 
 ## Tail Index Estimation via the MLE of a Type I Generalized Pareto Distribution
 '''
@@ -206,22 +201,81 @@ of a random variable with an unkown distribution is given by the Generalized Par
 Note that the random variable in question y is centered by its threshold: u.
 '''
 class GenParetoMLE(GenericLikelihoodModel):
-    
+    '''
+    Maximum-likelihood estimator for the shape (xi) and scale (sigma) parameters
+    of a Generalized Pareto Distribution, subclassing
+    ``statsmodels.base.model.GenericLikelihoodModel``.
+
+    Parameters
+    ----------
+    endog : np.ndarray
+        Exceedances over a threshold u, already centered (i.e. y = x - u for
+        x > u). Must be 1-dimensional.
+
+    References
+    ----------
+    Pickands, J. (1975). Statistical inference using extreme order statistics.
+        The Annals of Statistics, 3(1), 119-131.
+    '''
+
     def __init__(self, endog):
+        '''
+        Parameters
+        ----------
+        endog : np.ndarray
+            Centered exceedances passed to the model. Must be 1-dimensional.
+        '''
         self._endog = array_like(endog, 'endog', ndim=1)
         super().__init__(endog)
-        
+
         ## Indicator controll for the fit method
         self._fit_called = False
-        
+
     def nloglikeobs(self, params):
+        '''
+        Per-observation negative log-likelihood of the Generalized Pareto
+        Distribution, evaluated at the given parameters.
+
+        Parameters
+        ----------
+        params : array_like
+            Length-2 array ``[xi, sigma]`` with the shape and scale parameters.
+
+        Returns
+        -------
+        np.ndarray
+            Array of shape ``(nobs,)`` with the negative log-density at each
+            observation. Must stay per-observation (not summed) since
+            ``GenericLikelihoodModel``'s ``score_obs``/OPG-covariance machinery
+            differentiates it element-wise.
+        '''
         endog = self._endog
         xi = params[0]
         sigma = params[1]
         ll = scipy.stats.genpareto.logpdf(endog, xi, loc=0, scale=sigma)
         return -ll
-    
+
     def fit(self, start_params = None, maxiter: float | None = 1e2, **kwargs):
+        '''
+        Fit the Generalized Pareto Distribution via maximum likelihood.
+
+        Parameters
+        ----------
+        start_params : array_like | None, optional
+            Length-2 array ``[xi, sigma]`` used as the optimizer's starting
+            point. Defaults to ``[0.5, 1]``, a reasonable start for a Type I
+            GPD.
+        maxiter : float | None, optional
+            Maximum number of optimizer iterations. The default is ``1e2``.
+        **kwargs
+            Forwarded to ``GenericLikelihoodModel.fit`` (e.g. ``disp``,
+            ``cov_type``).
+
+        Returns
+        -------
+        statsmodels results instance
+            The fitted model, as returned by ``GenericLikelihoodModel.fit``.
+        '''
         if start_params is None:
             ## Reasonable start_params for Type I GPD
             start_params = [0.5, 1]
@@ -231,6 +285,56 @@ class GenParetoMLE(GenericLikelihoodModel):
 def hill_test(z: np.ndarray, moment_order: float, xi_hat: float, sigma_hat: float,
               bandwidth: int | None = 10, trim_quantile: float | None = 0.99,
               ax: plt.Axes | None = None):
+        '''
+        Tests whether the moment condition of a specified order holds for the
+        estimated tail index, via the asymptotic normality of the GPD shape MLE.
+
+        Parameters
+        ----------
+        z : np.ndarray
+            Centered exceedances (the same series used to fit ``GenParetoMLE``).
+            Must be 1-dimensional.
+        moment_order : float
+            Moment order r being tested; implies the hypothesized shape
+            xi = 1/r under the null. Must be strictly positive.
+        xi_hat : float
+            MLE-estimated GPD shape parameter (e.g. from
+            ``GenParetoMLE(z).fit()``). Must satisfy the Fisher regularity
+            condition ``xi_hat >= -0.5``.
+        sigma_hat : float
+            MLE-estimated GPD scale parameter, used only for the density plot.
+        bandwidth : int | None, optional
+            Number of histogram bins for the empirical density plot. The
+            default is 10.
+        trim_quantile : float | None, optional
+            Empirical quantile of ``z`` used as the plot's x-axis cutoff, so a
+            few rare extreme exceedances don't stretch the axis and squash the
+            bulk of the mass near 0. Must be strictly between 0 and 1. The
+            default is 0.99.
+        ax : plt.Axes | None, optional
+            If provided, plots the empirical density of the exceedances
+            against the fitted Generalized Pareto density. The default is None.
+
+        Raises
+        ------
+        ValueError
+            If ``moment_order`` is not strictly positive, or ``trim_quantile``
+            is not in (0, 1).
+        Exception
+            If ``xi_hat`` is less than -0.5, violating the Fisher regularity
+            condition required for the asymptotic normality result below.
+
+        Returns
+        -------
+        dict
+            Dictionary with keys ``'Test Statistic'`` (the w statistic),
+            ``'Critical Value'`` (the normal CDF at w), and ``'P-value'``.
+
+        References
+        ----------
+        Pickands, J. (1975). Statistical inference using extreme order
+            statistics. The Annals of Statistics, 3(1), 119-131.
+        '''
 
         z = array_like(z, 'z', ndim=1)
         moment_order = float_like(moment_order, 'moment_order')
@@ -288,6 +392,65 @@ def hill_test(z: np.ndarray, moment_order: float, xi_hat: float, sigma_hat: floa
             ax.set_xlim(0, cutoff)
             ax.legend()
             ax.set_title('Empirical Density vs. Generalized Pareto Density')
-            
-        return (w, critvalue, pvalue)
-  
+        
+        return {'Test Statistic': w,
+                'Critical Value': critvalue,
+                'P-value': pvalue}    
+
+## Test di Jarque-Bera
+def jb_test(resids):
+    '''
+    Jarque-Bera test of normality, based on the sample skewness and kurtosis.
+
+    Parameters
+    ----------
+    resids : np.ndarray
+        Series to test (e.g. model residuals or returns). Must be
+        1-dimensional with at least two observations.
+
+    Raises
+    ------
+    ValueError
+        If ``resids`` has fewer than two observations.
+
+    Returns
+    -------
+    dict
+        Dictionary with keys ``'Test Statistic'`` (the JB statistic),
+        ``'Critical Value'`` (the chi-squared(2) CDF at the JB statistic), and
+        ``'P-value'``.
+
+    References
+    ----------
+    Jarque, C. M., & Bera, A. K. (1980). Efficient tests for normality,
+        homoscedasticity and serial independence of regression residuals.
+        Economics Letters, 6(3), 255-259.
+    '''
+
+    resids = array_like(resids, 'resids', ndim=1)
+    nobs = resids.shape[0]
+    if nobs < 2:
+        raise ValueError('Input data must contain at least two observations.')
+    
+    sk = _skew(resids, axis=0)
+    kt = 3 + _kurtosis(resids, axis=0)
+    
+    '''
+    The Jarque-Bera test statistic is defined as:
+        
+            JB = T/6 * (S_hat^2 + (K_hat - 3)^2/4),
+    
+    where S_hat and K_hat are the sample estimated Skewness and Kurtosis of the sample data.
+    Under the null hypothesis that the sample data is normally distributed, the JB test
+    statistic has an asymptotic chi-squared distribution with two degrees of freedom:
+        
+                                        JB ~ X^2(2).
+    '''
+    ## Compute the JB test statistic
+    jb = nobs/6 * (sk**2 + (kt - 3)**2/4 )
+    critvalue = _chi2.cdf(jb, df=2)
+    pvalue = float(np.clip( 1 - critvalue, 0.0, 1.0 ))
+    
+    return {'Test Statistic':jb,
+            'Critical Value': critvalue,
+            'P-value': pvalue}
