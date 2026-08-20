@@ -134,7 +134,7 @@ def _bootstrap_block_size_univariate(series: np.array) -> tuple[float, float, fl
     ## m is multiplied by 2 to double the cutoff as suggested by Patton-Politis-White
     ## to widen the window of autocorrelations considered
     
-    ## Now the autocovariance-generating function
+    ## Now the long run autocovariance and the spectral density
     g = 0.0
     lr_acv = acv[0]
     
