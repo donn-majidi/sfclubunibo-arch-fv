@@ -14,6 +14,15 @@ Forecast-Validation for optimal ARCH/GARCH model selection in Python
 ## Overview
 
 ## Installation
+```bash
+git clone https://github.com/donn-majidi/sfclubunibo-arch-fv.git
+cd sfclubunibo-arch-fv
+python -m venv .venv
+source .venv/bin/activate  # on Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+See [Requirements](#requirements) for the list of packages this installs.
 
 ## Modules
 
@@ -52,7 +61,14 @@ print(bootstrap_block_size(lc.MSE))
 ## Usage Example
 
 ## Requirements
-
+- [`numpy>=2.3.0`](https://numpy.org/)
+- [`pandas>=2.3.0`](https://pandas.pydata.org/)
+- [`scipy>=1.16.0`](https://scipy.org/)
+- [`matplotlib>=3.10.0`](https://matplotlib.org/)
+- [`seaborn>=0.13.0`](https://seaborn.pydata.org/)
+- [`scikit-learn>=1.8.0`](https://scikit-learn.org/)
+- [`statsmodels>=0.14.0`](https://www.statsmodels.org/)
+- [`arch>=8.0.0`](https://bashtage.github.io/arch/)
 ## References
 
 ## License
