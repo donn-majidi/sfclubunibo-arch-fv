@@ -43,7 +43,7 @@ returns = returns.dropna()
 ## Import arch model constructor
 from arch import arch_model
 mod1 = arch_model(returns, vol='GARCH', p=1, o=0, q=1, dist='gaussian') ## GARCH(1,1) with Gaussian likelihood function.
-mod2 = arch_model(returns, vol='GARCH', p[1=, o=1, q=1, dist='studentst') ## GJR_GARCH(1,1,1) with Studend-t likelihood function.
+mod2 = arch_model(returns, vol='GARCH', p=1, o=1, q=1, dist='studentst') ## GJR_GARCH(1,1,1) with Studend-t likelihood function.
 
 ## Create array of model instances
 models = np.asarray([mod1, mod2], dtype=object) ## The dtype of the array has to be explicitly set to object.
@@ -52,7 +52,7 @@ models = np.asarray([mod1, mod2], dtype=object) ## The dtype of the array has to
 ws = 252
 fh = 1
 
-model_validator = Validator(endog=returns, models=models, window_size=ws, forecast_horizone=fh)
+model_validator = Validator(endog=returns, models=models, window_size=ws, forecast_horizon=fh)
 
 ## Out-of-sample forecasts along with forecast losses can be accessed from the class properties.
 forecasts = model_validator.forecasts
