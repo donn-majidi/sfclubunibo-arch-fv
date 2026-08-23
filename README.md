@@ -22,7 +22,7 @@ source .venv/bin/activate  # on Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-See [Requirements](#requirements) for the list of packages this installs.
+See [Requirements](#requirements) for the list of required packages.
 
 ## Modules
 
