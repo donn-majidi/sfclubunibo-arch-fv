@@ -17,6 +17,36 @@ Forecast-Validation for optimal ARCH/GARCH model selection in Python
 
 ## Modules
 
+### `Class LossContainer`
+Generic class for loss function calculations. It takes as input an array of model forecasts and the observations and it calculates the MSE, MAE, and QLIKE loss of each forecast. The estimated loss series are stored as attributes.
+- LossContainer.MSE contains series of squared forecast errors.
+- LossContainer.MAE contains series of absolute forecast errors.
+- LossContainer.QLIKE contains series of quasi-likelihood forecast scores.
+
+The class can be optionally instantiated with `forecast_horizon` which will include the forecast horizon in the summary results.
+```python
+from src.modules.loss_container import LossContainer
+lc = LossContainer(squared_returns, forecasts, forecast_horizon=1)
+MSE = lc.MSE
+print(MSE)
+
+## average forecast losses
+print(lc)
+```
+
+### `bootstrap_block_size`
+This function implements the automatic block-length selection procedure of Politis & White (2004) / Patton, Politis & White (2009).
+- It takes as input a dataframe or a series containing the estimated model losses and calculates the optimal block-size for each column.
+```python
+from src.modules.bootstrap_params import bootstrap_block_size
+print(bootstrap_block_size(lc.MSE))
+```
+### `cusum_supf_test`
+
+### `hill_test`
+
+### `jb_test`
+
 ## Workflow
 
 ## Usage Example
