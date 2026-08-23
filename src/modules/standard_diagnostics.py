@@ -281,6 +281,10 @@ class GenParetoMLE(GenericLikelihoodModel):
         self._fit_called = True
         return super().fit(start_params=start_params, maxiter=maxiter, **kwargs)
     
+    ## Set paramter names for model output
+    exog_names = ['xi_hat', 'sigma_hat']
+    
+    
 def hill_test(z: np.ndarray, moment_order: float, xi_hat: float, sigma_hat: float,
               bandwidth: int | None = 10, trim_quantile: float | None = 0.99,
               ax: plt.Axes | None = None):
@@ -353,7 +357,7 @@ def hill_test(z: np.ndarray, moment_order: float, xi_hat: float, sigma_hat: floa
                             'This violates the Fisher regularity conditions. Cannot run the test.')
                     
         '''
-        The asymptotic distribution of the shape parameter x_hat minus its hypothesized value
+        The asymptotic distribution of the shape parameter xi_hat minus its hypothesized value
         xi = 1/r, where r is the moment order being tested is normal with variance (1+xi)^2:
             
                         sqrt(m) * (xi_hat - xi) ~ N(0,(1+xi)^2),
