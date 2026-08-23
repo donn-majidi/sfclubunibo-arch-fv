@@ -1,6 +1,5 @@
 import scipy
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import chi2 as _chi2, norm as _norm
