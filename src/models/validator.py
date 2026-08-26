@@ -12,12 +12,13 @@ from statsmodels.tools.validation import (string_like,
 class Validator:
 
     def __init__(self, endog: np.ndarray, models: np.ndarray, window_size: int,
-                 forecast_horizon: int, align: str | None = 'origin'):
+                 forecast_horizon: int, alpha: float, align: str | None = 'origin'):
 
         self._endog = array_like(endog, 'endog', ndim=2)
         self._models = array_like(models, 'models', ndim=1, dtype=object)
         self._window_size = int_like(window_size, 'window_size')
         self._forecast_horizon = int_like(forecast_horizon, 'forecast_horizon')
+        self._alpha = float_like(alpha, 'alpha')
         self._align = string_like(align, 'align')
         self._nobs = endog.shape[0]
         self._nmodels = len(models)
@@ -47,6 +48,9 @@ class Validator:
             raise ValueError('window_size + forecast_horizon must be strictly less than '
                              'the number of observations.')
             
+        if alpha > 1 or alpha < 0:
+            raise ValueError('The value of alpha should be strictly between 0 and 1.')
+            
         if align not in ('target', 'origin'):
             raise ValueError(f'Invalid index align input: "{align}". Choose either "origin" '
                              'for "origin" index alignment or "target" for target index alignment. '
@@ -59,6 +63,8 @@ class Validator:
         self.MSE = None
         self.QLIKE = None
         self.MAE = None
+        self.VaR = None
+        self.ES = None
         
         ## Run the validation process
         self._validate()
@@ -98,12 +104,17 @@ class Validator:
         nobs = self._nobs
         nmodels = self._nmodels
         forecast_horizon = self._forecast_horizon
+        alpha = self._alpha
         
         ## Effective range: T - W - h + 1
         eff_range = nobs - window_size - forecast_horizon + 1
         
         forecasts = np.zeros((eff_range, nmodels))
         std_residuals = np.zeros((eff_range, nmodels ))
+        
+        VaR = np.zeros((eff_range, nmodels))
+        ES = np.zeros((eff_range, nmodels))
+        
         model_fits = []
         
         for j, md in enumerate(models):
@@ -131,14 +142,31 @@ class Validator:
                 
                 _fh = _fc.variance.iloc[0,-1]
                 _std = _fit.std_resid.loc[_fit.std_resid.last_valid_index()]
-                    
+                
                 forecasts[i,j] = _fh
                 std_residuals[i,j] = _std
                 
+                ## Next retrieve distribution parameters for VaR and ES estimation
+                if md.distribution.num_params == 0:
+                    dist_params = None
+                else:
+                    dist_nparams = md.distribution.num_params
+                    dist_params = _fit.params[-dist_nparams:]
+                    
+                _z_alpha = md.distribution.ppf(alpha, parameters=dist_params)
+                _VaR = _z_alpha * np.sqrt(_fh)
+                _ES = md.distribution.partial_moment(1, _z_alpha, parameters=dist_params) / alpha * np.sqrt(_fh)
+                
+                VaR[i,j] = _VaR
+                ES[i,j] = _ES
+                
+            ## Save the fitted model at the last iteration
             model_fits.append(_fit)
             
         self.forecasts = forecasts
         self.std_residuals = std_residuals
+        self.VaR = VaR
+        self.ES = ES
         self.model_fits = model_fits
         
     def _compute_loss(self):
@@ -179,6 +207,14 @@ class Validator:
         ## Standardized residuals
         df = pd.DataFrame(self.std_residuals, index=std_index)
         self.std_residuals = df
+        
+        ## VaR
+        df = pd.DataFrame(self.VaR, index=fc_index)
+        self.VaR = df
+        
+        ## Expected Shortfall
+        df = pd.DataFrame(self.ES, index=fc_index)
+        self.ES = df
         
         ## MSE
         df = pd.DataFrame(self.MSE, index=fc_index)
