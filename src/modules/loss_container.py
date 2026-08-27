@@ -16,10 +16,10 @@ class LossContainer:
 
     Parameters
     ----------
-    forecasts : pd.Series | pd.DataFrame
-        Forecasted (strictly positive) variances, one column per model.
     observations : pd.Series
         Realized (strictly positive) variances, aligned with ``forecasts``.
+    forecasts : pd.Series | pd.DataFrame
+        Forecasted (strictly positive) variances, one column per model.
     forecast_horizon : int | None, optional
         Forecast horizon associated with this set of forecasts. Stored for
         reference only; not used in the loss computations. The default is
@@ -43,12 +43,12 @@ class LossContainer:
         observations, or either contains non-positive values.
     '''
 
-    def __init__(self, forecasts: pd.Series | pd.DataFrame,
-                 observations: pd.Series, forecast_horizon: int | None = None):
-        
+    def __init__(self, observations: pd.Series, forecasts: pd.Series | pd.DataFrame,
+                 forecast_horizon: int | None = None):
+
+        self._observations = array_like(observations, 'observations', ndim=2)        
         self._forecasts = array_like(forecasts, 'forecasts', ndim=2)
         self._nobs = self._forecasts.shape[0]
-        self._observations = array_like(observations, 'observations', ndim=2)
         self._forecast_horizon = int_like(forecast_horizon, 'forecast_horizon', optional=True)
         
         ## Ensure that the number of observations in forecasts and observations match
