@@ -139,12 +139,14 @@ Generic class for loss function calculations. It takes as input the array of mod
 - LossContainer.mse_loss contains series of squared forecast errors.
 - LossContainer.mae_loss contains series of absolute forecast errors.
 - LossContainer.qlike_loss contains series of quasi-likelihood forecast scores.
+
 The class can be optionally instantiated with `forecast_horizon` which will include the forecast horizon in the summary results.
 observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
 
 #### Parameters
-observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
-forecasts: 1-Dimensional or 2-dimensional array of model forecasts. Index must be 'target' aligned.
+- observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
+- forecasts: 1-Dimensional or 2-dimensional array of model forecasts. Index must be 'target' aligned.
+- forecast_horizon: Integer determining the forecast horizon.
 
 #### Properties
 - mse_loss: Series of h-step-ahead conditional variance squared error loss per model.
