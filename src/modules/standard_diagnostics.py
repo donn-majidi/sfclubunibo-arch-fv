@@ -401,20 +401,20 @@ def hill_test(z: np.ndarray, moment_order: float, xi_hat: float, sigma_hat: floa
                 'P-value': pvalue}    
 
 ## Test di Jarque-Bera
-def jb_test(resids):
+def jb_test(z: np.ndarray):
     '''
     Jarque-Bera test of normality, based on the sample skewness and kurtosis.
 
     Parameters
     ----------
-    resids : np.ndarray
+    z : np.ndarray
         Series to test (e.g. model residuals or returns). Must be
         1-dimensional with at least two observations.
 
     Raises
     ------
     ValueError
-        If ``resids`` has fewer than two observations.
+        If ``z`` has fewer than two observations.
 
     Returns
     -------
@@ -430,13 +430,13 @@ def jb_test(resids):
         Economics Letters, 6(3), 255-259.
     '''
 
-    resids = array_like(resids, 'resids', ndim=1)
-    nobs = resids.shape[0]
+    z = array_like(z, 'z', ndim=1)
+    nobs = z.shape[0]
     if nobs < 2:
         raise ValueError('Input data must contain at least two observations.')
     
-    sk = _skew(resids, axis=0)
-    kt = 3 + _kurtosis(resids, axis=0)
+    sk = _skew(z, axis=0)
+    kt = 3 + _kurtosis(z, axis=0)
     
     '''
     The Jarque-Bera test statistic is defined as:

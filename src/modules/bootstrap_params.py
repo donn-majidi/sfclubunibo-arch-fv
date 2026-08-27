@@ -24,7 +24,7 @@ def bootstrap_block_size(x: np.ndarray) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        Indexed by ``series``'s columns (or name, for a ``Series``), with
+        Indexed by ``x``'s columns (or name, for a ``Series``), with
         columns ``'Stationary Bootstrap'``, ``'Circular Bootstrap'``, and
         ``'Moving-Blocks Bootstrap'`` holding each series' optimal block size
         for the corresponding bootstrap.

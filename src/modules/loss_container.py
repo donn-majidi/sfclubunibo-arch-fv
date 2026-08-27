@@ -27,11 +27,11 @@ class LossContainer:
 
     Attributes
     ----------
-    mse_losses : pd.DataFrame | np.ndarray
+    mse_loss : pd.DataFrame | np.ndarray
         Squared-error loss series, (forecast - observation)^2.
-    mae_losses : pd.DataFrame | np.ndarray
+    mae_loss : pd.DataFrame | np.ndarray
         Absolute-error loss series, |forecast - observation|.
-    qlike_losses : pd.DataFrame | np.ndarray
+    qlike_loss : pd.DataFrame | np.ndarray
         Quasi-likelihood loss series, log(forecast) + observation/forecast.
         Returned as a ``pd.DataFrame`` (indexed/columned like ``forecasts``)
         when ``forecasts`` is a pandas object, otherwise as a raw ndarray.
