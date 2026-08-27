@@ -10,96 +10,11 @@ from statsmodels.tools.validation import (string_like,
                                           int_like,
                                           )
 class Validator:
-    '''
-    Rolling-window forecast-validation framework for one or more ARCH/GARCH-class
-    conditional-volatility models.
 
-    For each model, the class re-estimates the model on a rolling window of
-    ``window_size`` observations, produces a ``forecast_horizon``-step-ahead
-    conditional variance forecast at each origin, and evaluates that forecast
-    against the realized squared return at the target date via the MSE, MAE,
-    and QLIKE loss functions. If ``alpha`` is supplied, Value at Risk and
-    Expected Shortfall forecasts are additionally computed for each window,
-    using the model's own conditional distribution.
-
-    Parameters
-    ----------
-    endog : np.ndarray
-        Return series (e.g. demeaned log returns) the models were built on.
-        Must not contain NaN values. If a ``pd.Series`` or ``pd.DataFrame``,
-        its index is preserved and used to label the output.
-    models : np.ndarray
-        1-D object array of model instances (as returned by ``arch_model()``
-        or constructed via ``ZeroMean``/``ARX`` plus a volatility process and
-        a distribution). Each element must be an instance of
-        ``arch.univariate.base.ARCHModel``.
-    window_size : int
-        Number of observations in each rolling estimation window. Must be
-        strictly less than the number of observations in ``endog``.
-    forecast_horizon : int
-        Forecast horizon h to evaluate. ``window_size + forecast_horizon``
-        must be strictly less than the number of observations in ``endog``.
-    alpha : float | None, optional
-        Significance level for Value at Risk and Expected Shortfall
-        forecasting. Must be strictly between 0 and 1. If not passed, VaR and
-        ES forecasts are not computed. The default is None.
-    align : {'origin', 'target'}, optional
-        Index alignment method for ``forecasts``, ``value_at_risk``,
-        ``expected_shortfall``, and the loss series. ``'origin'`` labels each
-        row by the last observation used to produce that forecast (the
-        default behavior of the ``forecast()`` method in the ``arch``
-        package); ``'target'`` labels each row by the date being forecasted,
-        letting the output be compared directly against ``endog`` without
-        further index shifting. Standardized residuals are always
-        ``'origin'`` aligned regardless of this setting, since they
-        correspond to the last observation used to fit the model. The
-        default is 'origin'.
-
-    Attributes
-    ----------
-    forecasts : pd.DataFrame
-        h-step-ahead conditional variance forecast per model, one column per
-        model.
-    std_residuals : pd.DataFrame
-        Standardized residuals from the last observation in each estimation
-        window, one column per model. Always 'origin' aligned.
-    model_fits : np.ndarray
-        Object array holding, for each model, the fitted ``ARCHModelResult``
-        from the last rolling window only.
-    mse_loss : pd.DataFrame
-        Squared-error loss series, (forecast - endog^2)^2, per model.
-    mae_loss : pd.DataFrame
-        Absolute-error loss series, |forecast - endog^2|, per model.
-    qlike_loss : pd.DataFrame
-        Quasi-likelihood loss series, log(forecast) + endog^2/forecast, per
-        model.
-    value_at_risk : pd.DataFrame
-        h-step-ahead conditional Value at Risk forecast per model, at level
-        ``alpha``. All-zero if ``alpha`` was not passed.
-    expected_shortfall : pd.DataFrame
-        h-step-ahead conditional Expected Shortfall forecast per model, at
-        level ``alpha``. All-zero if ``alpha`` was not passed.
-
-    Raises
-    ------
-    ValueError
-        If ``endog`` contains NaN values, if ``window_size`` or
-        ``window_size + forecast_horizon`` is not strictly less than the
-        number of observations in ``endog``, if ``alpha`` is not strictly
-        between 0 and 1, or if ``align`` is not 'origin' or 'target'.
-    Exception
-        If any element of ``models`` is not an instance of ``ARCHModel``.
-    '''
-
-    def __init__(self, endog: np.ndarray, models: np.ndarray, window_size: int,
-                 forecast_horizon: int, alpha: float | None = None, align: str | None = 'origin'):
+    def __init__(self, endog: np.ndarray, models: np.ndarray):
 
         self._endog = array_like(endog, 'endog', ndim=2)
         self._models = array_like(models, 'models', ndim=1, dtype=object)
-        self._window_size = int_like(window_size, 'window_size')
-        self._forecast_horizon = int_like(forecast_horizon, 'forecast_horizon')
-        self._alpha = float_like(alpha, 'alpha', optional=True)
-        self._align = string_like(align, 'align')
         self._nobs = endog.shape[0]
         self._nmodels = len(models)
         
@@ -108,10 +23,6 @@ class Validator:
         else:
             self._index = np.arange(len(endog))
         
-        ## Note: The indices of the output point to the information set used
-        ## for producing the output, which is I_{t-1}, while the output itself
-        ## is the projection of the model at time t.
-        
         ## Input validation
         if np.any(np.isnan(endog)):
             raise ValueError('Input data contains NaN values.')
@@ -119,39 +30,16 @@ class Validator:
         if not np.all([isinstance(md, _ARCHModel) for md in models]):
             raise Exception('Model inputs should be instances of the ARCHModel class '
                             'initiated by the arch_model() model constructor.')
-            
-        if window_size >= self._nobs:
-            raise ValueError('The length of the window must be strictly less than the '
-                             'number of observations.')
-
-        if window_size + forecast_horizon >= self._nobs:
-            raise ValueError('window_size + forecast_horizon must be strictly less than '
-                             'the number of observations.')
-            
-        if alpha is not None and (alpha >= 1 or alpha <= 0):
-            raise ValueError('The value of alpha should be strictly between 0 and 1.')
-            
-        if align not in ('target', 'origin'):
-            raise ValueError(f'Invalid index align input: "{align}". Choose either "origin" '
-                             'for "origin" index alignment or "target" for target index alignment. '
-                             'For more information refer to the docstring or the repo README.md file.')
         
         ## Initiate class params
         self.forecasts = None
         self.std_residuals = None
         self.model_fits = None
         self.mse_loss = None
-        self.qlike_loss = None
         self.mae_loss = None
+        self.qlike_loss = None
         self.value_at_risk = None
         self.expected_shortfall = None
-        
-        ## Run the validation process
-        self._validate()
-        self._compute_loss()
-        
-        ## Prepare the output
-        self._to_pandas()
         
     def __str__(self):
         '''Returns a compact summary of average MSE, MAE, and QLIKE loss per model.'''
@@ -168,39 +56,46 @@ class Validator:
 
         header = (
             f"Validator: {len(self.forecasts)} evaluated window(s), "
-            f"{self._nmodels} model(s), forecast_horizon={self._forecast_horizon}"
+            f"{self._nmodels} model(s)."
         )
         return f"{header}\n{summary.to_string()}"
 
     def __repr__(self):
         '''Returns an unambiguous string representation of the instance's shape parameters.'''
         return (
-            f"{self.__class__.__name__}(nobs={self._nobs}, nmodels={self._nmodels}, "
-            f"window_size={self._window_size}, forecast_horizon={self._forecast_horizon})"
+            f"{self.__class__.__name__}(nobs={self._nobs}, nmodels={self._nmodels})"
         )
 
-    def _validate(self):
-        '''
-        Runs the rolling-window estimation/forecasting loop for each model.
+    def validate(self, window_size: int, horizon: int, alpha: float | None = None,
+                 align: str | None = 'origin'):
 
-        For each model, warm-starts the fit from the previous window's
-        converged parameters (falling back to a cold start with a larger
-        iteration budget on non-convergence), produces a
-        ``forecast_horizon``-step-ahead conditional variance forecast, and,
-        if ``alpha`` was passed, the corresponding Value at Risk and Expected
-        Shortfall. Populates ``forecasts``, ``std_residuals``,
-        ``value_at_risk``, ``expected_shortfall``, and ``model_fits`` as raw
-        ndarrays (before the pandas conversion done in ``_to_pandas``).
-        '''
         models = self._models
-        window_size = self._window_size
         nobs = self._nobs
         nmodels = self._nmodels
-        forecast_horizon = self._forecast_horizon
-        alpha = self._alpha
+
+        window_size = int_like(window_size, 'window_size')
+        horizon = int_like(horizon, 'horizon')
+        alpha = float_like(alpha, 'alpha', optional=True)
+        align = string_like(align, 'align')
         
+        if window_size >= nobs:
+            raise ValueError('The length of the window must be strictly less than the '
+                             'number of observations.')
+            
+        if window_size + horizon >= nobs:
+            raise ValueError('window_size + forecast_horizon must be strictly less than '
+                             'the number of observations.')
+            
+        if alpha is not None and (alpha >= 1 or alpha <= 0):
+            raise ValueError('The value of alpha should be strictly between 0 and 1.')
+            
+        if align not in ('target', 'origin'):
+            raise ValueError(f'Invalid index align input: "{align}". Choose either "origin" '
+                             'for "origin" index alignment or "target" for target index alignment. '
+                             'For more information refer to the docstring or the repo README.md file.')
+
         ## Effective range: T - W - h + 1
-        eff_range = nobs - window_size - forecast_horizon + 1
+        eff_range = nobs - window_size - horizon + 1
         
         forecasts = np.zeros((eff_range, nmodels))
         std_residuals = np.zeros((eff_range, nmodels ))
@@ -246,16 +141,16 @@ class Validator:
                 ## do not exist. I prefer the bootstrap method, maybe later change
                 ## so that user can choose.
                 try:
-                    _fc = _fit.forecast(horizon=forecast_horizon, method=_method)
+                    _fc = _fit.forecast(horizon=horizon, method=_method)
                 except ValueError:
                     warnings.warn(
                         'Failed to produce analytic forecasts. Falling back to '
                         f'boot strap forecasts for model {md.volatility.name} at '
-                        f'horizon={forecast_horizon}.',
+                        f'horizon={horizon}.',
                         stacklevel=2
                         )
                     _method = 'bootstrap'
-                    _fc = _fit.forecast(horizon=forecast_horizon, method=_method)
+                    _fc = _fit.forecast(horizon=horizon, method=_method)
                 
                 _fh = _fc.variance.iloc[0,-1]
                 _std = _fit.std_resid.loc[_fit.std_resid.last_valid_index()]
@@ -287,44 +182,61 @@ class Validator:
         self.value_at_risk = value_at_risk
         self.expected_shortfall = expected_shortfall
         self.model_fits = np.asarray(model_fits, dtype=object)
+        self.mse_loss = self.compute_loss(forecasts, window_size, horizon, 'mse')
+        self.mae_loss = self.compute_loss(forecasts, window_size, horizon, 'mae')
+        self.qlike_loss = self.compute_loss(forecasts, window_size, horizon, 'qlike')
         
-    def _compute_loss(self):
-        '''
-        Computes the MSE, MAE, and QLIKE loss series from ``forecasts``
-        against the target-aligned realized squared returns, populating
-        ``mse_loss``, ``mae_loss``, and ``qlike_loss`` as raw ndarrays.
-        '''
-        window_size = self._window_size
-        forecast_horizon = self._forecast_horizon
+        ## Prepare the output
+        self._to_pandas(window_size, horizon, align)
+        
+    def compute_loss(self, forecasts: np.ndarray, window_size: int, 
+                     horizon: int, loss_function: str):
+
+        forecasts = array_like(forecasts, 'forecasts', ndim=2)
+        window_size = int_like(window_size, 'window_size')
+        horizon = int_like(horizon, 'horizon')
+        loss_function = string_like(loss_function, 'loss_function')
+
+        valid_loss_functions = ('mse', 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')
+
+        if loss_function not in valid_loss_functions:
+            raise ValueError('Unsupported loss function. Must be one of: '
+                             f'{valid_loss_functions}')
 
         ## Align observations and forecasts for correct loss evaluation
         ## The first index that corresponds to the first target forecast is 
         ## Window_Size + Forecast_horizon - 1
-        first_indx = window_size + forecast_horizon - 1
+        first_indx = window_size + horizon - 1
         endog = self._endog[first_indx:]
-        forecasts = self.forecasts
 
-        self.mse_loss = (forecasts - endog**2)**2
-        self.qlike_loss = ( np.log(forecasts) + endog**2/forecasts )
-        self.mae_loss = np.abs(forecasts - endog**2)
+        if loss_function in ('mse', 'MSE'):
+            loss = (forecasts - endog**2)**2
+        elif loss_function in ('mae', 'MAE'):
+            loss = np.abs(forecasts - endog**2)
+        elif loss_function in ('qlike', 'QLIKE'):
+            loss = ( np.log(forecasts) + endog**2/forecasts )
+        else:
+            raise NotImplementedError('Loss function not implemented.')
         
-    def _to_pandas(self):
+        return loss
+
+    def _to_pandas(self, window_size: int, horizon: int, align: str):
         '''
-        Converts the raw ndarray results from ``_validate``/``_compute_loss``
+        Converts the raw ndarray results from ``validate``/``compute_loss``
         into index-aligned ``pd.DataFrame``s, per the ``align`` setting.
         '''
         index = self._index
-        window_size = self._window_size
-        forecast_horizon = self._forecast_horizon
-        align = self._align
+        window_size = int_like(window_size, 'window_size')
+        horizon = int_like(horizon, 'horizon')
+        align = string_like(align, 'align')
         
         ### Index alignment
         if align == 'origin':
-            fc_index = index[ (window_size - 1) : -forecast_horizon]
+            fc_index = index[ (window_size - 1) : -horizon]
         else:
-            fc_index = index[ (window_size - 1 + forecast_horizon) :]
+            fc_index = index[ (window_size - 1 + horizon) :]
         
-        std_index = index[window_size - 1: -forecast_horizon]
+        std_index = index[window_size - 1: -horizon]
         
         ## Forecasts
         df = pd.DataFrame(self.forecasts, index=fc_index)
@@ -346,14 +258,10 @@ class Validator:
         df = pd.DataFrame(self.mse_loss, index=fc_index)
         self.mse_loss = df
         
-        ## QLIKE
-        df = pd.DataFrame(self.qlike_loss, index=fc_index)
-        self.qlike_loss = df
-        
         ## MAE
         df = pd.DataFrame(self.mae_loss, index=fc_index)
         self.mae_loss = df
-        
-        
-        
-            
+    
+        ## QLIKE
+        df = pd.DataFrame(self.qlike_loss, index=fc_index)
+        self.qlike_loss = df
