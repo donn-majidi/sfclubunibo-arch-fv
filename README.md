@@ -98,7 +98,7 @@ class Validator(endog: np.ndarray,
                 models: np.ndarray,
                 window_size: int,
                 forecast_horizon: int,
-                alpha: float,
+                alpha: float = None,
                 align: 'origin' | 'target' = 'origin')
 ```
 Model validator class for rolling-window forecast loss evaluations.
