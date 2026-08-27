@@ -1,4 +1,3 @@
-import sys
 import warnings
 import numpy as np
 import pandas as pd
@@ -106,15 +105,11 @@ class Validator:
         model_fits = []
         
         for j, md in enumerate(models):
-            sys.stdout.write(f'\nNow fitting model number {j}\n')
-            sys.stdout.flush()
             _method = 'analytic'
             _fit = None
             _warned_convergence = False
 
             for i in range(eff_range):
-                sys.stdout.write(".")
-                sys.stdout.flush()
                 _start_params = _fit.params if _fit is not None else None
 
                 _fit = md.fit(first_obs=i, last_obs=window_size + i,
