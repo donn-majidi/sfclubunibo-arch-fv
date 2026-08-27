@@ -8,7 +8,7 @@ from statsmodels.tools.validation import (string_like,
                                           int_like,
                                           )
 
-def bootstrap_block_size(series: pd.DataFrame | pd.Series) -> pd.DataFrame:
+def bootstrap_block_size(x: np.ndarray) -> pd.DataFrame:
     '''
     Computes the data-driven optimal block size for the stationary, circular,
     and moving-blocks bootstraps, for each column of a (possibly
@@ -17,7 +17,7 @@ def bootstrap_block_size(series: pd.DataFrame | pd.Series) -> pd.DataFrame:
 
     Parameters
     ----------
-    series : pd.DataFrame | pd.Series
+    x : pd.DataFrame | pd.Series
         Series to compute block sizes for. If a ``DataFrame``, each column is
         treated as a separate univariate series.
 
@@ -37,15 +37,15 @@ def bootstrap_block_size(series: pd.DataFrame | pd.Series) -> pd.DataFrame:
         block-length selection for the dependent bootstrap". Econometric
         Reviews, 28(4), 372-375.
     '''
-    x_series = array_like(series, 'series', ndim=2)
-    opt_bs = [_bootstrap_block_size_univariate(col) for col in x_series.T]
-    
-    if isinstance(series, pd.DataFrame):
-        indx = list(series.columns)
-    elif isinstance(series, pd.Series):
-        indx = [series.name]
+    x_arr = array_like(x, 'x', ndim=2)
+    opt_bs = [_bootstrap_block_size_univariate(col) for col in x_arr.T]
+
+    if isinstance(x, pd.DataFrame):
+        indx = list(x.columns)
+    elif isinstance(x, pd.Series):
+        indx = [x.name]
     else:
-        indx = [i for i in range(x_series.shape[1])]
+        indx = [i for i in range(x_arr.shape[1])]
     
     return pd.DataFrame(opt_bs, index=indx, columns=['Stationary Bootstrap',
                                                      'Circular Bootstrap',
