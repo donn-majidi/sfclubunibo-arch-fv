@@ -70,9 +70,9 @@ class LossContainer:
             self._columns = [forecasts.name if forecasts.name is not None else 'forecast']
             
         ## Declare class parameters and attributes
-        self.mse_losses = None
-        self.mae_losses = None
-        self.qlike_losses = None
+        self.mse_loss = None
+        self.mae_loss = None
+        self.qlike_loss = None
         
         ## Compute the loss series
         self._compute_loss_series()
@@ -88,9 +88,9 @@ class LossContainer:
 
         summary = pd.DataFrame(
             {
-                'MSE': np.asarray(self.mse_losses.mean(axis=0)),
-                'MAE': np.asarray(self.mae_losses.mean(axis=0)),
-                'QLIKE': np.asarray(self.qlike_losses.mean(axis=0)),
+                'MSE': np.asarray(self.mse_loss.mean(axis=0)),
+                'MAE': np.asarray(self.mae_loss.mean(axis=0)),
+                'QLIKE': np.asarray(self.qlike_loss.mean(axis=0)),
             },
             index=columns,
         ).round(6)
@@ -109,9 +109,9 @@ class LossContainer:
         forecasts = self._forecasts
         observations = self._observations
         
-        self.mse_losses = (forecasts - observations)**2
-        self.qlike_losses = ( np.log(forecasts) + observations/forecasts )
-        self.mae_losses = np.abs(forecasts - observations)
+        self.mse_loss = (forecasts - observations)**2
+        self.qlike_loss = ( np.log(forecasts) + observations/forecasts )
+        self.mae_loss = np.abs(forecasts - observations)
         
     def _to_pandas(self):
         
@@ -119,16 +119,13 @@ class LossContainer:
         columns = self._columns
         
         ## MSE
-        df =  pd.DataFrame(self.mse_losses, index=index, columns=columns)
-        self.mse_losses = df
+        df =  pd.DataFrame(self.mse_loss, index=index, columns=columns)
+        self.mse_loss = df
         
         ## MAE
-        df = pd.DataFrame(self.mae_losses, index=index, columns=columns)
-        self.mae_losses = df
+        df = pd.DataFrame(self.mae_loss, index=index, columns=columns)
+        self.mae_loss = df
         
         ## QLIKE
-        df = pd.DataFrame(self.qlike_losses, index=index, columns=columns)
-        self.qlike_losses = df
-            
-        
-        
+        df = pd.DataFrame(self.qlike_loss, index=index, columns=columns)
+        self.qlike_loss = df
