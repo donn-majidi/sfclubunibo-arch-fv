@@ -9,6 +9,70 @@ from statsmodels.tools.validation import (string_like,
                                           int_like,
                                           )
 class Validator:
+    '''
+    Rolling-window forecast-validation framework for one or more ARCH/GARCH-class
+    conditional-volatility models.
+
+    Instantiate with the return series and candidate models, then call
+    ``validate()`` to run the rolling-window estimation/forecasting loop. Each
+    model is re-estimated on a rolling window of ``window_size`` observations,
+    produces a ``horizon``-step-ahead conditional variance forecast at each
+    origin, and is evaluated against the realized squared return at the
+    target date via the MSE, MAE, and QLIKE loss functions. If ``alpha`` is
+    passed to ``validate()``, Value at Risk and Expected Shortfall forecasts
+    are additionally computed for each window, using the model's own
+    conditional distribution.
+
+    Parameters
+    ----------
+    endog : np.ndarray
+        Return series (e.g. demeaned log returns) the models were built on.
+        Must not contain NaN values. If a ``pd.Series`` or ``pd.DataFrame``,
+        its index is preserved and used to label the output.
+    models : np.ndarray
+        1-D object array of model instances (as returned by ``arch_model()``
+        or constructed via ``ZeroMean``/``ARX`` plus a volatility process and
+        a distribution). Each element must be an instance of
+        ``arch.univariate.base.ARCHModel``.
+
+    Attributes
+    ----------
+    forecasts : pd.DataFrame
+        h-step-ahead conditional variance forecast per model, one column per
+        model. ``None`` until ``validate()`` is called.
+    std_residuals : pd.DataFrame
+        Standardized residuals from the last observation in each estimation
+        window, one column per model. Always 'origin' aligned. ``None``
+        until ``validate()`` is called.
+    model_fits : np.ndarray
+        Object array holding, for each model, the fitted ``ARCHModelResult``
+        from the last rolling window only. ``None`` until ``validate()`` is
+        called.
+    mse_loss : pd.DataFrame
+        Squared-error loss series, (forecast - endog^2)^2, per model.
+        ``None`` until ``validate()`` is called.
+    mae_loss : pd.DataFrame
+        Absolute-error loss series, |forecast - endog^2|, per model. ``None``
+        until ``validate()`` is called.
+    qlike_loss : pd.DataFrame
+        Quasi-likelihood loss series, log(forecast) + endog^2/forecast, per
+        model. ``None`` until ``validate()`` is called.
+    value_at_risk : pd.DataFrame
+        h-step-ahead conditional Value at Risk forecast per model, at the
+        ``alpha`` level passed to ``validate()``. All-zero if ``alpha`` was
+        not passed. ``None`` until ``validate()`` is called.
+    expected_shortfall : pd.DataFrame
+        h-step-ahead conditional Expected Shortfall forecast per model, at
+        the ``alpha`` level passed to ``validate()``. All-zero if ``alpha``
+        was not passed. ``None`` until ``validate()`` is called.
+
+    Raises
+    ------
+    ValueError
+        If ``endog`` contains NaN values.
+    Exception
+        If any element of ``models`` is not an instance of ``ARCHModel``.
+    '''
 
     def __init__(self, endog: np.ndarray, models: np.ndarray):
 
@@ -67,7 +131,53 @@ class Validator:
 
     def validate(self, window_size: int, horizon: int, alpha: float | None = None,
                  align: str | None = 'origin'):
+        '''
+        Runs the rolling-window estimation/forecasting loop for each model.
 
+        For each model, warm-starts the fit from the previous window's
+        converged parameters (falling back to a cold start with a larger
+        iteration budget on non-convergence), produces a ``horizon``-step-
+        ahead conditional variance forecast, and, if ``alpha`` is passed, the
+        corresponding Value at Risk and Expected Shortfall. Populates
+        ``forecasts``, ``std_residuals``, ``value_at_risk``,
+        ``expected_shortfall``, ``model_fits``, and the MSE/MAE/QLIKE loss
+        series (via ``compute_loss``), converting all of them to
+        index-aligned ``pd.DataFrame``s (via ``_to_pandas``) before
+        returning.
+
+        Parameters
+        ----------
+        window_size : int
+            Number of observations in each rolling estimation window. Must
+            be strictly less than the number of observations in ``endog``.
+        horizon : int
+            Forecast horizon h to evaluate. ``window_size + horizon`` must
+            be strictly less than the number of observations in ``endog``.
+        alpha : float | None, optional
+            Significance level for Value at Risk and Expected Shortfall
+            forecasting. Must be strictly between 0 and 1. If not passed,
+            ``value_at_risk``/``expected_shortfall`` are left as all-zero.
+            The default is None.
+        align : {'origin', 'target'}, optional
+            Index alignment method for ``forecasts``, ``value_at_risk``,
+            ``expected_shortfall``, and the loss series. ``'origin'`` labels
+            each row by the last observation used to produce that forecast
+            (the default behavior of the ``forecast()`` method in the
+            ``arch`` package); ``'target'`` labels each row by the date
+            being forecasted, letting the output be compared directly
+            against ``endog`` without further index shifting. Standardized
+            residuals are always ``'origin'`` aligned regardless of this
+            setting, since they correspond to the last observation used to
+            fit the model. The default is 'origin'.
+
+        Raises
+        ------
+        ValueError
+            If ``window_size`` or ``window_size + horizon`` is not strictly
+            less than the number of observations in ``endog``, if ``alpha``
+            is not strictly between 0 and 1, or if ``align`` is not
+            'origin' or 'target'.
+        '''
         models = self._models
         nobs = self._nobs
         nmodels = self._nmodels
@@ -184,9 +294,36 @@ class Validator:
         ## Prepare the output
         self._to_pandas(window_size, horizon, align)
         
-    def compute_loss(self, forecasts: np.ndarray, window_size: int, 
+    def compute_loss(self, forecasts: np.ndarray, window_size: int,
                      horizon: int, loss_function: str):
+        '''
+        Computes a single loss series between ``forecasts`` and the
+        target-aligned realized squared returns.
 
+        Parameters
+        ----------
+        forecasts : np.ndarray
+            h-step-ahead conditional variance forecast, one column per
+            model.
+        window_size : int
+            Window size used to produce ``forecasts``. Used to locate the
+            first target-aligned observation in ``endog``.
+        horizon : int
+            Forecast horizon used to produce ``forecasts``. Used to locate
+            the first target-aligned observation in ``endog``.
+        loss_function : {'mse', 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE'}
+            Loss function to compute.
+
+        Returns
+        -------
+        np.ndarray
+            Loss series, same shape as ``forecasts``.
+
+        Raises
+        ------
+        ValueError
+            If ``loss_function`` is not one of the supported values.
+        '''
         forecasts = array_like(forecasts, 'forecasts', ndim=2)
         window_size = int_like(window_size, 'window_size')
         horizon = int_like(horizon, 'horizon')
@@ -219,6 +356,15 @@ class Validator:
         '''
         Converts the raw ndarray results from ``validate``/``compute_loss``
         into index-aligned ``pd.DataFrame``s, per the ``align`` setting.
+
+        Parameters
+        ----------
+        window_size : int
+            Window size used by ``validate()``, for index alignment.
+        horizon : int
+            Forecast horizon used by ``validate()``, for index alignment.
+        align : {'origin', 'target'}
+            Index alignment method; see ``validate()``.
         '''
         index = self._index
         window_size = int_like(window_size, 'window_size')
