@@ -1,3 +1,4 @@
+import sys
 import warnings
 import numpy as np
 import pandas as pd
@@ -8,7 +9,6 @@ from statsmodels.tools.validation import (string_like,
                                           float_like,
                                           int_like,
                                           )
-
 class Validator:
 
     def __init__(self, endog: np.ndarray, models: np.ndarray, window_size: int,
@@ -66,6 +66,9 @@ class Validator:
         self.VaR = None
         self.ES = None
         
+        self.VaRc = None
+        self.ESc = None
+        
         ## Run the validation process
         self._validate()
         self._compute_loss()
@@ -118,13 +121,37 @@ class Validator:
         model_fits = []
         
         for j, md in enumerate(models):
+            sys.stdout.write(f'\nNow fitting model number {j}\n')
+            sys.stdout.flush()
             _method = 'analytic'
-            
+            _fit = None
+            _warned_convergence = False
+
             for i in range(eff_range):
-                (nobs - window_size)
-                _fit = md.fit(first_obs=i, last_obs=window_size + i, 
-                              options={'maxiter': 500}, disp=False)
-                
+                sys.stdout.write(".")
+                sys.stdout.flush()
+                _start_params = _fit.params if _fit is not None else None
+
+                _fit = md.fit(first_obs=i, last_obs=window_size + i,
+                              starting_values=_start_params, disp=False)
+
+                ## A warm start from the previous window's params can put the optimizer
+                ## in a bad spot right after a sharp volatility swing, so it may fail to
+                ## converge. Refit from the model's default starting values with a larger
+                ## iteration budget instead of carrying a bad estimate forward as the next
+                ## window's warm start.
+                if _fit.convergence_flag != 0:
+                    if not _warned_convergence:
+                        warnings.warn(
+                            f'Warm-started fit did not converge for model {j} '
+                            f'({md.volatility.name}) at window ending index '
+                            f'{window_size + i - 1}; refitting from default starting values.',
+                            stacklevel=2,
+                        )
+                        _warned_convergence = True
+                    _fit = md.fit(first_obs=i, last_obs=window_size + i,
+                                  starting_values=None, options={'maxiter': 500}, disp=False)
+
                 ## Try/Except handle for when analytical forecasts for horizon>1
                 ## do not exist. I prefer the bootstrap method, maybe later change
                 ## so that user can choose.
@@ -167,7 +194,7 @@ class Validator:
         self.std_residuals = std_residuals
         self.VaR = VaR
         self.ES = ES
-        self.model_fits = model_fits
+        self.model_fits = np.asarray(model_fits, dtype=object)
         
     def _compute_loss(self):
 
