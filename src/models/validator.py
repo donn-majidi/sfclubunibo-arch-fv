@@ -12,13 +12,13 @@ from statsmodels.tools.validation import (string_like,
 class Validator:
 
     def __init__(self, endog: np.ndarray, models: np.ndarray, window_size: int,
-                 forecast_horizon: int, alpha: float, align: str | None = 'origin'):
+                 forecast_horizon: int, alpha: float | None = None, align: str | None = 'origin'):
 
         self._endog = array_like(endog, 'endog', ndim=2)
         self._models = array_like(models, 'models', ndim=1, dtype=object)
         self._window_size = int_like(window_size, 'window_size')
         self._forecast_horizon = int_like(forecast_horizon, 'forecast_horizon')
-        self._alpha = float_like(alpha, 'alpha')
+        self._alpha = float_like(alpha, 'alpha', optional=True)
         self._align = string_like(align, 'align')
         self._nobs = endog.shape[0]
         self._nmodels = len(models)
@@ -47,8 +47,8 @@ class Validator:
         if window_size + forecast_horizon >= self._nobs:
             raise ValueError('window_size + forecast_horizon must be strictly less than '
                              'the number of observations.')
-            
-        if alpha > 1 or alpha < 0:
+
+        if alpha is not None and (alpha >= 1 or alpha <= 0):
             raise ValueError('The value of alpha should be strictly between 0 and 1.')
             
         if align not in ('target', 'origin'):
@@ -60,14 +60,11 @@ class Validator:
         self.forecasts = None
         self.std_residuals = None
         self.model_fits = None
-        self.MSE = None
-        self.QLIKE = None
-        self.MAE = None
-        self.VaR = None
-        self.ES = None
-        
-        self.VaRc = None
-        self.ESc = None
+        self.mse_loss = None
+        self.qlike_loss = None
+        self.mae_loss = None
+        self.value_at_risk = None
+        self.expected_shortfall = None
         
         ## Run the validation process
         self._validate()
@@ -81,9 +78,9 @@ class Validator:
 
         summary = pd.DataFrame(
             {
-                'MSE': np.asarray(self.MSE.mean(axis=0)),
-                'MAE': np.asarray(self.MAE.mean(axis=0)),
-                'QLIKE': np.asarray(self.QLIKE.mean(axis=0)),
+                'MSE': np.asarray(self.mse_loss.mean(axis=0)),
+                'MAE': np.asarray(self.mae_loss.mean(axis=0)),
+                'QLIKE': np.asarray(self.qlike_loss.mean(axis=0)),
             },
             index=columns,
         ).round(6)
@@ -115,8 +112,8 @@ class Validator:
         forecasts = np.zeros((eff_range, nmodels))
         std_residuals = np.zeros((eff_range, nmodels ))
         
-        VaR = np.zeros((eff_range, nmodels))
-        ES = np.zeros((eff_range, nmodels))
+        value_at_risk = np.zeros((eff_range, nmodels))
+        expected_shortfall = np.zeros((eff_range, nmodels))
         
         model_fits = []
         
@@ -173,27 +170,29 @@ class Validator:
                 forecasts[i,j] = _fh
                 std_residuals[i,j] = _std
                 
-                ## Next retrieve distribution parameters for VaR and ES estimation
-                if md.distribution.num_params == 0:
-                    dist_params = None
-                else:
-                    dist_nparams = md.distribution.num_params
-                    dist_params = _fit.params[-dist_nparams:]
+                ## VaR and Expected Shortfall estimation
+                if alpha is not None:
+                    ## Frist retrieve distribution parameters for VaR and ES estimation
+                    if md.distribution.num_params == 0:
+                        dist_params = None
+                    else:
+                        dist_nparams = md.distribution.num_params
+                        dist_params = _fit.params[-dist_nparams:]
                     
-                _z_alpha = md.distribution.ppf(alpha, parameters=dist_params)
-                _VaR = _z_alpha * np.sqrt(_fh)
-                _ES = md.distribution.partial_moment(1, _z_alpha, parameters=dist_params) / alpha * np.sqrt(_fh)
+                    _z_alpha = md.distribution.ppf(alpha, parameters=dist_params)
+                    _var = _z_alpha * np.sqrt(_fh)
+                    _es = md.distribution.partial_moment(1, _z_alpha, parameters=dist_params) / alpha * np.sqrt(_fh)
                 
-                VaR[i,j] = _VaR
-                ES[i,j] = _ES
+                    value_at_risk[i,j] = _var
+                    expected_shortfall[i,j] = _es
                 
             ## Save the fitted model at the last iteration
             model_fits.append(_fit)
             
         self.forecasts = forecasts
         self.std_residuals = std_residuals
-        self.VaR = VaR
-        self.ES = ES
+        self.value_at_risk = value_at_risk
+        self.expected_shortfall = expected_shortfall
         self.model_fits = np.asarray(model_fits, dtype=object)
         
     def _compute_loss(self):
@@ -208,9 +207,9 @@ class Validator:
         endog = self._endog[first_indx:]
         forecasts = self.forecasts
 
-        self.MSE = (forecasts - endog**2)**2
-        self.QLIKE = ( np.log(forecasts) + endog**2/forecasts )
-        self.MAE = np.abs(forecasts - endog**2)
+        self.mse_loss = (forecasts - endog**2)**2
+        self.qlike_loss = ( np.log(forecasts) + endog**2/forecasts )
+        self.mae_loss = np.abs(forecasts - endog**2)
         
     def _to_pandas(self):
 
@@ -236,24 +235,24 @@ class Validator:
         self.std_residuals = df
         
         ## VaR
-        df = pd.DataFrame(self.VaR, index=fc_index)
-        self.VaR = df
+        df = pd.DataFrame(self.value_at_risk, index=fc_index)
+        self.value_at_risk = df
         
         ## Expected Shortfall
-        df = pd.DataFrame(self.ES, index=fc_index)
-        self.ES = df
+        df = pd.DataFrame(self.expected_shortfall, index=fc_index)
+        self.expected_shortfall = df
         
         ## MSE
-        df = pd.DataFrame(self.MSE, index=fc_index)
-        self.MSE = df
+        df = pd.DataFrame(self.mse_loss, index=fc_index)
+        self.mse_loss = df
         
         ## QLIKE
-        df = pd.DataFrame(self.QLIKE, index=fc_index)
-        self.QLIKE = df
+        df = pd.DataFrame(self.qlike_loss, index=fc_index)
+        self.qlike_loss = df
         
         ## MAE
-        df = pd.DataFrame(self.MAE, index=fc_index)
-        self.MAE = df
+        df = pd.DataFrame(self.mae_loss, index=fc_index)
+        self.mae_loss = df
         
         
         
