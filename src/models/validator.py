@@ -47,7 +47,7 @@ class Validator:
         if window_size + forecast_horizon >= self._nobs:
             raise ValueError('window_size + forecast_horizon must be strictly less than '
                              'the number of observations.')
-
+            
         if alpha is not None and (alpha >= 1 or alpha <= 0):
             raise ValueError('The value of alpha should be strictly between 0 and 1.')
             

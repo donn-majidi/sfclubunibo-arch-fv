@@ -27,11 +27,11 @@ class LossContainer:
 
     Attributes
     ----------
-    MSE : pd.DataFrame | np.ndarray
+    mse_losses : pd.DataFrame | np.ndarray
         Squared-error loss series, (forecast - observation)^2.
-    MAE : pd.DataFrame | np.ndarray
+    mae_losses : pd.DataFrame | np.ndarray
         Absolute-error loss series, |forecast - observation|.
-    QLIKE : pd.DataFrame | np.ndarray
+    qlike_losses : pd.DataFrame | np.ndarray
         Quasi-likelihood loss series, log(forecast) + observation/forecast.
         Returned as a ``pd.DataFrame`` (indexed/columned like ``forecasts``)
         when ``forecasts`` is a pandas object, otherwise as a raw ndarray.
@@ -70,9 +70,9 @@ class LossContainer:
             self._columns = [forecasts.name if forecasts.name is not None else 'forecast']
             
         ## Declare class parameters and attributes
-        self.MSE = None
-        self.MAE = None
-        self.QLIKE = None
+        self.mse_losses = None
+        self.mae_losses = None
+        self.qlike_losses = None
         
         ## Compute the loss series
         self._compute_loss_series()
@@ -88,9 +88,9 @@ class LossContainer:
 
         summary = pd.DataFrame(
             {
-                'MSE': np.asarray(self.MSE.mean(axis=0)),
-                'MAE': np.asarray(self.MAE.mean(axis=0)),
-                'QLIKE': np.asarray(self.QLIKE.mean(axis=0)),
+                'MSE': np.asarray(self.mse_losses.mean(axis=0)),
+                'MAE': np.asarray(self.mae_losses.mean(axis=0)),
+                'QLIKE': np.asarray(self.qlike_losses.mean(axis=0)),
             },
             index=columns,
         ).round(6)
@@ -109,9 +109,9 @@ class LossContainer:
         forecasts = self._forecasts
         observations = self._observations
         
-        self.MSE = (forecasts - observations)**2
-        self.QLIKE = ( np.log(forecasts) + observations/forecasts )
-        self.MAE = np.abs(forecasts - observations)
+        self.mse_losses = (forecasts - observations)**2
+        self.qlike_losses = ( np.log(forecasts) + observations/forecasts )
+        self.mae_losses = np.abs(forecasts - observations)
         
     def _to_pandas(self):
         
@@ -119,16 +119,16 @@ class LossContainer:
         columns = self._columns
         
         ## MSE
-        df =  pd.DataFrame(self.MSE, index=index, columns=columns)
-        self.MSE = df
+        df =  pd.DataFrame(self.mse_losses, index=index, columns=columns)
+        self.mse_losses = df
         
         ## MAE
-        df = pd.DataFrame(self.MAE, index=index, columns=columns)
-        self.MAE = df
+        df = pd.DataFrame(self.mae_losses, index=index, columns=columns)
+        self.mae_losses = df
         
         ## QLIKE
-        df = pd.DataFrame(self.QLIKE, index=index, columns=columns)
-        self.QLIKE = df
+        df = pd.DataFrame(self.qlike_losses, index=index, columns=columns)
+        self.qlike_losses = df
             
         
         
