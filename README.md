@@ -48,23 +48,47 @@ mod2 = arch_model(returns, vol='GARCH', p=1, o=1, q=1, dist='studentst') ## GJR_
 ## Create array of model instances
 models = np.asarray([mod1, mod2], dtype=object) ## The dtype of the array has to be explicitly set to object.
 
-## Set the window size and the forecast horizon to feed to the Validator class
-ws = 252
-fh = 1
+## Set the input parameters to feed to the Validator class
+ws = 252  # Window size
+fh = 1    # Forecast horizon
+alpha = 0.05  # Significance level for Value at Risk and Expected Shortfall estimation. This parameter is optional.
+align = 'target'  # Index align method for out-of-sample forecasts and corresponding losses. If not passed, the default align method will be used: 'origin'.
+```
+>[!NOTE]
+>1.Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the class instance.
+>
+>2.The default index align method for the out-of-sample forecasts is 'origin' as in the default behavior of the forecast() method in the arch package. Setting the align method to 'target' can ease direct comparison with the data as no further index alignment would be required. Compare:
 
-model_validator = Validator(endog=returns, models=models, window_size=ws, forecast_horizon=fh)
+| index: align = 'origin'  |  h.1 | h.2  | index: align = 'target'  | h.1  | h.2 |
+|--------|------|----- | ------ | ---- | --- |
+| 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
+| 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
+| 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
 
-## Out-of-sample forecasts along with forecast losses can be accessed from the class properties.
-forecasts = model_validator.forecasts
-forecasts_mse_loss = model_validator.MSE  ## DataFrame containing squared forecast errors
-forecasts_qlike_loss = model_validator.QLIKE  ## DataFrame containing quasi-likelihood scores
+```python
+model_validator = Validator(endog=returns, models=models, window_size=ws, forecast_horizon=fh,
+                            alpha=alpha, align=align)
 
-## Index-aligned standardized residuals obtained from each iteration can be accessed via
-zs = model_validator.std_residuals
+## Out-of-sample forecasts along with forecast losses can be accessed from class properties.
+mv_forecasts = model_validator.forecasts  ## DataFrame containing index aligned out-of-sample forecasts
+mv_mse = model_validator.mse_loss  ## DataFrame containing squared forecast errors
+mv_qlike = model_validator.qlike_loss  ## DataFrame containing quasi-likelihood scores
 
+## If alpha is passed, the class instance will also contain Value at Risk and Expected Shortfall forecasts
+## which can be accessed from class properties
+mv_var = model_validator.value_at_risk
+mv_exp = model_validator.expected_shortfall
+
+## Standardized residuals obtained from each iteration can be accessed via:
+mv_resid = model_validator.std_residuals
+```
+>[!NOTE]
+>Regardless of the index alignment method chosen for the out-of-sample forecasts, the indices of the standardized residuals are always 'origin' aligned, as they have to correspond to the last observation used to fit the model.
+
+```python
 ## Finally, the model fit results from the last iteration can be accessed from the model_results property
-mod1_fit = model_validator.model_results[0]
-mod2_fit = model_validator.model_results[1]
+mod1_fit = model_validator.model_fits[0]
+mod2_fit = model_validator.model_fits[1]
 ```
 ## Models
 
@@ -73,7 +97,9 @@ mod2_fit = model_validator.model_results[1]
 class Validator(endog: np.ndarray,
                 models: np.ndarray,
                 window_size: int,
-                forecast_horizon: int)
+                forecast_horizon: int,
+                alpha: float,
+                align: 'origin' | 'target' = 'origin')
 ```
 Model validator class for rolling-window forecast loss evaluations.
 #### Parameters
@@ -81,21 +107,43 @@ Model validator class for rolling-window forecast loss evaluations.
 - models: 1-D array of model instances.
 - window_size: Number of observations in each rolling estimation window.
 - forecast_horizon: Forecast horizon h to evaluate.
+- alpha: Significance level for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
+- align: Index alignment method: 'origin' or 'target'. Default is 'origin'.
+
+Compare:
+| index: align = 'origin'  |  h.1 | h.2  | index: align = 'target'  | h.1  | h.2 |
+|--------|------|----- | ------ | ---- | --- |
+| 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
+| 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
+| 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
 
 #### Properties
-- forecasts: h-step-ahead conditional variance forecast per model (columns) and rolling window origin (rows, indexed like ``endog``).
-- std_residuals: Standardized residual at the newest in-window observation, per model and window origin.
-- model_results: list of ARCHModelResult containing model fit results from the last iteration.
-- MSE, QLIKE, MAE: Index-aligned forecast losses obtained from model forecasts.
+- forecasts: Series of h-step-ahead conditional variance forecast per model.
+- mse_loss: Series of h-step-ahead conditional variance squared error loss per model.
+- mae_loss: Series of h-step-ahead conditional variance absolute error loss per model.
+- qlike_loss: Series of h-step-ahead conditional variance quasi-likelihood score per model.
+- value_at_risk: Series of h-step-ahead conditional value at risk forecast per model.
+- expected_shortfall: Series of h-step-ahead conditional expected shortfall per model.
+- std_residuals: Standardized residuals obtained from the last observation in each estimation window.
+- model_fits: Array containing estimated model results on the last estimation window.
 
 ## Extra Modules
 
 ### `Class LossContainer`
 Generic class for loss function calculations. It takes as input the array of model forecasts and the index-aligned observations and it calculates the MSE, MAE, and QLIKE loss of each forecast. The estimated loss series are stored as properties.
-- LossContainer.MSE contains series of squared forecast errors.
-- LossContainer.MAE contains series of absolute forecast errors.
-- LossContainer.QLIKE contains series of quasi-likelihood forecast scores.
+- LossContainer.mse_loss contains series of squared forecast errors.
+- LossContainer.mae_loss contains series of absolute forecast errors.
+- LossContainer.qlike_loss contains series of quasi-likelihood forecast scores.
 The class can be optionally instantiated with `forecast_horizon` which will include the forecast horizon in the summary results.
+
+#### Parameters
+forecasts: 1-Dimensional or 2-dimensional array of model forecasts. Index must be 'target' aligned.
+observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
+
+#### Properties
+- mse_loss: Series of h-step-ahead conditional variance squared error loss per model.
+- mae_loss: Series of h-step-ahead conditional variance absolute error loss per model.
+- qlike_loss: Series of h-step-ahead conditional variance quasi-likelihood score per model.
 
 > [!NOTE]
 > The Validator class automatically computes the loss series and handles index-alignment internally. Only use the LossContainer class if using an alternative forecasting scheme.
@@ -105,37 +153,63 @@ from src.modules.loss_container import LossContainer
 ## assuming that the array of out-of-sample forecasts is stored in forecasts
 ## and the univariate array of observations (variance proxies in the case of volatility forecasts) is stored in observations
 ## then the class should be loaded as:
-lc = LossContainer(returns, forecasts, forecast_horizon=1)
-f_mse = lc.MSE
-print(MSE)
+lc = LossContainer(observations, forecasts, forecast_horizon=1)
+lc_mse = lc.mse_loss
+print(lc_mse)
 
 ## average forecast losses
 print(lc)
+```
+>[!NOTE]
+>Make sure that the forecasts and the observations are in the same units and that the index of the forecasts is 'target' aligned.
+
+Continuing the example from section [Usage Example](#usage-example):
+```python
+mv_index = mv_forecasts.index
+observations = returns.loc[mv_index]**2
+lc2 = LossContainer(observations, mv_forecasts, forecast_horizon=fh)
+lc2_mse = lc2.mse_loss
+print(lc2_mse)
+
+## average forecast losses
+print(lc2)
 ```
 
 ### `bootstrap_block_size`
 This function implements the automatic block-length selection procedure of Politis & White (2004) / Patton, Politis & White (2009).
 - It takes as input a dataframe or a series containing the estimated model losses and calculates the optimal block-size for each column.
+
+Parameters:
+- x: 1-Dimensional or 2-dimensional array of input time-series.
+
+Returns:
+- pd.DataFrame containing the estimated optimal block size for each of the input series per bootstrapping algorithm ('Stationary Bootstrap', 'Circular Bootstrap', 'Moving-Blocks Bootstrap')
 ```python
 from src.modules.bootstrap_params import bootstrap_block_size
-optimal_bsz = bootstrap_block_size(f_mse)
-print(optimal_bsz)
+opt_bs = bootstrap_block_size(mv_qlike_loss)
+print(opt_bs)
 ```
 ### `cusum_supf_test`
 This function implements Bruce Hansen's CUSUM of Squares SupF test.
 
-
-Inputs:
-- x: Univariate array of standardized residuals.
+Parameters:
+- x: 1-Dimensional array of standardized residuals.
 - moment: Moment order being tested. Has to be either 2 or 4.
 - alpha: The size of the test. Default is 0.05.
 - trim: Trimming fraction for trimming the CUSUM path.
 - bandwidth: Kernel bandwidth for variance estimation.
 - ax: plt.Axes canvas on which to plot the graph of the CUSUM path along with the confidence bands.
 
+Returns:
+- Dictionary containing:
+    - the SupF statistic
+    - Chi2 test statistic
+    - pvalue
+    - breakpoint (where SupF exceeds the confidence bands.)
+
 ```python
 from src.modules.standard_diagnostics import cusum_supf_test
-zs_0 = zs[0] ## Univariate array of standardized residuals
+zs_0 = mv_resid[0] ## Univariate array of standardized residuals
 
 import matplotlib.pyplot as plt
 fig, ax = plt.subplots()
@@ -155,8 +229,8 @@ class GenParetoMLE(endog: np.ndarray)
 - params: Estimated parameters.
   - params[0] contains the estimated shape parameter.
   - params[1] contains the estimated scale parameter.
+
 ```python
->>>Example
 from src.modules.standard_diagnostics import GenParetoMLE
 thresh = np.percentile(zs_0, 95)
 ex_0 = zs_0[zs_0 > thresh] - thresh
@@ -177,7 +251,7 @@ where $m$ is the number of exceedances, ovvero the size of the series passed to 
 ```math
                  w = \sqrt(m)  (\hat{\xi} - \xi) / (1+\xi) \sim \mathcal{N}(0,1)
 ```
-Inputs:
+Parameters:
 - z: Univariate array of centered exceedances above threshold. Must be the same array fed to GenParetoMLE.
 - moment_order: Moment order being tested.
 - xi_hat: MLE estimate of the shape parameter.
@@ -212,6 +286,14 @@ where $\hat{S}$ and $\hat{K}$ are sample estimates of Skewness and Kurtosis of t
 ```math
                 JB \sim \mathcal{\chi}^2(2).
 ```
+Parameters:
+- z: Univariate array of standardized random variables.
+Returns:
+- Dictionary containing:
+  - test statistic
+  - critical value
+  - p-value of the test
+
 ```python
 from src.modules.standard_diagnostics import jb_test
 jb_results = jb_test(zs_0)
