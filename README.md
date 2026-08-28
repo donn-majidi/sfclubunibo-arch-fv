@@ -57,12 +57,12 @@ fh = 1    # Forecast horizon
 alpha = [0.01,0.05]  # Significance levels for Value at Risk and Expected Shortfall estimation. This parameter is optional.
 align = 'target'  # Index align method for out-of-sample forecasts and corresponding losses. If not passed, the default align method will be used: 'origin'.
 
-model_validator(window_size=ws, horizon=fh, alpha = alpha, align=align)
+model_validator.validate(window_size=ws, horizon=fh, alpha = alpha, align=align)
 ```
->[!NOTE]
->1.Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
+> [!NOTE]
+> 1. Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
 >
->2.The default index align method for the out-of-sample forecasts is 'origin' as in the default behavior of the forecast() method in the arch package. Setting the align method to 'target' can ease direct comparison with the data as no further index alignment would be required. Compare:
+> 2. The default index align method for the out-of-sample forecasts is 'origin' as in the default behavior of the forecast() method in the arch package. Setting the align method to 'target' can ease direct comparison with the data as no further index alignment would be required. Compare:
 
 | index: align = 'origin'  |  h.1 | h.2  | index: align = 'target'  | h.1  | h.2 |
 |--------|------|----- | ------ | ---- | --- |
@@ -101,44 +101,57 @@ class Validator(endog: np.ndarray,
 ```
 Model validator class for rolling-window forecast loss evaluations.
 #### Parameters
-- endog: Return series (e.g. demeaned log returns) the models were built on.
-- models: 1-D array of model instances.
-- window_size: Number of observations in each rolling estimation window.
-- forecast_horizon: Forecast horizon h to evaluate.
-- alpha: Array of significance levels for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
-- align: Index alignment method: 'origin' or 'target'. Default is 'origin'.
-
-Compare:
-| index: align = 'origin'  |  h.1 | h.2  | index: align = 'target'  | h.1  | h.2 |
-|--------|------|----- | ------ | ---- | --- |
-| 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
-| 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
-| 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
+- `endog`: Return series (e.g. demeaned log returns) the models were built on.
+- `models`: 1-D array of model instances.
 
 #### Methods
-- validate(window_size: int,
+```python
+validate(window_size: int,
           horizon: int,
           alpha: np.ndarray | None = None,
           align: str | None = 'origin')
+  ```
   
   Run the validation process for given input parameters.
 
-- compute_loss(forecasts: np.ndarray,
+  #### Parameters:
+  - `window_size`: Number of observations in each rolling estimation window.
+  - `forecast_horizon`: Forecast horizon h to evaluate.
+  - `alpha`: Array of significance levels for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
+  - `align`: Index alignment method: 'origin' or 'target'. Default is 'origin'.
+
+```python
+compute_loss(forecasts: np.ndarray,
               window_size: int,
               horizon: int,
-              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')
-  
+              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
+  ```
   Compute the desired loss function given input parameters.
+  #### Parameters:
+  - `window_size`: Number of observations in each rolling estimation window.
+  - `forecast_horizon`: Forecast horizon h to evaluate.
+  - `loss_function`: String indicating the loss function to compute. Must be one of `('mse', 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
+
+> [!NOTE]
+  > 1. Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
+  >
+  > 2. The default index align method for the out-of-sample forecasts is 'origin' as in the default behavior of the forecast() method in the arch package. Setting the align method to 'target' can   ease direct comparison with the data as no further index alignment would be required. Compare:
+
+  | index: align = 'origin'  |  h.1 | h.2  | index: align = 'target'  | h.1  | h.2 |
+  |--------|------|----- | ------ | ---- | --- |
+  | 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
+  | 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
+  | 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
 
 #### Properties
-- forecasts: Dataframe of h-step-ahead conditional variance forecast per model.
-- mse_loss: Dataframe of h-step-ahead conditional variance squared error loss per model.
-- mae_loss: Dataframe of h-step-ahead conditional variance absolute error loss per model.
-- qlike_loss: Dataframe of h-step-ahead conditional variance quasi-likelihood score per model.
-- value_at_risk: Dataframe of h-step-ahead conditional value at risk forecast per model. The columns are multi-indexed per model per significance level.
-- expected_shortfall: Dataframe of h-step-ahead conditional expected shortfall per model. The columns are multi-indexed per model per significance level.
-- std_residuals: Standardized residuals obtained from the last observation in each estimation window.
-- model_fits: Array containing estimated model results on the last estimation window.
+- `forecasts`: Dataframe of h-step-ahead conditional variance forecast per model.
+- `mse_loss`: Dataframe of h-step-ahead conditional variance squared error loss per model.
+- `mae_loss`: Dataframe of h-step-ahead conditional variance absolute error loss per model.
+- `qlike_loss`: Dataframe of h-step-ahead conditional variance quasi-likelihood score per model.
+- `value_at_risk`: Dataframe of h-step-ahead conditional value at risk forecast per model. The columns are multi-indexed per model per significance level.
+- `expected_shortfall`: Dataframe of h-step-ahead conditional expected shortfall per model. The columns are multi-indexed per model per significance level.
+- `std_residuals`: Standardized residuals obtained from the last observation in each estimation window.
+- `model_fits`: Array containing estimated model results on the last estimation window.
 
 ## Extra Modules
 
@@ -157,14 +170,14 @@ The class can be optionally instantiated with `forecast_horizon` which will incl
 observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
 
 #### Parameters
-- observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
-- forecasts: 1-Dimensional or 2-dimensional array of model forecasts. Index must be 'target' aligned.
-- forecast_horizon: Integer determining the forecast horizon.
+- `observations`: 1-Dimensional array of observations. Must be in the same units as the forecasts.
+- `forecasts`: 1-Dimensional or 2-dimensional array of model forecasts. Index must be 'target' aligned.
+- `forecast_horizon`: Integer determining the forecast horizon.
 
 #### Properties
-- mse_loss: Series of h-step-ahead conditional variance squared error loss per model.
-- mae_loss: Series of h-step-ahead conditional variance absolute error loss per model.
-- qlike_loss: Series of h-step-ahead conditional variance quasi-likelihood score per model.
+- `mse_loss`: Series of h-step-ahead conditional variance squared error loss per model.
+- `mae_loss`: Series of h-step-ahead conditional variance absolute error loss per model.
+- `qlike_loss`: Series of h-step-ahead conditional variance quasi-likelihood score per model.
 
 > [!NOTE]
 > The Validator class automatically computes the loss series and handles index-alignment internally. Only use the LossContainer class if using an alternative forecasting scheme.
@@ -201,10 +214,10 @@ This function implements the automatic block-length selection procedure of Polit
 - It takes as input a dataframe or a series containing the estimated model losses and calculates the optimal block-size for each column.
 
 Parameters:
-- x: 1-Dimensional or 2-dimensional array of input time-series.
+- `x`: 1-Dimensional or 2-dimensional array of input time-series.
 
 Returns:
-- pd.DataFrame containing the estimated optimal block size for each of the input series per bootstrapping algorithm ('Stationary Bootstrap', 'Circular Bootstrap', 'Moving-Blocks Bootstrap')
+- `pd.DataFrame` containing the estimated optimal block size for each of the input series per bootstrapping algorithm ('Stationary Bootstrap', 'Circular Bootstrap', 'Moving-Blocks Bootstrap')
 ```python
 from src.modules.bootstrap_params import bootstrap_block_size
 opt_bs = bootstrap_block_size(mv_qlike_loss)
@@ -214,15 +227,15 @@ print(opt_bs)
 This function implements Bruce Hansen's CUSUM of Squares SupF test.
 
 Parameters:
-- x: 1-Dimensional array of standardized residuals.
-- moment: Moment order being tested. Has to be either 2 or 4.
-- alpha: The size of the test. Default is 0.05.
-- trim: Trimming fraction for trimming the CUSUM path.
-- bandwidth: Kernel bandwidth for variance estimation.
-- ax: plt.Axes canvas on which to plot the graph of the CUSUM path along with the confidence bands.
+- `x`: 1-Dimensional array of standardized residuals.
+- `moment`: Moment order being tested. Has to be either 2 or 4.
+- `alpha`: The size of the test. Default is 0.05.
+- `trim`: Trimming fraction for trimming the CUSUM path.
+- `bandwidth`: Kernel bandwidth for variance estimation.
+- `ax`: plt.Axes canvas on which to plot the graph of the CUSUM path along with the confidence bands.
 
 Returns:
-- Dictionary containing:
+- `dict()` containing:
     - the SupF statistic
     - Chi2 test statistic
     - pvalue
@@ -245,17 +258,17 @@ This is a child class of statsmodels GenericLikelihoodModel to estimate the shap
 class GenParetoMLE(endog: np.ndarray)
 ```
 #### Parameters
-- endog: Tail observations for GPD parameters estimation. Must already be centered.
+- `endog`: Tail observations for GPD parameters estimation. Must already be centered.
 
 #### Methods
-- fit():
+- `fit()`:
   Fit the model. Method return type is GenericLikelihoodModelResults.
   Among the properties of the GenericLikelihoodModelResults are the estimated parameters which can be accessed via:
   
 ### Properties of GenericLikelihoodModelResults
-- params: Estimated parameters.
-  - params[0] contains the estimated shape parameter.
-  - params[1] contains the estimated scale parameter.
+- `params`: Estimated parameters.
+  - `params[0]` contains the estimated shape parameter.
+  - `params[1]` contains the estimated scale parameter.
 
 ```python
 from src.modules.standard_diagnostics import GenParetoMLE
@@ -279,16 +292,16 @@ where $m$ is the number of exceedances, ovvero the size of the series passed to 
                  w = \sqrt(m)  (\hat{\xi} - \xi) / (1+\xi) \sim \mathcal{N}(0,1)
 ```
 Parameters:
-- z: Univariate array of centered exceedances above threshold. Must be the same array fed to GenParetoMLE.
-- moment_order: Moment order being tested.
-- xi_hat: MLE estimate of the shape parameter.
-- sigma_hat: MLE estimate of the scale parameter.
-- bandwidth: Optional. Number of bins to plot the histogram.
-- trim_quantile: Optional | Default = 0.99. The cut-off quantile on the plot. By trimming the extreme values makes the plot tidier.
-- ax: Optional. plt.Axes canvas on which to plot the empirical pdf of the input data along with the theoretical pdf of the Generalized Pareto Distribution with given shape and scale parameters.
+- `z`: Univariate array of centered exceedances above threshold. Must be the same array fed to GenParetoMLE.
+- `moment_order`: Moment order being tested.
+- `xi_hat`: MLE estimate of the shape parameter.
+- `sigma_hat`: MLE estimate of the scale parameter.
+- `bandwidth`: Optional. Number of bins to plot the histogram.
+- `trim_quantile`: Optional | Default = 0.99. The cut-off quantile on the plot. By trimming the extreme values makes the plot tidier.
+- `ax: Optional`: plt.Axes canvas on which to plot the empirical pdf of the input data along with the theoretical pdf of the Generalized Pareto Distribution with given shape and scale parameters.
 
 Returns:
-- Dictionary containing:
+- `dict()` containing:
   - test statistic
   - critical value
   - p-value of the test
@@ -314,9 +327,9 @@ where $\hat{S}$ and $\hat{K}$ are sample estimates of Skewness and Kurtosis of t
                 JB \sim \mathcal{\chi}^2(2).
 ```
 Parameters:
-- z: Univariate array of standardized random variables.
+- `z`: Univariate array of standardized random variables.
 Returns:
-- Dictionary containing:
+- `dict()` containing:
   - test statistic
   - critical value
   - p-value of the test
