@@ -20,8 +20,8 @@ class Validator:
     origin, and is evaluated against the realized squared return at the
     target date via the MSE, MAE, and QLIKE loss functions. If ``alpha`` is
     passed to ``validate()``, Value at Risk and Expected Shortfall forecasts
-    are additionally computed for each window, using the model's own
-    conditional distribution.
+    are additionally computed for each window and each significance level in
+    ``alpha``, using the model's own conditional distribution.
 
     Parameters
     ----------
@@ -58,13 +58,15 @@ class Validator:
         Quasi-likelihood loss series, log(forecast) + endog^2/forecast, per
         model. ``None`` until ``validate()`` is called.
     value_at_risk : pd.DataFrame
-        h-step-ahead conditional Value at Risk forecast per model, at the
-        ``alpha`` level passed to ``validate()``. All-zero if ``alpha`` was
-        not passed. ``None`` until ``validate()`` is called.
+        h-step-ahead conditional Value at Risk forecast. If ``alpha`` was
+        passed to ``validate()``, columns are a ``(model, alpha)``
+        ``pd.MultiIndex``, one column per model/significance-level
+        combination. If ``alpha`` was not passed, all-zero with one column
+        per model. ``None`` until ``validate()`` is called.
     expected_shortfall : pd.DataFrame
-        h-step-ahead conditional Expected Shortfall forecast per model, at
-        the ``alpha`` level passed to ``validate()``. All-zero if ``alpha``
-        was not passed. ``None`` until ``validate()`` is called.
+        h-step-ahead conditional Expected Shortfall forecast. Same column
+        structure as ``value_at_risk``. ``None`` until ``validate()`` is
+        called.
 
     Raises
     ------
@@ -129,7 +131,7 @@ class Validator:
             f"{self.__class__.__name__}(nobs={self._nobs}, nmodels={self._nmodels})"
         )
 
-    def validate(self, window_size: int, horizon: int, alpha: float | None = None,
+    def validate(self, window_size: int, horizon: int, alpha: np.ndarray | None = None,
                  align: str | None = 'origin'):
         '''
         Runs the rolling-window estimation/forecasting loop for each model.
@@ -138,12 +140,12 @@ class Validator:
         converged parameters (falling back to a cold start with a larger
         iteration budget on non-convergence), produces a ``horizon``-step-
         ahead conditional variance forecast, and, if ``alpha`` is passed, the
-        corresponding Value at Risk and Expected Shortfall. Populates
-        ``forecasts``, ``std_residuals``, ``value_at_risk``,
-        ``expected_shortfall``, ``model_fits``, and the MSE/MAE/QLIKE loss
-        series (via ``compute_loss``), converting all of them to
-        index-aligned ``pd.DataFrame``s (via ``_to_pandas``) before
-        returning.
+        corresponding Value at Risk and Expected Shortfall at every
+        significance level in ``alpha``. Populates ``forecasts``,
+        ``std_residuals``, ``value_at_risk``, ``expected_shortfall``,
+        ``model_fits``, and the MSE/MAE/QLIKE loss series (via
+        ``compute_loss``), converting all of them to index-aligned
+        ``pd.DataFrame``s (via ``_to_pandas``) before returning.
 
         Parameters
         ----------
@@ -153,11 +155,16 @@ class Validator:
         horizon : int
             Forecast horizon h to evaluate. ``window_size + horizon`` must
             be strictly less than the number of observations in ``endog``.
-        alpha : float | None, optional
-            Significance level for Value at Risk and Expected Shortfall
-            forecasting. Must be strictly between 0 and 1. If not passed,
-            ``value_at_risk``/``expected_shortfall`` are left as all-zero.
-            The default is None.
+        alpha : float | array_like | None, optional
+            Significance level(s) for Value at Risk and Expected Shortfall
+            forecasting. May be a single float or a 1-D array/list of
+            floats, each strictly between 0 and 1. If not passed,
+            ``value_at_risk``/``expected_shortfall`` are left as all-zero,
+            one column per model. If passed, VaR/ES are computed at every
+            level and ``value_at_risk``/``expected_shortfall`` gain a
+            ``(model, alpha)`` ``pd.MultiIndex`` column structure — one
+            column per model/significance-level combination. The default is
+            None.
         align : {'origin', 'target'}, optional
             Index alignment method for ``forecasts``, ``value_at_risk``,
             ``expected_shortfall``, and the loss series. ``'origin'`` labels
@@ -174,9 +181,9 @@ class Validator:
         ------
         ValueError
             If ``window_size`` or ``window_size + horizon`` is not strictly
-            less than the number of observations in ``endog``, if ``alpha``
-            is not strictly between 0 and 1, or if ``align`` is not
-            'origin' or 'target'.
+            less than the number of observations in ``endog``, if any value
+            in ``alpha`` is not strictly between 0 and 1, or if ``align`` is
+            not 'origin' or 'target'.
         '''
         models = self._models
         nobs = self._nobs
@@ -184,7 +191,7 @@ class Validator:
 
         window_size = int_like(window_size, 'window_size')
         horizon = int_like(horizon, 'horizon')
-        alpha = float_like(alpha, 'alpha', optional=True)
+        alpha = array_like(alpha, 'alpha', ndim=1, optional=True)
         align = string_like(align, 'align')
         
         if window_size >= nobs:
@@ -195,8 +202,8 @@ class Validator:
             raise ValueError('window_size + forecast_horizon must be strictly less than '
                              'the number of observations.')
             
-        if alpha is not None and (alpha >= 1 or alpha <= 0):
-            raise ValueError('The value of alpha should be strictly between 0 and 1.')
+        if alpha is not None and (np.any(alpha >= 1) or np.any(alpha <= 0)):
+            raise ValueError('The values of alpha should be strictly between 0 and 1.')
             
         if align not in ('target', 'origin'):
             raise ValueError(f'Invalid index align input: "{align}". Choose either "origin" '
@@ -209,8 +216,13 @@ class Validator:
         forecasts = np.zeros((eff_range, nmodels))
         std_residuals = np.zeros((eff_range, nmodels ))
         
-        value_at_risk = np.zeros((eff_range, nmodels))
-        expected_shortfall = np.zeros((eff_range, nmodels))
+        if alpha is not None:
+            nalphas = alpha.shape[0]
+            value_at_risk = np.zeros((eff_range, nmodels, nalphas))
+            expected_shortfall = np.zeros((eff_range, nmodels, nalphas))
+        else:
+            value_at_risk = np.zeros((eff_range, nmodels))
+            expected_shortfall = np.zeros((eff_range, nmodels))
         
         model_fits = []
         
@@ -272,12 +284,13 @@ class Validator:
                         dist_nparams = md.distribution.num_params
                         dist_params = _fit.params[-dist_nparams:]
                     
-                    _z_alpha = md.distribution.ppf(alpha, parameters=dist_params)
-                    _var = _z_alpha * np.sqrt(_fh)
-                    _es = md.distribution.partial_moment(1, _z_alpha, parameters=dist_params) / alpha * np.sqrt(_fh)
+                    for k, a in enumerate(alpha):
+                        _z_alpha = md.distribution.ppf(a, parameters=dist_params)
+                        _var = _z_alpha * np.sqrt(_fh)
+                        _es = md.distribution.partial_moment(1, _z_alpha, parameters=dist_params) / a * np.sqrt(_fh)
                 
-                    value_at_risk[i,j] = _var
-                    expected_shortfall[i,j] = _es
+                        value_at_risk[i,j,k] = _var
+                        expected_shortfall[i,j,k] = _es
                 
             ## Save the fitted model at the last iteration
             model_fits.append(_fit)
@@ -292,7 +305,7 @@ class Validator:
         self.qlike_loss = self.compute_loss(forecasts, window_size, horizon, 'qlike')
         
         ## Prepare the output
-        self._to_pandas(window_size, horizon, align)
+        self._to_pandas(window_size, horizon, align, alpha)
         
     def compute_loss(self, forecasts: np.ndarray, window_size: int,
                      horizon: int, loss_function: str):
@@ -352,7 +365,8 @@ class Validator:
         
         return loss
 
-    def _to_pandas(self, window_size: int, horizon: int, align: str):
+    def _to_pandas(self, window_size: int, horizon: int, align: str,
+                   alpha: np.ndarray | None = None):
         '''
         Converts the raw ndarray results from ``validate``/``compute_loss``
         into index-aligned ``pd.DataFrame``s, per the ``align`` setting.
@@ -365,11 +379,21 @@ class Validator:
             Forecast horizon used by ``validate()``, for index alignment.
         align : {'origin', 'target'}
             Index alignment method; see ``validate()``.
+        alpha : float | array_like | None, optional
+            Significance level(s) used by ``validate()``. If passed,
+            ``value_at_risk``/``expected_shortfall`` are reshaped from
+            ``(eff_range, nmodels, nalphas)`` into a DataFrame with a
+            ``(model, alpha)`` ``pd.MultiIndex`` column structure; if not
+            passed, they are left as a plain one-column-per-model
+            DataFrame. The default is None.
         '''
         index = self._index
+        nobs = self._nobs
+        nmodels = self._nmodels
         window_size = int_like(window_size, 'window_size')
         horizon = int_like(horizon, 'horizon')
         align = string_like(align, 'align')
+        alpha = array_like(alpha, 'alpha', ndim=1, optional=True)
         
         ### Index alignment
         if align == 'origin':
@@ -386,14 +410,28 @@ class Validator:
         ## Standardized residuals
         df = pd.DataFrame(self.std_residuals, index=std_index)
         self.std_residuals = df
-        
-        ## VaR
-        df = pd.DataFrame(self.value_at_risk, index=fc_index)
-        self.value_at_risk = df
-        
-        ## Expected Shortfall
-        df = pd.DataFrame(self.expected_shortfall, index=fc_index)
-        self.expected_shortfall = df
+
+        ## Value at Risk and Expected Shortfall
+        var = self.value_at_risk
+        exp = self.expected_shortfall
+        if alpha is not None:
+            eff_range = nobs - window_size - horizon + 1
+            multi_cols = pd.MultiIndex.from_product([range(nmodels), alpha], names=['Model', 'alpha'])
+                
+            #### Value at Risk
+            df = pd.DataFrame(var.reshape(eff_range, -1), columns=multi_cols, index=fc_index)
+            self.value_at_risk = df
+            
+            #### Expected Shortfall
+            df = pd.DataFrame(exp.reshape(eff_range, -1), columns=multi_cols, index=fc_index)
+            self.expected_shortfall = df
+            
+        else:
+            df = pd.DataFrame(var, index=fc_index)
+            self.value_at_risk = df
+            
+            df = pd.DataFrame(exp, index=fc_index)
+            self.expected_shortfall = df
         
         ## MSE
         df = pd.DataFrame(self.mse_loss, index=fc_index)
