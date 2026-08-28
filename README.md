@@ -48,14 +48,19 @@ mod2 = arch_model(returns, vol='GARCH', p=1, o=1, q=1, dist='studentst') ## GJR_
 ## Create array of model instances
 models = np.asarray([mod1, mod2], dtype=object) ## The dtype of the array has to be explicitly set to object.
 
-## Set the input parameters to feed to the Validator class
+## Create and instance of the Validator class
+model_validator = Validator(endog=returns, models=models)
+
+## Set the input parameters to feed to the validate() method
 ws = 252  # Window size
 fh = 1    # Forecast horizon
 alpha = [0.01,0.05]  # Significance levels for Value at Risk and Expected Shortfall estimation. This parameter is optional.
 align = 'target'  # Index align method for out-of-sample forecasts and corresponding losses. If not passed, the default align method will be used: 'origin'.
+
+model_validator(window_size=ws, horizon=fh, alpha = alpha, align=align)
 ```
 >[!NOTE]
->1.Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the class instance.
+>1.Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
 >
 >2.The default index align method for the out-of-sample forecasts is 'origin' as in the default behavior of the forecast() method in the arch package. Setting the align method to 'target' can ease direct comparison with the data as no further index alignment would be required. Compare:
 
@@ -66,9 +71,6 @@ align = 'target'  # Index align method for out-of-sample forecasts and correspon
 | 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
 
 ```python
-model_validator = Validator(endog=returns, models=models, window_size=ws, forecast_horizon=fh,
-                            alpha=alpha, align=align)
-
 ## Out-of-sample forecasts along with forecast losses can be accessed from class properties.
 mv_forecasts = model_validator.forecasts  ## DataFrame containing index aligned out-of-sample forecasts
 mv_mse = model_validator.mse_loss  ## DataFrame containing squared forecast errors
@@ -95,11 +97,7 @@ mod2_fit = model_validator.model_fits[1]
 ### `class Validator`
 ```python
 class Validator(endog: np.ndarray,
-                models: np.ndarray,
-                window_size: int,
-                forecast_horizon: int,
-                alpha: np.ndarray = None,
-                align: 'origin' | 'target' = 'origin')
+                models: np.ndarray)
 ```
 Model validator class for rolling-window forecast loss evaluations.
 #### Parameters
@@ -116,6 +114,21 @@ Compare:
 | 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
 | 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
 | 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
+
+#### Methods
+- validate(window_size: int,
+          horizon: int,
+          alpha: np.ndarray | None = None,
+          align: str | None = 'origin')
+  
+  Run the validation process for given input parameters.
+
+- compute_loss(forecasts: np.ndarray,
+              window_size: int,
+              horizon: int,
+              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')
+  
+  Compute the desired loss function given input parameters.
 
 #### Properties
 - forecasts: Dataframe of h-step-ahead conditional variance forecast per model.
@@ -233,7 +246,13 @@ class GenParetoMLE(endog: np.ndarray)
 ```
 #### Parameters
 - endog: Tail observations for GPD parameters estimation. Must already be centered.
-### Properties
+
+#### Methods
+- fit():
+  Fit the model. Method return type is GenericLikelihoodModelResults.
+  Among the properties of the GenericLikelihoodModelResults are the estimated parameters which can be accessed via:
+  
+### Properties of GenericLikelihoodModelResults
 - params: Estimated parameters.
   - params[0] contains the estimated shape parameter.
   - params[1] contains the estimated scale parameter.
