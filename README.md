@@ -116,21 +116,9 @@ validate(window_size: int,
 
   #### Parameters:
   - `window_size`: Number of observations in each rolling estimation window.
-  - `forecast_horizon`: Forecast horizon h to evaluate.
+  - `horizon`: Forecast horizon h to evaluate.
   - `alpha`: Array of significance levels for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
   - `align`: Index alignment method: 'origin' or 'target'. Default is 'origin'.
-
-```python
-compute_loss(forecasts: np.ndarray,
-              window_size: int,
-              horizon: int,
-              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
-  ```
-  Compute the desired loss function given input parameters.
-  #### Parameters:
-  - `window_size`: Number of observations in each rolling estimation window.
-  - `forecast_horizon`: Forecast horizon h to evaluate.
-  - `loss_function`: String indicating the loss function to compute. Must be one of `('mse', 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
 
 > [!NOTE]
   > 1. Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
@@ -142,6 +130,19 @@ compute_loss(forecasts: np.ndarray,
   | 2026-08-03 | `1.0310` | `1.0315` | 2026-08-03 | NaN | NaN |
   | 2026-08-04 | `1.2406` | 1.2337 | 2026-08-04 | `1.0310` | NaN |
   | 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
+
+```python
+compute_loss(forecasts: np.ndarray,
+              window_size: int,
+              horizon: int,
+              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
+  ```
+  Compute the desired loss function given input parameters.
+  #### Parameters:
+  - `forecasts`: n-Dimensional array of model forecasts.
+  - `window_size`: Number of observations in each rolling estimation window.
+  - `horizon`: Forecast horizon h to evaluate.
+  - `loss_function`: String indicating the loss function to compute. Must be one of `('mse', 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
 
 #### Properties
 - `forecasts`: Dataframe of h-step-ahead conditional variance forecast per model.
