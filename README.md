@@ -135,7 +135,7 @@ validate(window_size: int,
 compute_loss(forecasts: np.ndarray,
               window_size: int,
               horizon: int,
-              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')`
+              loss_function:  'mse' | 'MSE', 'mae', 'MAE', 'qlike', 'QLIKE')
   ```
   Compute the desired loss function given input parameters.
   #### Parameters:
