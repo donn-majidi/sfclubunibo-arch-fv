@@ -51,7 +51,7 @@ models = np.asarray([mod1, mod2], dtype=object) ## The dtype of the array has to
 ## Set the input parameters to feed to the Validator class
 ws = 252  # Window size
 fh = 1    # Forecast horizon
-alpha = 0.05  # Significance level for Value at Risk and Expected Shortfall estimation. This parameter is optional.
+alpha = [0.01,0.05]  # Significance levels for Value at Risk and Expected Shortfall estimation. This parameter is optional.
 align = 'target'  # Index align method for out-of-sample forecasts and corresponding losses. If not passed, the default align method will be used: 'origin'.
 ```
 >[!NOTE]
@@ -98,7 +98,7 @@ class Validator(endog: np.ndarray,
                 models: np.ndarray,
                 window_size: int,
                 forecast_horizon: int,
-                alpha: float = None,
+                alpha: np.ndarray = None,
                 align: 'origin' | 'target' = 'origin')
 ```
 Model validator class for rolling-window forecast loss evaluations.
@@ -107,7 +107,7 @@ Model validator class for rolling-window forecast loss evaluations.
 - models: 1-D array of model instances.
 - window_size: Number of observations in each rolling estimation window.
 - forecast_horizon: Forecast horizon h to evaluate.
-- alpha: Significance level for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
+- alpha: Array of significance levels for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
 - align: Index alignment method: 'origin' or 'target'. Default is 'origin'.
 
 Compare:
@@ -118,12 +118,12 @@ Compare:
 | 2026-08-05 | 1.1138 | 1.1113 | 2026-08-05 | `1.2406` | `1.0315` |
 
 #### Properties
-- forecasts: Series of h-step-ahead conditional variance forecast per model.
-- mse_loss: Series of h-step-ahead conditional variance squared error loss per model.
-- mae_loss: Series of h-step-ahead conditional variance absolute error loss per model.
-- qlike_loss: Series of h-step-ahead conditional variance quasi-likelihood score per model.
-- value_at_risk: Series of h-step-ahead conditional value at risk forecast per model.
-- expected_shortfall: Series of h-step-ahead conditional expected shortfall per model.
+- forecasts: Dataframe of h-step-ahead conditional variance forecast per model.
+- mse_loss: Dataframe of h-step-ahead conditional variance squared error loss per model.
+- mae_loss: Dataframe of h-step-ahead conditional variance absolute error loss per model.
+- qlike_loss: Dataframe of h-step-ahead conditional variance quasi-likelihood score per model.
+- value_at_risk: Dataframe of h-step-ahead conditional value at risk forecast per model. The columns are multi-indexed per model per significance level.
+- expected_shortfall: Dataframe of h-step-ahead conditional expected shortfall per model. The columns are multi-indexed per model per significance level.
 - std_residuals: Standardized residuals obtained from the last observation in each estimation window.
 - model_fits: Array containing estimated model results on the last estimation window.
 
