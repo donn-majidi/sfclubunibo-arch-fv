@@ -188,6 +188,8 @@ class Validator:
         models = self._models
         nobs = self._nobs
         nmodels = self._nmodels
+        
+        ## TODO: Add option for chossing between rolling, fixed, and one time window
 
         window_size = int_like(window_size, 'window_size')
         horizon = int_like(horizon, 'horizon')
