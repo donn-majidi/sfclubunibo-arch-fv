@@ -53,11 +53,12 @@ model_validator = Validator(endog=returns, models=models)
 
 ## Set the input parameters to feed to the validate() method
 ws = 252  # Window size
+uf = 21   # Update frequency
 fh = 1    # Forecast horizon
 alpha = [0.01,0.05]  # Significance levels for Value at Risk and Expected Shortfall estimation. This parameter is optional.
 align = 'target'  # Index align method for out-of-sample forecasts and corresponding losses. If not passed, the default align method will be used: 'origin'.
 
-model_validator.validate(window_size=ws, horizon=fh, alpha = alpha, align=align)
+model_validator.validate(window_size=ws, horizon=fh, update_frequency=uf, alpha = alpha, align=align)
 ```
 > [!NOTE]
 > 1. Value at Risk and Expected Shortfall forecasts will only be computed if a value for alpha is passed to the validate() method.
@@ -108,6 +109,7 @@ Model validator class for rolling-window forecast loss evaluations.
 ```python
 validate(window_size: int,
           horizon: int,
+          update_frequency: int,
           alpha: np.ndarray | None = None,
           align: str | None = 'origin')
   ```
@@ -117,6 +119,7 @@ validate(window_size: int,
   #### Parameters:
   - `window_size`: Number of observations in each rolling estimation window.
   - `horizon`: Forecast horizon h to evaluate.
+  - `update_frequency`: Update frequency for re-fitting the models.
   - `alpha`: Array of significance levels for Value at Risk and Expected Shortfall forecasting. This parameter is optional, if not passed, VaR and ES forecasts will not be computed.
   - `align`: Index alignment method: 'origin' or 'target'. Default is 'origin'.
 
@@ -162,12 +165,7 @@ class LossContainer(observations: np.ndarray,
                     forecasts: np.ndarray,
                     forecast_horizon: int = None)
 ```
-Generic class for loss function calculations. It takes as input the array of model forecasts and the index-aligned observations and it calculates the MSE, MAE, and QLIKE loss of each forecast. The estimated loss series are stored as properties.
-- LossContainer.mse_loss contains series of squared forecast errors.
-- LossContainer.mae_loss contains series of absolute forecast errors.
-- LossContainer.qlike_loss contains series of quasi-likelihood forecast scores.
-
-The class can be optionally instantiated with `forecast_horizon` which will include the forecast horizon in the summary results.
+Generic class for loss function calculations. It takes as input the array of model forecasts and the index-aligned observations and it calculates the MSE, MAE, and QLIKE loss of each forecast. The estimated loss series are stored as properties. The class can be optionally instantiated with `forecast_horizon` which will include the forecast horizon in the summary results.
 observations: 1-Dimensional array of observations. Must be in the same units as the forecasts.
 
 #### Parameters
