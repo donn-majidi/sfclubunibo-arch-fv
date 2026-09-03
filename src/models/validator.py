@@ -47,7 +47,11 @@ class Validator:
     model_fits : np.ndarray
         Object array holding, for each model, the fitted ``ARCHModelResult``
         from the last rolling window only. ``None`` until ``validate()`` is
-        called.
+        called. If ``update_frequency`` was passed to ``validate()`` and the
+        last window was not a re-estimation window, this holds the
+        ``ARCHModelFixedResult`` produced by ``fix()`` for that window
+        instead (same parameters as the last actual fit, just re-anchored to
+        the final window).
     mse_loss : pd.DataFrame
         Squared-error loss series, (forecast - endog^2)^2, per model.
         ``None`` until ``validate()`` is called.
@@ -131,8 +135,8 @@ class Validator:
             f"{self.__class__.__name__}(nobs={self._nobs}, nmodels={self._nmodels})"
         )
 
-    def validate(self, window_size: int, horizon: int, alpha: np.ndarray | None = None,
-                 align: str | None = 'origin'):
+    def validate(self, window_size: int, horizon: int, update_frequency: int = 1,
+                 alpha: np.ndarray | None = None, align: str | None = 'origin'):
         '''
         Runs the rolling-window estimation/forecasting loop for each model.
 
@@ -155,6 +159,18 @@ class Validator:
         horizon : int
             Forecast horizon h to evaluate. ``window_size + horizon`` must
             be strictly less than the number of observations in ``endog``.
+        update_frequency : int, optional
+            Re-estimate (via ``md.fit()``) only every ``update_frequency``-th
+            window; on the windows in between, the model is re-anchored to
+            the new window via ``md.fix()`` using the parameters from the
+            most recent actual fit, at zero optimization cost — window 0 is
+            always fit regardless of this setting, so a fresh set of
+            parameters always seeds the first forecast. This trades staleness
+            of the parameter estimates for speed: forecasts and standardized
+            residuals still advance one window at a time (via ``fix()``'s
+            ``first_obs``/``last_obs``), only the coefficients themselves are
+            held fixed between re-estimations. Must be a positive integer.
+            The default is 1, which re-estimates every window.
         alpha : float | array_like | None, optional
             Significance level(s) for Value at Risk and Expected Shortfall
             forecasting. May be a single float or a 1-D array/list of
@@ -182,8 +198,9 @@ class Validator:
         ValueError
             If ``window_size`` or ``window_size + horizon`` is not strictly
             less than the number of observations in ``endog``, if any value
-            in ``alpha`` is not strictly between 0 and 1, or if ``align`` is
-            not 'origin' or 'target'.
+            in ``alpha`` is not strictly between 0 and 1, if ``align`` is
+            not 'origin' or 'target', or if ``update_frequency`` is not a
+            positive integer.
         '''
         models = self._models
         nobs = self._nobs
@@ -195,7 +212,11 @@ class Validator:
         horizon = int_like(horizon, 'horizon')
         alpha = array_like(alpha, 'alpha', ndim=1, optional=True)
         align = string_like(align, 'align')
-        
+        update_frequency = int_like(update_frequency, 'update_frequency')
+
+        if update_frequency < 1:
+            raise ValueError('update_frequency must be a positive integer.')
+
         if window_size >= nobs:
             raise ValueError('The length of the window must be strictly less than the '
                              'number of observations.')
@@ -234,27 +255,35 @@ class Validator:
             _warned_convergence = False
 
             for i in range(eff_range):
-                _start_params = _fit.params if _fit is not None else None
+                ## Window 0 always gets a real fit, since there is no prior estimate
+                ## to re-anchor to via fix(). Otherwise, only re-estimate every
+                ## update_frequency-th window; in between, hold the parameters fixed
+                ## at their last-estimated values and just re-anchor the model to the
+                ## new window (via fix()'s first_obs/last_obs) at zero optimization cost.
+                if i % update_frequency == 0:
+                    _start_params = _fit.params if _fit is not None else None
 
-                _fit = md.fit(first_obs=i, last_obs=window_size + i,
-                              starting_values=_start_params, disp=False)
-
-                ## A warm start from the previous window's params can put the optimizer
-                ## in a bad spot right after a sharp volatility swing, so it may fail to
-                ## converge. Refit from the model's default starting values with a larger
-                ## iteration budget instead of carrying a bad estimate forward as the next
-                ## window's warm start.
-                if _fit.convergence_flag != 0:
-                    if not _warned_convergence:
-                        warnings.warn(
-                            f'Warm-started fit did not converge for model {j} '
-                            f'({md.volatility.name}) at window ending index '
-                            f'{window_size + i - 1}; refitting from default starting values.',
-                            stacklevel=2,
-                        )
-                        _warned_convergence = True
                     _fit = md.fit(first_obs=i, last_obs=window_size + i,
-                                  starting_values=None, options={'maxiter': 500}, disp=False)
+                                  starting_values=_start_params, disp=False)
+
+                    ## A warm start from the previous window's params can put the optimizer
+                    ## in a bad spot right after a sharp volatility swing, so it may fail to
+                    ## converge. Refit from the model's default starting values with a larger
+                    ## iteration budget instead of carrying a bad estimate forward as the next
+                    ## window's warm start.
+                    if _fit.convergence_flag != 0:
+                        if not _warned_convergence:
+                            warnings.warn(
+                                f'Warm-started fit did not converge for model {j} '
+                                f'({md.volatility.name}) at window ending index '
+                                f'{window_size + i - 1}; refitting from default starting values.',
+                                stacklevel=2,
+                            )
+                            _warned_convergence = True
+                        _fit = md.fit(first_obs=i, last_obs=window_size + i,
+                                      starting_values=None, options={'maxiter': 500}, disp=False)
+                else:
+                    _fit = md.fix(params=_fit.params, first_obs=i, last_obs=window_size + i)
 
                 ## Try/Except handle for when analytical forecasts for horizon>1
                 ## do not exist. I prefer the bootstrap method, maybe later change
